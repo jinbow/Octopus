@@ -1,7 +1,7 @@
 # Octupus
 Offline calculation of particle trajectories
 
-This module is in a development stage. Email me for questions.
+This model is in a development stage. Email me for questions.
 
 Jinbo Wang <jinbow@gmail.com>
 Scripps Institution of Oceanography
