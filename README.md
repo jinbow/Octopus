@@ -1,4 +1,4 @@
-# Octupus
+# Octopus
 Offline calculation of particle trajectories
 
 This model is in a development stage. Email me for questions.
