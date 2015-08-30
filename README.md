@@ -27,7 +27,7 @@ Steps to run:
 
 5. Download necessary binary files:
 
-   bash download_data.sh
+   bash sync_data.sh
 
 5. In the src/ folder, run the model
 
