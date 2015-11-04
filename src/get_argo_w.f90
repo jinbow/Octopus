@@ -78,6 +78,4 @@ subroutine get_argo_w(argow)
 
     endif
 
-endif
-
 end subroutine get_argo_w
