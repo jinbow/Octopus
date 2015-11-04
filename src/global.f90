@@ -1,7 +1,8 @@
 module global
+#include "cpp_options.h"
+
     implicit none
     include "size.h"
-    #include "cpp_options.h"
     !for particle
     integer*8 :: Npts,NPP
 
