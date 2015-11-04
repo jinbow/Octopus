@@ -1,7 +1,7 @@
 subroutine check_and_dump(SNPP)
 
     use global, only :tt,dumpFreq,diagFreq,pickupFreq,&
-                      rec_num,dt_reinit,iswitch,saveTSG,pickup
+                      rec_num,dt_reinit,iswitch,pickup
     implicit none
     INTEGER*8 :: t0,t1,IPP
     INTEGER*8, intent(in) :: SNPP
@@ -14,10 +14,10 @@ subroutine check_and_dump(SNPP)
         t1=iswitch
         print*, "write data to files at step ",rec_num,' tt=',tt
         do IPP=1,SNPP
-!        if (saveTSG) then
+#ifdef saveTSG
             call interp_tracer(t0,t1,IPP)
+#endif
             call c_gradient(t0,IPP)
- !       endif
             call dump_data(IPP)
         enddo
 
