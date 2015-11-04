@@ -47,5 +47,8 @@ module global
                       output_dir="output",fn_PHIHYD
 !mixing parameters
     REAL*8 :: Khdiff, Kvdiff, kvdt2, khdt2
+#ifdef isArgo
+    integer*8 :: argo_clock(2),parking_time,surfacing_time
+#endif
 
 end module global
