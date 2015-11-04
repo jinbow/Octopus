@@ -1,6 +1,7 @@
 subroutine get_argo_w(argow)
 #include "cpp_options.h"
 
+#ifdef isArgo
     use global, only : xyz,argo_clock,parking_time,surfacing_time
 
     implicit none
@@ -77,5 +78,6 @@ subroutine get_argo_w(argow)
         endif
 
     endif
+#endif
 
 end subroutine get_argo_w
