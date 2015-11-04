@@ -4,7 +4,7 @@ subroutine read_namelist()
     use global, only : casename,path2uvw,fn_UVEL,fn_VVEL,&
         fn_WVEL,dt,dt_reinit,tend,dt_case,fn_THETA,fn_SALT,&
         fn_GAMMA,dt_mld,pickupFreq,pickup,dumpFreq,diagFreq,tstart,fn_parti_init,&
-        target_density,useMLD,vel_stationary,Khdiff,Kvdiff,NPP,Npts,output_dir,&
+        target_density,vel_stationary,Khdiff,Kvdiff,NPP,Npts,output_dir,&
         fn_PHIHYD
     implicit none
 !    integer*8, intent(in) :: inml
@@ -13,7 +13,7 @@ subroutine read_namelist()
     namelist /PARAM/ casename,path2uvw,fn_UVEL,fn_VVEL,&
         fn_WVEL,dt,tend,fn_THETA,fn_SALT,&
         fn_GAMMA,pickup,pickupFreq,dumpFreq,diagFreq,tstart,fn_parti_init,&
-        target_density,dt_reinit,dt_mld,dt_case,useMLD,vel_stationary,&
+        target_density,dt_reinit,dt_mld,dt_case,vel_stationary,&
         Khdiff,Kvdiff,NPP,Npts,output_dir,fn_PHIHYD
 
 !    read (*,NML=PARAM)

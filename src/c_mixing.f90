@@ -1,7 +1,8 @@
 subroutine apply_mixing(IPP)
+#include "cpp_options.h"
 
     use global, only: Npts,hFacC,xyz,z2k,k2z,Nx,Ny,dt_mld,tt,mld,&
-        useMLD,parti_mld,kvdt2,khdt2,dxg_r,dyg_r,drf_r,pi2f
+        parti_mld,kvdt2,khdt2,dxg_r,dyg_r,drf_r,pi2f
     use random, only: random_normal
     implicit none
     !integer*4, target :: ixyz(Npts,3)
@@ -13,7 +14,7 @@ subroutine apply_mixing(IPP)
     logical :: ivok_mld
     integer*8, intent(in) :: IPP
 
-    ivok_mld= (mod(tt,dt_mld) .eq. 0) .and. useMLD
+    ivok_mld= (mod(tt,dt_mld) .eq. 0)
 
     if (ivok_mld) then
         call load_mld(tt)
