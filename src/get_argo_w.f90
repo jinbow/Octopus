@@ -1,13 +1,12 @@
 subroutine get_argo_w(argow)
 #include "cpp_options.h"
-
-#ifdef isArgo
-    use global, only : xyz,argo_clock,parking_time,surfacing_time
-
     implicit none
     integer*8 :: ia
     real*8,intent(out) :: argow
 
+#ifdef isArgo
+
+    use global, only : xyz,argo_clock,parking_time,surfacing_time
     !add noise to the vertical velocity
     !call random_number(tmp0)
     !tmp0=(tmp0-0.5)*0.05
