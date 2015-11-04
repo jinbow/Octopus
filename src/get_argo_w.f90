@@ -1,14 +1,15 @@
 subroutine get_argo_w(argow)
 #include "cpp_options.h"
 
-    use global, only : argo_clock,parking_time,surfacing_time
+    use global, only : xyz,argo_clock,parking_time,surfacing_time
 
     implicit none
-    integer*8 :: i,j,k,ip,ia
-    real*8,dimension(3),intent(out) :: argow
+    integer*8 :: ia
+    real*8,intent(out) :: argow
 
-       !call random_number(tmp0)
-       !tmp0=0!(tmp0-0.5)*0.05
+    !add noise to the vertical velocity
+    !call random_number(tmp0)
+    !tmp0=(tmp0-0.5)*0.05
 
     ia=argo_clock(1)
 
@@ -62,7 +63,7 @@ subroutine get_argo_w(argow)
             argow = 0.0
             argo_clock(1) = 5
             argo_clock(2) =0.0
-            print*, "before dump"
+
             call dump_argo()
         endif
 
