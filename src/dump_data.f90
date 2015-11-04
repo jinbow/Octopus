@@ -3,7 +3,7 @@ subroutine dump_data(IPP)
 !output particle data
     use omp_lib
     use global, only: casename,tt,fn_ids,xyz,tsg,&
-        Npts,parti_mld,DumpClock,saveTSG,&
+        Npts,parti_mld,DumpClock,&
         NPP,output_dir,grad
     implicit none
     character(len=128) :: fn
