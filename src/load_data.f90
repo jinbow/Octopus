@@ -31,7 +31,7 @@ subroutine load_data(IPP)
     read(fn_ids(2,IPP),rec=1) xyz2
     close(fn_ids(2,IPP))
     tsg(:,:,IPP)=real(xyz2,8)
- #endif
+#endif
 
 #ifdef useMLD
     !$OMP SECTION
