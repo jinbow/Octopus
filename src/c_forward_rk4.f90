@@ -3,7 +3,8 @@ subroutine rk4(SNPP)
 #include "cpp_options.h"
 
     ! integrate in time using RK4 scheme
-    use global, only : tt,Npts,iswitch,xyz,dt,Nx,Ny,Nz,uvwp,dt_file,t_amend,useKh
+    use global, only : tt,Npts,iswitch,xyz,dt,Nx,Ny,Nz,&
+                       uvwp,dt_file,t_amend
 
     implicit none
     real*8, dimension(3) :: x0,x1,uvw
@@ -13,7 +14,7 @@ subroutine rk4(SNPP)
     t0=abs(iswitch-1)
     t1=iswitch
     do IPP=1,SNPP
-!$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(x0,x1,uvw,ip) SHARED(IPP,SNPP,Npts,xyz,t_amend,t0,t1,dt,useKh)
+!$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(x0,x1,uvw,ip) SHARED(IPP,SNPP,Npts,xyz,t_amend,t0,t1,dt)
         do ip=1,Npts
             x0=xyz(ip,:,IPP)
             x1=xyz(ip,:,IPP)
