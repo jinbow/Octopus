@@ -31,7 +31,7 @@ subroutine dump_data(IPP)
             access='direct',form='unformatted',convert='BIG_ENDIAN',recl=4*4*Npts,status='replace')
         write(fn_ids(2,IPP),rec=1) real(tsg(:,:,IPP),4)
         close(fn_ids(2,IPP))
-    endif
+
 #endif
 
 #ifdef useMLD
