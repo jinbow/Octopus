@@ -1,7 +1,9 @@
 
 subroutine rk4(SNPP)
+#include "cpp_options.h"
+
     ! integrate in time using RK4 scheme
-    use global, only : tt,Npts,iswitch,xyz,dt,Nx,Ny,Nz,uvwp,dt_file,t_amend,useKh,saveTSG
+    use global, only : tt,Npts,iswitch,xyz,dt,Nx,Ny,Nz,uvwp,dt_file,t_amend,useKh
 
     implicit none
     real*8, dimension(3) :: x0,x1,uvw
@@ -33,10 +35,15 @@ subroutine rk4(SNPP)
             xyz(ip,:,IPP)=x1+dt*uvw/6d0
         enddo
 !$OMP END PARALLEL DO
-    if (useKh) then
+
+#ifdef useKh
        call apply_mixing(IPP)
-    endif
+#endif
+
+#if boundaryConsition == 1
     call set_boundary(IPP)
+#endif
+
     enddo
 
 end subroutine rk4
