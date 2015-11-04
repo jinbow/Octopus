@@ -1,2 +1,4 @@
-#define saveTSG .TRUE.
-#define isArgo .TRUE.
+#define saveTSG
+#define isArgo
+#define useKh
+#define boundaryCondition 1
