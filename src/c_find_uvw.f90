@@ -13,7 +13,7 @@ subroutine find_particle_uvw(t_amend,ip,IPP,t0,t1,uvw)
     real*8, intent(in) :: t_amend
     integer*8,intent(in) :: t0,t1,ip,IPP
 
-    real*8,dimension(3),intent(out) :: uvw=0.0
+    real*8,dimension(3),intent(out) :: uvw
 
     real*8,dimension(3) :: dxyz_fac
     integer*8 :: i,j,k
