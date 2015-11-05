@@ -1,5 +1,5 @@
 subroutine check_and_save(SNPP)
-
+#include "cpp_options.h"
     use global, only :tt,saveFreq,diagFreq,pickupFreq,&
                       rec_num,dt_reinit,iswitch,pickup
     implicit none
@@ -14,10 +14,13 @@ subroutine check_and_save(SNPP)
         t1=iswitch
         print*, "write data to files at step ",rec_num,' tt=',tt
         do IPP=1,SNPP
+
 #ifdef saveTSG
             call interp_tracer(t0,t1,IPP)
 #endif
+#ifdef saveGradient
             call c_gradient(t0,IPP)
+#endif
             call save_data(IPP)
         enddo
 

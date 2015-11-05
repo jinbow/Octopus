@@ -40,12 +40,13 @@ subroutine save_data(IPP)
         close(fn_ids(3,IPP))
 #endif
 
+#ifdef saveGradient
     !$OMP SECTION
     open(fn_ids(4,IPP),file=trim(output_dir)//'/'//trim(casename)//'_'//trim(fn1)//'.GRAD.'//trim(fn)//'.data',&
         access='direct',form='unformatted', convert='BIG_ENDIAN',recl=4*4*Npts,status='unknown')
     write(fn_ids(4,IPP),rec=1) real(grad(:,:,IPP),4)
     close(fn_ids(4,IPP))
-
+#endif
 !$OMP END PARALLEL SECTIONS
 
 end subroutine save_data
