@@ -41,7 +41,7 @@ subroutine rk4(SNPP)
        call apply_mixing(IPP)
 #endif
 
-#if boundaryConsition == 1
+#if boundaryCondition == 1
     call set_boundary(IPP)
 #endif
 
