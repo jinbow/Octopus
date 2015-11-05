@@ -1,6 +1,6 @@
-subroutine check_and_dump(SNPP)
+subroutine check_and_save(SNPP)
 
-    use global, only :tt,dumpFreq,diagFreq,pickupFreq,&
+    use global, only :tt,saveFreq,diagFreq,pickupFreq,&
                       rec_num,dt_reinit,iswitch,pickup
     implicit none
     INTEGER*8 :: t0,t1,IPP
@@ -9,7 +9,7 @@ subroutine check_and_dump(SNPP)
 !$OMP PARALLEL SECTIONS
 
 !$OMP SECTION
-    if (mod(tt,dumpFreq) .eq. 0.0) then
+    if (mod(tt,saveFreq) .eq. 0.0) then
         t0=abs(iswitch-1)
         t1=iswitch
         print*, "write data to files at step ",rec_num,' tt=',tt
@@ -18,7 +18,7 @@ subroutine check_and_dump(SNPP)
             call interp_tracer(t0,t1,IPP)
 #endif
             call c_gradient(t0,IPP)
-            call dump_data(IPP)
+            call save_data(IPP)
         enddo
 
     endif
@@ -34,7 +34,7 @@ subroutine check_and_dump(SNPP)
         print*, "==========================================="
         print*, " Dump pickup data at record ", rec_num
         print*, "==========================================="
-        call dump_pickup()
+        call save_pickup()
     endif
 
 !$OMP SECTION
@@ -44,4 +44,4 @@ subroutine check_and_dump(SNPP)
         call init_particles()
     endif
 !$OMP END PARALLEL SECTIONS
-end subroutine check_and_dump
+end subroutine check_and_save

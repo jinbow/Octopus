@@ -1,4 +1,4 @@
-subroutine dump_pickup()
+subroutine save_pickup()
     use global, only: casename,tt,DumpClock,tsg,xyz
     implicit none
     character(len=64) :: fn
@@ -8,4 +8,4 @@ subroutine dump_pickup()
         access='stream',convert='BIG_ENDIAN',status='replace')
     write(0) xyz,tsg,tt
     close(0)
-end subroutine dump_pickup
+end subroutine save_pickup

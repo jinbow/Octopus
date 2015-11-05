@@ -1,4 +1,4 @@
-subroutine dump_data(IPP)
+subroutine save_data(IPP)
 #include "cpp_options.h"
 !output particle data
     use omp_lib
@@ -20,14 +20,14 @@ subroutine dump_data(IPP)
 
     !$OMP SECTION
     open(fn_ids(1,IPP),file=trim(output_dir)//'/'//trim(casename)//'_'//trim(fn1)//'.XYZ.'//trim(fn)//'.data',&
-        access='direct',form='unformatted', convert='BIG_ENDIAN',recl=3*4*Npts,status='replace')
+        access='direct',form='unformatted', convert='BIG_ENDIAN',recl=3*4*Npts,status='unknown')
     write(fn_ids(1,IPP),rec=1) real(xyz(:,:,IPP),4)
     close(fn_ids(1,IPP))
 
 #ifdef saveTSG
     !$OMP SECTION
         open(fn_ids(2,IPP),file=trim(output_dir)//'/'//trim(casename)//'_'//trim(fn1)//'.TSG.'//trim(fn)//'.data',&
-            access='direct',form='unformatted',convert='BIG_ENDIAN',recl=4*4*Npts,status='replace')
+            access='direct',form='unformatted',convert='BIG_ENDIAN',recl=4*4*Npts,status='unknown')
         write(fn_ids(2,IPP),rec=1) real(tsg(:,:,IPP),4)
         close(fn_ids(2,IPP))
 
@@ -36,17 +36,17 @@ subroutine dump_data(IPP)
 #ifdef useMLD
     !$OMP SECTION
         open(fn_ids(3,IPP),file=trim(output_dir)//'/'//trim(casename)//'_'//trim(fn1)//'.MLD.'//trim(fn)//'.data',&
-            access='direct',form='unformatted',convert='BIG_ENDIAN',recl=4*Npts,status='replace')
+            access='direct',form='unformatted',convert='BIG_ENDIAN',recl=4*Npts,status='unknown')
         write(fn_ids(3,IPP),rec=1) real(parti_mld(:,IPP),4)
         close(fn_ids(3,IPP))
 #endif
 
     !$OMP SECTION
     open(fn_ids(4,IPP),file=trim(output_dir)//'/'//trim(casename)//'_'//trim(fn1)//'.GRAD.'//trim(fn)//'.data',&
-        access='direct',form='unformatted', convert='BIG_ENDIAN',recl=4*4*Npts,status='replace')
+        access='direct',form='unformatted', convert='BIG_ENDIAN',recl=4*4*Npts,status='unknown')
     write(fn_ids(4,IPP),rec=1) real(grad(:,:,IPP),4)
     close(fn_ids(4,IPP))
 
 !$OMP END PARALLEL SECTIONS
 
-end subroutine dump_data
+end subroutine save_data

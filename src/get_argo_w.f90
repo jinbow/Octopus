@@ -1,16 +1,14 @@
 subroutine get_argo_w(argow)
 #include "cpp_options.h"
-    implicit none
-
-    real*8,intent(out) :: argow
-
 
 #ifdef isArgo
-
     use global, only : xyz,argo_clock,parking_time,surfacing_time
        !add noise to the vertical velocity
        !call random_number(tmp0)
        !tmp0=(tmp0-0.5)*0.05
+
+    implicit none
+    real*8,intent(out) :: argow
     integer*8 :: ia
     ia=argo_clock(1)
 
@@ -64,8 +62,7 @@ subroutine get_argo_w(argow)
             argow = 0.0
             argo_clock(1) = 5
             argo_clock(2) =0.0
-
-            call dump_argo()
+            call save_data()
         endif
 
     elseif (ia==5) then
@@ -78,6 +75,7 @@ subroutine get_argo_w(argow)
         endif
 
     endif
+
 #endif
 
 end subroutine get_argo_w

@@ -8,7 +8,7 @@ subroutine load_data(IPP)
     character(len=16) :: fn1
     !    integer*8 :: iwrite
     integer*8,intent(in) :: IPP
-    real*4 :: xyz1(Npts,3),xyz2(Npts,3),xyz3(Npts)
+    real*4 :: xyz1(Npts,3) !,xyz2(Npts,3),xyz3(Npts)
 
     !    iwrite=int(tt/DumpClock)+1
     !tt=(pickup-1)*DumpClock
