@@ -67,7 +67,7 @@ program main
             call load_uvwtsg(rec_num,iswitch)
         endif
 
-        call check_and_dump(SNPP)
+        call check_and_save(SNPP)
         print*, tsg(1,1,1)
     enddo
     CALL DATE_AND_TIME(date,time1,zone,time)

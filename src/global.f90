@@ -32,7 +32,7 @@ module global
     REAL*8 :: z2k(5701), k2z(0:420)
 
 !timing parameters
-    REAL*8 :: t_amend, dumpFreq,DumpClock=86400, diagFreq, target_density
+    REAL*8 :: t_amend, saveFreq,DumpClock=86400, diagFreq, target_density
     REAL*8 :: tt,dtp,dt,dt_mld,tstart,tend,tend_file,dt_reinit,dt_case=15*86400
     INTEGER*8 :: rec_num
     logical :: vel_stationary
