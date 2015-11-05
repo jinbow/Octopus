@@ -17,7 +17,6 @@ subroutine save_data(IPP)
 
 !$OMP PARALLEL SECTIONS
 
-
     !$OMP SECTION
     open(fn_ids(1,IPP),file=trim(output_dir)//'/'//trim(casename)//'_'//trim(fn1)//'.XYZ.'//trim(fn)//'.data',&
         access='direct',form='unformatted', convert='BIG_ENDIAN',recl=3*4*Npts,status='unknown')
