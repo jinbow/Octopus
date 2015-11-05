@@ -28,6 +28,3 @@ argo: $(obj_argo); $(FORTRAN_COMPILER) -o O.argo -fopenmp $(obj_argo)
 
 clean: 
 	rm *.o *.mod
-
-	
-	
