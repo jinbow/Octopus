@@ -142,7 +142,7 @@ subroutine load_tsg(irec,isw)
     !$OMP END PARALLEL SECTIONS
 
     print*, "end loading data"
-end subroutine load_uvwtsg
+end subroutine load_tsg
 
 
 subroutine load_grid()
