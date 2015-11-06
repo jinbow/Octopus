@@ -19,7 +19,7 @@ subroutine check_and_save(SNPP)
             call interp_tracer(t0,t1,IPP)
 #endif
 #ifdef saveGradient
-            call c_gradient(t0,IPP)
+            call calc_gradient(t0,IPP)
 #endif
             call save_data(IPP)
         enddo
