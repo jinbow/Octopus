@@ -2,7 +2,7 @@ subroutine get_argo_w(argow)
 #include "cpp_options.h"
 
 #ifdef isArgo
-    use global, only : xyz,argo_clock,parking_time,surfacing_time
+    use global, only : xyz,argo_clock,parking_time,surfacing_time,SNPP
        !add noise to the vertical velocity
        !call random_number(tmp0)
        !tmp0=(tmp0-0.5)*0.05
@@ -15,6 +15,9 @@ subroutine get_argo_w(argow)
     if ( ia==0 ) then
         argo_clock(1)=1
         argow = 0.047
+        call save_data(SNPP)
+        print*, "=============" 
+        print*, "output Argo data"
     elseif (ia==1) then
         !save the surface position
         !descending
@@ -62,7 +65,6 @@ subroutine get_argo_w(argow)
             argow = 0.0
             argo_clock(1) = 5
             argo_clock(2) =0.0
-            call save_data()
         endif
 
     elseif (ia==5) then

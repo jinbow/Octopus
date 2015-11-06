@@ -5,10 +5,11 @@ program main
 
     implicit none
     integer*8 :: n_threads=16
-    integer*8 :: i,IPP,SNPP
+    integer*8 :: i,IPP
     !integer*8, dimension(2) :: ipts
     character(len=10)     :: date,time0,time1,zone
     integer*8,dimension(8):: time
+    integer*8 :: count_step=0
 
     CALL DATE_AND_TIME(date,time0,zone,time)
 
@@ -39,6 +40,9 @@ program main
         call load_uvwtsg(rec_num,0)
         call load_uvwtsg(rec_num+1,1)
         iswitch=1
+
+    call check_and_save(NPP)
+
     do while (tt<=tend)
         SNPP = min(int(tt/dt_case)+1,NPP)
         if ( mod(tt,dt_case)==0 .and. int(tt/dt_case,8)+1<=NPP) then
@@ -50,6 +54,7 @@ program main
             dtp = real(mod(tt,dt_file))/real(dt_file)
                 call rk4(SNPP)
             tt=tt+dt
+            count_step=count_step+1
         enddo
 
         if (mod(rec_num,Nrecs)==0) then
@@ -66,9 +71,11 @@ program main
             print*, iswitch
             call load_uvwtsg(rec_num,iswitch)
         endif
-
+#ifndef isArgo
+        if (mod(count_step,int(saveFreq,8)) .eq. 0) then
         call check_and_save(SNPP)
-        print*, tsg(1,1,1)
+        endif
+#endif
     enddo
     CALL DATE_AND_TIME(date,time1,zone,time)
     print*, "Program started at", time0, "and ended ", time1

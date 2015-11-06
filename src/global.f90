@@ -4,7 +4,7 @@ module global
     implicit none
     include "size.h"
     !for particle
-    integer*8 :: Npts,NPP
+    integer*8 :: Npts,NPP,SNPP
 
 
     CHARACTER(32) :: fn_particle_init
