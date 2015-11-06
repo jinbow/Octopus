@@ -1,12 +1,13 @@
 subroutine find_particle_uvw(t_amend,ip,IPP,t0,t1,uvw)
 #include "cpp_options.h"
 
-    use global, only : Nx,Ny,Nz,Npts,xyz,&
-        dxg_r,dyg_r,drf_r,dtp,&
-        uu,vv,ww,hFacC,tsg,theta,salt,&
-        gam,tt, &
-        pi2f,pj2f,pk2f,pi2c,pj2c,pk2c, &
-        dif, djf, dkf, dic, djc, dkc
+    use global
+!    , only : Nx,Ny,Nz,Npts,xyz,&
+!        dxg_r,dyg_r,drf_r,dtp,&
+!        uu,vv,ww,hFacC,tsg,theta,salt,&
+!        gam,tt, &
+!        pi2f,pj2f,pk2f,pi2c,pj2c,pk2c, &
+!        dif, djf, dkf, dic, djc, dkc
 
     implicit none
 
