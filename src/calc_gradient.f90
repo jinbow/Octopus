@@ -19,7 +19,7 @@ subroutine calc_gradient(t0,IPP)
         k=pk2c(ip,IPP)
         call interp_bilinear(dy,dr,uu(i,j:j+1,k:k+1,t0),tmp0)
         call interp_bilinear(dy,dr,uu(i+1,j:j+1,k:k+1,t0),tmp1)
-        grad(ip,1,IPP)=(tmp1-tmp0)*dxg_r(i,j)
+        grad(ip,1,IPP)=(tmp1-tmp0)*dxg_ri(i,j)
         !du/dy
         call interp_bilinear(dx,dr,uu(i:i+1,j,k:k+1,t0),tmp0)
         call interp_bilinear(dx,dr,uu(i:i+1,j+1,k:k+1,t0),tmp1)
