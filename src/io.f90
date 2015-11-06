@@ -65,7 +65,7 @@ subroutine load_3d(fn_id,irec,dout)
     i=(i-1)*Nz+1
     k0=max(minval(floor(xyz(:,3,:)))-1,0)
     k1=min(maxval(ceiling(xyz(:,3,:)))+1,Nz-1)
-!$OMP PARALLEL DO PRIVATE(k)
+    !$OMP PARALLEL DO PRIVATE(k)
     do k=k0,k1
         read(fn_id,rec=i+k) dout(0:Nx-1,:,k)
         dout(Nx:Nx+1,:,k)=dout(0:1,:,k)
@@ -74,7 +74,7 @@ subroutine load_3d(fn_id,irec,dout)
 !$OMP END PARALLEL DO
 end subroutine load_3d
 
-subroutine load_uvwtsg(irec,isw)
+subroutine load_uvw(irec,isw)
     use global, only : fn_uvwtsg_ids,Nx,Ny,Nz,uu,vv,ww,theta,gam,salt,Nrecs
     implicit none
     INTEGER*8, intent(in) :: irec,isw
@@ -84,48 +84,62 @@ subroutine load_uvwtsg(irec,isw)
     if (i .eq. 0) then
         i=Nrecs
     endif
-!$OMP PARALLEL SECTIONS
-!$OMP SECTION
-    call load_3d(fn_uvwtsg_ids(1),irec,uu(:,:,:,isw))
+    !$OMP PARALLEL SECTIONS
+    !$OMP SECTION
+    call load_3d(fn_uvwtsg_ids(1),i,uu(:,:,:,isw))
     uu(:,:,-1,isw)=uu(:,:,0,isw)
     uu(:,:,Nz,isw)=uu(:,:,Nz-1,isw)
     print*, "====>> load UVEL", irec, "min() =", minval(uu(:,:,:,isw))
-!$OMP SECTION
-    call load_3d(fn_uvwtsg_ids(2),irec,vv(:,:,:,isw))
+    !$OMP SECTION
+    call load_3d(fn_uvwtsg_ids(2),i,vv(:,:,:,isw))
 
     vv(:,:,-1,isw)=vv(:,:,0,isw)
     vv(:,:,Nz,isw)=vv(:,:,Nz-1,isw)
     print*, "====>> load VVEL", irec, "min() =", minval(vv(:,:,:,isw))
-!$OMP SECTION
-    call load_3d(fn_uvwtsg_ids(3),irec,ww(:,:,:,isw))
+    !$OMP SECTION
+    call load_3d(fn_uvwtsg_ids(3),i,ww(:,:,:,isw))
    
     ww(:,:,-1,isw)=0d0 !reflective surface ghost cell 
     ww(:,:,Nz,isw)=0d0 !reflective bottom  ghost cell
 
-    print*, "====>> load WVEL", irec, "min() =", minval(ww(:,:,:,isw))
+    print*, "====>> load WVEL", i, "min() =", minval(ww(:,:,:,isw))
+    !$OMP END PARALLEL SECTIONS
 
-!$OMP SECTION
-    call load_3d(fn_uvwtsg_ids(4),irec,theta(:,:,:,isw))
+end subroutine load_uvw
+
+subroutine load_tsg(irec,isw)
+    use global, only : fn_uvwtsg_ids,Nx,Ny,Nz,uu,vv,ww,theta,gam,salt,Nrecs
+    implicit none
+    INTEGER*8, intent(in) :: irec,isw
+    !real*4, dimension(-1:Nx+1,0:Ny-1,-1:Nz) :: tmp
+    integer*8 :: i
+    i=mod(irec,Nrecs)
+    if (i .eq. 0) then
+        i=Nrecs
+    endif
+    !$OMP PARALLEL SECTIONS
+    !$OMP SECTION
+    call load_3d(fn_uvwtsg_ids(4),i,theta(:,:,:,isw))
     theta(:,:,-1,isw)=theta(:,:,0,isw)
     theta(:,:,Nz,isw)=theta(:,:,Nz-1,isw)
     print*, "====>> load THETA", irec, "min() =", minval(theta(:,:,:,isw)),maxval(theta(:,:,:,isw))
 
-!$OMP SECTION
-    call load_3d(fn_uvwtsg_ids(5),irec,salt(:,:,:,isw))
+    !$OMP SECTION
+    call load_3d(fn_uvwtsg_ids(5),i,salt(:,:,:,isw))
 
     salt(:,:,-1,isw)=salt(:,:,0,isw)
     salt(:,:,Nz,isw)=salt(:,:,Nz-1,isw)
 
-    print*, "====>> load SALT", irec, "min() =", minval(salt(:,:,:,isw))
-!$OMP SECTION
-    call load_3d(fn_uvwtsg_ids(6),irec,gam(:,:,:,isw))
+    print*, "====>> load SALT", i, "min() =", minval(salt(:,:,:,isw))
+    !$OMP SECTION
+    call load_3d(fn_uvwtsg_ids(6),i,gam(:,:,:,isw))
 
     gam(:,:,-1,isw)=gam(:,:,0,isw)
     gam(:,:,Nz,isw)=gam(:,:,Nz-1,isw)
 
     where(gam(:,:,:,isw)<20) gam(:,:,:,isw)=0d0
     print*, "====>> load GAMMA", irec, "min() =", minval(gam(:,:,:,isw))
-!$OMP END PARALLEL SECTIONS
+    !$OMP END PARALLEL SECTIONS
 
     print*, "end loading data"
 end subroutine load_uvwtsg
@@ -204,7 +218,7 @@ end subroutine load_grid
 
 subroutine save_data(IPP)
 #include "cpp_options.h"
-!output particle data
+    !output particle data
     use omp_lib
     use global, only: casename,tt,fn_ids,xyz,tsg,&
         Npts,parti_mld,DumpClock,NPP,output_dir,grad
@@ -219,7 +233,7 @@ subroutine save_data(IPP)
     write(fn,"(I10.10)") iwrite
     write(fn1,"(I4.4)") IPP
 
-!$OMP PARALLEL SECTIONS
+    !$OMP PARALLEL SECTIONS
 
     !$OMP SECTION
     open(fn_ids(1,IPP),file=trim(output_dir)//'/'//trim(casename)//'_'//trim(fn1)//'.XYZ.'//trim(fn)//'.data',&
@@ -229,19 +243,19 @@ subroutine save_data(IPP)
 
 #ifdef saveTSG
     !$OMP SECTION
-        open(fn_ids(2,IPP),file=trim(output_dir)//'/'//trim(casename)//'_'//trim(fn1)//'.TSG.'//trim(fn)//'.data',&
-            access='direct',form='unformatted',convert='BIG_ENDIAN',recl=4*4*Npts,status='unknown')
-        write(fn_ids(2,IPP),rec=1) real(tsg(:,:,IPP),4)
-        close(fn_ids(2,IPP))
+    open(fn_ids(2,IPP),file=trim(output_dir)//'/'//trim(casename)//'_'//trim(fn1)//'.TSG.'//trim(fn)//'.data',&
+        access='direct',form='unformatted',convert='BIG_ENDIAN',recl=4*4*Npts,status='unknown')
+    write(fn_ids(2,IPP),rec=1) real(tsg(:,:,IPP),4)
+    close(fn_ids(2,IPP))
 
 #endif
 
 #ifdef useMLD
     !$OMP SECTION
-        open(fn_ids(3,IPP),file=trim(output_dir)//'/'//trim(casename)//'_'//trim(fn1)//'.MLD.'//trim(fn)//'.data',&
-            access='direct',form='unformatted',convert='BIG_ENDIAN',recl=4*Npts,status='unknown')
-        write(fn_ids(3,IPP),rec=1) real(parti_mld(:,IPP),4)
-        close(fn_ids(3,IPP))
+    open(fn_ids(3,IPP),file=trim(output_dir)//'/'//trim(casename)//'_'//trim(fn1)//'.MLD.'//trim(fn)//'.data',&
+        access='direct',form='unformatted',convert='BIG_ENDIAN',recl=4*Npts,status='unknown')
+    write(fn_ids(3,IPP),rec=1) real(parti_mld(:,IPP),4)
+    close(fn_ids(3,IPP))
 #endif
 
 #ifdef saveGradient

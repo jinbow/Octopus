@@ -1,4 +1,3 @@
-
 subroutine interp_tracer(t0,t1,IPP)
     use global,only: Nx,Ny,dtp,xyz,dic,djc,dkc,pi2c,pj2c,pk2c,Npts,theta,salt,gam,tsg,NPP,tt,phihyd,fn_PHIHYD
     implicit none

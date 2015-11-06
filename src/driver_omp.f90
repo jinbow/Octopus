@@ -37,8 +37,8 @@ program main
     do IPP = 1, NPP
         call init_particles(IPP)
     enddo
-        call load_uvwtsg(rec_num,0)
-        call load_uvwtsg(rec_num+1,1)
+        call load_uvw(rec_num,0)
+        call load_uvw(rec_num+1,1)
         iswitch=1
 
     call check_and_save(NPP)
@@ -58,8 +58,8 @@ program main
         enddo
 
         if (mod(rec_num,Nrecs)==0) then
-            call load_uvwtsg(1,0)
-            call load_uvwtsg(2,1)
+            call load_uvw(1,0)
+            call load_uvw(2,1)
             rec_num=rec_num+2
             do IPP=1,SNPP
                 call jump(IPP)
@@ -69,7 +69,7 @@ program main
             rec_num=rec_num+1
             iswitch=abs(iswitch-1)
             print*, iswitch
-            call load_uvwtsg(rec_num,iswitch)
+            call load_uvw(rec_num,iswitch)
         endif
 #ifndef isArgo
         if (mod(count_step,int(saveFreq,8)) .eq. 0) then
