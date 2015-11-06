@@ -11,9 +11,14 @@ print*, "start allocation of variables ......"
 ALLOCATE ( xyz(Npts,3,NPP), &
            xyz0(Npts,3,NPP), &
            uvwp(Npts,3,NPP), &
-           dxyz_fac(Npts,3,NPP), &
-           grad(Npts,4,NPP), &
-           tsg(Npts,4,NPP) )
+           dxyz_fac(Npts,3,NPP) )
+#ifdef saveTSG
+ALLOCATE (tsg(Npts,4,NPP))
+#endif
+
+#ifdef saveGradient
+ALLOCATE (grad(Npts,5,NPP))
+#endif
 
 ALLOCATE ( pi2f(Npts,NPP),&
            pj2f(Npts,NPP),&
