@@ -14,9 +14,9 @@ ALLOCATE ( xyz(Npts,3,NPP), &
            xyz0(Npts,3,NPP), &
            uvwp(Npts,3,NPP), &
            dxyz_fac(Npts,3,NPP) )
-#ifdef saveTSG
+
 ALLOCATE (tsg(Npts,4,NPP))
-#endif
+
 
 #ifdef saveGradient
 ALLOCATE (grad(Npts,5,NPP))

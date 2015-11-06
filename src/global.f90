@@ -18,9 +18,9 @@ module global
     REAL*8, parameter     :: PI=3.141592653589793238462643383279502884197d0
     REAL*8, DIMENSION(:,:,:), ALLOCATABLE :: xyz, xyz0, uvwp, dxyz_fac
 
-#ifdef saveTSG
+
     REAL*8, DIMENSION(:,:,:), ALLOCATABLE :: tsg
-#endif
+
 
 #ifdef saveGradient
     REAL*8, DIMENSION(:,:,:), ALLOCATABLE :: grad
