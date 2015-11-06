@@ -19,6 +19,7 @@ subroutine check_and_save(SNPP)
             call load_tsg(rec_num,iswitch)
             call interp_tracer(t0,t1,IPP)
 #endif
+
 #ifdef saveGradient
             call calc_gradient(t0,IPP)
 #endif
