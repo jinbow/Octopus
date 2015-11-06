@@ -1,10 +1,11 @@
 subroutine allocate_parti()
 #include "cpp_options.h"
 
-use global, only :xyz, xyz0, uvwp, dxyz_fac, tsg,&
-                  pi2f,pj2f,pk2f,pi2c,pj2c,pk2c,&
-                  dif, djf, dkf, dic, djc, dkc, parti_mld,&
-                  NPP,Npts,fn_ids,grad
+use global
+!, only :xyz, xyz0, uvwp, dxyz_fac, tsg,&
+!                  pi2f,pj2f,pk2f,pi2c,pj2c,pk2c,&
+!                  dif, djf, dkf, dic, djc, dkc, parti_mld,&
+!                  NPP,Npts,fn_ids,grad
 print*, "----------------------------------------------"
 print*, "start allocation of variables ......"
 
