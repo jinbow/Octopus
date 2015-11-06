@@ -52,20 +52,21 @@ end subroutine load_PHIHYD
 
 
 subroutine load_3d(fn_id,irec,dout)
-    use global, only : Nx,Ny,Nz,Nrecs
+    use global, only : Nx,Ny,Nz,Nrecs,xyz
     implicit none
     INTEGER*8, intent(in) :: irec,fn_id
     real*4, dimension(-2:Nx+1,0:Ny-1,-1:Nz), intent(out) :: dout
-    integer*8 :: i,k
+    integer*8 :: i,k,k0,k1
 
     i=mod(irec,Nrecs)
     if (i .eq. 0) then
         i=Nrecs
     endif
-
     i=(i-1)*Nz+1
+    k0=max(minval(floor(xyz(:,3,:)))-1,0)
+    k1=min(maxval(ceiling(xyz(:,3,:)))+1,Nz-1)
 !$OMP PARALLEL DO PRIVATE(k)
-    do k=0,Nz-1
+    do k=k0,k1
         read(fn_id,rec=i+k) dout(0:Nx-1,:,k)
         dout(Nx:Nx+1,:,k)=dout(0:1,:,k)
         dout(-2:-1,:,k)=dout(Nx-2:Nx-1,:,k)
