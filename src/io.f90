@@ -220,8 +220,9 @@ subroutine save_data(IPP)
 #include "cpp_options.h"
     !output particle data
     use omp_lib
-    use global, only: casename,tt,fn_ids,xyz,tsg,&
-        Npts,parti_mld,DumpClock,NPP,output_dir,grad
+    use global
+    !, only: casename,tt,fn_ids,xyz,tsg,&
+    !    Npts,parti_mld,DumpClock,NPP,output_dir,grad
     implicit none
     character(len=128) :: fn
     character(len=16) :: fn1
