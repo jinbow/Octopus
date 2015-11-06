@@ -16,9 +16,17 @@ module global
 
     REAL*4 :: sose_depth(-2:Nx+1,0:Ny-1)
     REAL*8, parameter     :: PI=3.141592653589793238462643383279502884197d0
-    REAL*8, DIMENSION(:,:,:), ALLOCATABLE :: xyz, xyz0, uvwp, dxyz_fac, tsg, grad
+    REAL*8, DIMENSION(:,:,:), ALLOCATABLE :: xyz, xyz0, uvwp, dxyz_fac
 
-!pickup    
+#ifdef saveTSG
+    REAL*8, DIMENSION(:,:,:), ALLOCATABLE :: tsg
+#endif
+
+#ifdef saveGradient
+    REAL*8, DIMENSION(:,:,:), ALLOCATABLE :: grad
+#endif
+
+    !pickup
     REAL*8 :: pickup=0
     REAL*8 :: pickupFreq=7776000.0
 
@@ -26,12 +34,12 @@ module global
     REAL*8, DIMENSION(:,:), ALLOCATABLE :: dif, djf, dkf, dic, djc, dkc !distance to face and cell center
     REAL*8, DIMENSION(:,:), ALLOCATABLE :: parti_mld
 
-!grid
+    !grid
     REAL*8, DIMENSION(-2:Nx+1,0:Ny-1) :: dxg_r, dyg_r
     REAL*8, DIMENSION(-1:Nz):: drf_r
     REAL*8 :: z2k(5701), k2z(0:420)
 
-!timing parameters
+    !timing parameters
     REAL*8 :: t_amend, saveFreq,DumpClock=86400, diagFreq, target_density
     REAL*8 :: tt,dtp,dt,dt_mld,tstart,tend,tend_file,dt_reinit,dt_case=15*86400
     INTEGER*8 :: rec_num
@@ -39,15 +47,15 @@ module global
     integer*8 :: iswitch
 
 
-!file names
+    !file names
     INTEGER*8, ALLOCATABLE :: fn_ids(:,:)
     INTEGER*8 :: fn_uvwtsg_ids(7),fn_xyz_tsg_mld_ids(3),fn_id_mld
 
     INTEGER*8 :: file_i0
     CHARACTER(255) :: casename,path2uvw,fn_parti_init,fn_UVEL,&
-                      fn_VVEL,fn_WVEL,fn_THETA,fn_SALT,fn_GAMMA,&
-                      output_dir="output",fn_PHIHYD
-!mixing parameters
+        fn_VVEL,fn_WVEL,fn_THETA,fn_SALT,fn_GAMMA,&
+        output_dir="output",fn_PHIHYD
+    !mixing parameters
     REAL*8 :: Khdiff, Kvdiff, kvdt2, khdt2
 #ifdef isArgo
     integer*8 :: argo_clock(2),parking_time,surfacing_time
