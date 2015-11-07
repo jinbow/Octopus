@@ -1,5 +1,6 @@
 &PARAM
 casename='TEST_0000',
+output_dir='../output/'
 path2uvw='/net/mazdata2/jinbo/Project/Eclipse/offline_particle/data/',
 fn_UVEL='UVEL.0000000100.data',
 fn_VVEL='VVEL.0000000100.data',
@@ -16,7 +17,7 @@ dt_reinit=-1,
 dt_mld=432000.,
 dt=43200,
 tstart=0.,
-tend=86400.,
+tend=864000.,
 NPP=1,
 dt_case=864000,
 pickup=0.,

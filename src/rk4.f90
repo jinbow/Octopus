@@ -38,7 +38,11 @@ subroutine rk4(SNPP)
 !$OMP END PARALLEL DO
 
 #ifdef useKh
-       call apply_mixing(IPP)
+       call apply_mixing_Kh(IPP)
+#endif
+
+#ifdef useMLD
+call apply_mixing_mld(IPP)
 #endif
 
 #if boundaryCondition == 1
