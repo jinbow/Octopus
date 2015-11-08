@@ -61,9 +61,11 @@ program main
             call load_uvw(1,0)
             call load_uvw(2,1)
             rec_num=rec_num+2
+#ifndef isArgo
             do IPP=1,SNPP
                 call jump(IPP)
             enddo
+#endif
             iswitch=1
         else
             rec_num=rec_num+1

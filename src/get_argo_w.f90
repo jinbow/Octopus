@@ -16,7 +16,7 @@ subroutine get_argo_w(argow)
         argo_clock(1)=1
         argow = 0.047
         call save_data(SNPP)
-        print*, "=============" 
+        print*, "==========================================" 
         print*, "output Argo data"
     elseif (ia==1) then
         !save the surface position
