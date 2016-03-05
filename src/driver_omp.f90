@@ -4,7 +4,7 @@ program main
     use omp_lib
 
     implicit none
-    integer*8 :: n_threads=16
+    integer*8 :: n_threads=4
     integer*8 :: i,IPP
     !integer*8, dimension(2) :: ipts
     character(len=10)     :: date,time0,time1,zone

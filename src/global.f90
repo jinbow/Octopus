@@ -22,9 +22,9 @@ module global
     REAL*8, DIMENSION(:,:,:), ALLOCATABLE :: tsg
 
 
-#ifdef saveGradient
+!#ifdef saveGradient
     REAL*8, DIMENSION(:,:,:), ALLOCATABLE :: grad
-#endif
+!#endif
 
     !pickup
     REAL*8 :: pickup=0
@@ -54,7 +54,7 @@ module global
     INTEGER*8 :: file_i0
     CHARACTER(255) :: casename,path2uvw,fn_parti_init,fn_UVEL,&
         fn_VVEL,fn_WVEL,fn_THETA,fn_SALT,fn_GAMMA,&
-        output_dir="output",fn_PHIHYD
+        output_dir="output",fn_PHIHYD,fn_MLD
     !mixing parameters
     REAL*8 :: Khdiff, Kvdiff, kvdt2, khdt2
 #ifdef isArgo

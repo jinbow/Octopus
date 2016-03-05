@@ -1,7 +1,6 @@
 subroutine find_index(ip,IPP)
     !find particle index for C-grid variable and their distance to grid faces
-    use global, only: pi2f,pj2f,pk2f,pi2c,pj2c,pk2c,xyz, &
-        dif, djf, dkf, dic, djc, dkc,Nx,Nz,Ny
+    use global
     integer*8, intent(in) :: ip,IPP
     real*8 :: x
     ! these ifs make sure the index does not go beyond the allowed values, otherwise

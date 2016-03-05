@@ -20,7 +20,7 @@ subroutine init_particles(IPP)
 #ifdef isArgo
         xyz(:,3,IPP)=0
 #else
-        !call set_boundary(IPP)
+        call set_boundary(IPP)
         ! Reset the particle depth to find the particle density
         if (target_density>0) then
             tsg(:,3,IPP)=target_density

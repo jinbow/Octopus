@@ -1,6 +1,5 @@
 subroutine set_boundary(IPP)
-    use global, only:Nz,Npts,xyz,pi2f,pj2f,&
-        pk2f,hFacC,reflect_x,reflect_y
+    use global
     implicit none
     integer*8 :: ip
     integer*8, intent(in) :: IPP
@@ -18,6 +17,7 @@ subroutine set_boundary(IPP)
         endif
         
         call find_index(ip,IPP)
+
         !reflective boundary condition
         if (hFacC(pi2f(ip,IPP),pj2f(ip,IPP),pk2f(ip,IPP))<1e-5) then
             xyz(ip,1,IPP)=xyz(ip,1,IPP)+reflect_x(pi2f(ip,IPP),pj2f(ip,IPP),pk2f(ip,IPP)) !semi-reflective boundary

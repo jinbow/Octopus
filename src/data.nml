@@ -1,13 +1,14 @@
 &PARAM
 casename='TEST_0000',
-output_dir='../output/'
-path2uvw='/net/mazdata2/jinbo/Project/Eclipse/offline_particle/data/',
+path2uvw='/nobackup/jwang23/data/sose/sose100/',
+output_dir='/nobackup/jwang23/Octopus/sose100/',
 fn_UVEL='UVEL.0000000100.data',
 fn_VVEL='VVEL.0000000100.data',
 fn_WVEL='WVEL.0000000100.data',
 fn_THETA='THETA.0000000100.data',
 fn_SALT='SALT.0000000100.data',
 fn_GAMMA='GAMMA.0000000100.data',
+fn_MLD='MLD.0000000100.data',
 fn_PHIHYD='',
 fn_parti_init='particle_init.bin',
 target_density=27.4,

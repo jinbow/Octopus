@@ -5,7 +5,7 @@ subroutine read_namelist()
         fn_WVEL,dt,dt_reinit,tend,dt_case,fn_THETA,fn_SALT,&
         fn_GAMMA,dt_mld,pickupFreq,pickup,saveFreq,diagFreq,tstart,fn_parti_init,&
         target_density,vel_stationary,Khdiff,Kvdiff,NPP,Npts,output_dir,&
-        fn_PHIHYD
+        fn_PHIHYD,fn_MLD
     implicit none
 !    integer*8, intent(in) :: inml
 !    character*32 :: fn
@@ -14,7 +14,7 @@ subroutine read_namelist()
         fn_WVEL,dt,tend,fn_THETA,fn_SALT,&
         fn_GAMMA,pickup,pickupFreq,saveFreq,diagFreq,tstart,fn_parti_init,&
         target_density,dt_reinit,dt_mld,dt_case,vel_stationary,&
-        Khdiff,Kvdiff,NPP,Npts,output_dir,fn_PHIHYD
+        Khdiff,Kvdiff,NPP,Npts,output_dir,fn_PHIHYD,fn_MLD
 
 !    read (*,NML=PARAM)
 !from the namelist file

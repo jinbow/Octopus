@@ -1,7 +1,7 @@
 subroutine open_files()
     use global,only:fn_uvwtsg_ids,fn_ids,fn_id_mld,path2uvw,fn_UVEL,&
                     fn_VVEL,fn_WVEL,fn_THETA,fn_SALT,fn_GAMMA,fn_PHIHYD,&
-                    Nx,Ny,Nz
+                    Nx,Ny,Nz,fn_MLD
     implicit none
 
     open(fn_uvwtsg_ids(1),file=trim(path2uvw)//trim(fn_UVEL),&
@@ -27,7 +27,7 @@ subroutine open_files()
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
         status='old',recl=4*Nx*Ny)
     endif
-    open(fn_id_mld,file=trim(path2uvw)//'iter100_mld_438x320x2160.bin',&
+    open(fn_id_mld,file=trim(path2uvw)//trim(fn_MLD),&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
         status='old',recl=4*Nx*Ny)
 
