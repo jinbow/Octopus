@@ -1,17 +1,24 @@
-""" Generate binary files for reflective bottom boundary condition.
+""" 
+This file generates the binary files for reflective bottom boundary condition.
+
+you only need to edit fn_hFacc to point to the correct hFacC file.
+
 Jinbo Wang
 <jinbow@gmail.com>
 Scripps Institution of Oceanography
-August 26, 2015 """
+August 26, 2015 
+
+"""
 
 from numpy import *
 from scipy.interpolate import NearestNDInterpolator as npi 
 from pylab import *
 
-nz,ny,nx=32,140,216 #the model grid size
-nz,ny,nx=25,160,360
+nz,ny,nx=42,320,2160 #the model grid size
 
-hfac=fromfile('hFacC.data','>f4').reshape(nz,ny,nx)
+
+fn_hFacC='../data/hFacC.data'
+hfac=fromfile(fn_hFacC,'>f4').reshape(nz,ny,nx)
 
 y=arange(ny)
 x=arange(-10,nx+10)

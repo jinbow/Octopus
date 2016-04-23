@@ -34,13 +34,13 @@ subroutine check_and_save(SNPP)
         call diag()
     endif
 
-    !$OMP SECTION
-    if (mod(tt,pickupFreq) .eq. 0) then
-        print*, "==========================================="
-        print*, " Dump pickup data at record ", rec_num
-        print*, "==========================================="
-        call save_pickup()
-    endif
+!    !$OMP SECTION
+!    if (mod(tt,pickupFreq) .eq. 0) then
+!        print*, "==========================================="
+!        print*, " Dump pickup data at record ", rec_num
+!        print*, "==========================================="
+!        call save_pickup()
+!    endif
 
     !$OMP SECTION
     !reinitialize particles if invoked
