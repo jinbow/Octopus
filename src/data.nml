@@ -1,7 +1,7 @@
 &PARAM
 casename='TEST_0000',
-path2uvw='/nobackup/jwang23/data/sose/sose100/',
-output_dir='/nobackup/jwang23/Octopus/sose100/',
+path2uvw='../data/',
+output_dir='../output/',
 fn_UVEL='UVEL.0000000100.data',
 fn_VVEL='VVEL.0000000100.data',
 fn_WVEL='WVEL.0000000100.data',

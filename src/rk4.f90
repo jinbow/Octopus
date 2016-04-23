@@ -1,4 +1,3 @@
-
 subroutine rk4(SNPP)
 #include "cpp_options.h"
 
@@ -20,7 +19,6 @@ subroutine rk4(SNPP)
             x1=xyz(ip,:,IPP)
 
             call find_particle_uvw(0.0d0,ip,IPP,t0,t1,uvw)
-    
             x1=x1+dt*uvw/6d0
             xyz(ip,:,IPP)=x0+dt*uvw/2d0
 
@@ -38,11 +36,11 @@ subroutine rk4(SNPP)
 !$OMP END PARALLEL DO
 
 #ifdef useKh
-       call apply_mixing_Kh(IPP)
+    call apply_mixing_Kh(IPP)
 #endif
 
 #ifdef useMLD
-call apply_mixing_mld(IPP)
+    call apply_mixing_mld(IPP)
 #endif
 
 #if boundaryCondition == 1

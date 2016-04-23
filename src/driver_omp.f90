@@ -20,8 +20,8 @@ program main
     call calc_parameters()
   
     call open_files()
-    ! load z to k lookup table for mixed layer process
 
+    ! load z to k lookup table for mixed layer process
     call load_z_lookup_table() 
    
     call load_grid()

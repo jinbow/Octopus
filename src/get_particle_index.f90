@@ -21,12 +21,13 @@ subroutine find_index(ip,IPP)
 
         ! pi2f(ip)=floor(xyz(ip,1))
         pi2f(ip,IPP)=floor(x)
-        pj2f(ip,IPP)=floor(xyz(ip,2,IPP))
-        pk2f(ip,IPP)=floor(xyz(ip,3,IPP))
+        pj2f(ip,IPP)=min(floor(xyz(ip,2,IPP)),Ny)
+        pk2f(ip,IPP)=min(floor(xyz(ip,3,IPP)),Nz)
         ! pi2c(ip)=floor(xyz(ip,1)-0.5d0)
         pi2c(ip,IPP)=floor(x-0.5d0)
-        pj2c(ip,IPP)=floor(xyz(ip,2,IPP)-0.5d0)
-        pk2c(ip,IPP)=floor(xyz(ip,3,IPP)-0.5d0)
+        pj2c(ip,IPP)=min(floor(xyz(ip,2,IPP)-0.5d0),Ny)
+        pk2c(ip,IPP)=min(floor(xyz(ip,3,IPP)-0.5d0),Nz)
+        pk2c(ip,IPP)=sign(pk2c(ip,IPP),1)
 
         ! dif(ip) = xyz(ip,1)-pi2f(ip)
         dif(ip,IPP) = x-pi2f(ip,IPP)
@@ -34,7 +35,7 @@ subroutine find_index(ip,IPP)
         dkf(ip,IPP) = xyz(ip,3,IPP)-pk2f(ip,IPP)
         
         ! dic(ip) = xyz(ip,1)-pi2c(ip)-0.5d0
-        dic(ip,IPP) = x-pi2c(ip,IPP)-0.5d0
+        dic(ip,IPP) = x-pi2c(ip,IPP)-0.5
         djc(ip,IPP) = xyz(ip,2,IPP)-pj2c(ip,IPP)-0.5d0
         dkc(ip,IPP) = xyz(ip,3,IPP)-pk2c(ip,IPP)-0.5d0
 
