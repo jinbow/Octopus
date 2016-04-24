@@ -90,7 +90,7 @@ The model needs the following to run with mixed layer parameterization:
 
 ####Meridional boundary condition
 
-1. Use **#define reflective_meridional_boundary** to turn on the reflective meridional boundaries. Particles will keep bounding back to the domain.
+1. Use **#define reflective_meridional_boundary** to turn on the reflective meridional boundaries. Particles will keep bouncing back to the domain.
 1. Use **#undef reflective_meridional_boundary** to turn it off. Particles will stay stagnant outside.
 
 ####Zonal boundary condition
