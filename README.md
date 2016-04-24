@@ -36,7 +36,7 @@ Before running the model, go to scripts folder and run "python gen_data.py" to c
 
     to generate the binary files.
     
-    After running gen_data.py, you should get a list of binary files in your pth_data_out folder including
+    After running gen_data.py, you should get a list of binary files in your **pth_data_out** folder specified in **data.nml** including
 
     1. reflect_x.bin
     1. reflect_y.bin
@@ -44,7 +44,7 @@ Before running the model, go to scripts folder and run "python gen_data.py" to c
     1. k_to_z_lookup_table.bin.
     
 
- 1. In the src/ folder, run the model
+ 1. In the **src/** folder, run the model
 
     >./O.particle
 
