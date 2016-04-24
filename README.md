@@ -1,5 +1,6 @@
 # Octopus
 Offline calculation of particle trajectories
+==============================================
 
 This model is in a development stage. Email me for questions.
 
@@ -7,6 +8,24 @@ Jinbo Wang <jinbow@gmail.com>
 Scripps Institution of Oceanography
 August 26, 2015
 
+
+There are two configurations: Lagrangian particle and Argo float. 
+
+Use "make" to compile the code for Lagrangian particle simulation. Use "make argo" for simulating Argo float. 
+
+Before running the model, go to scripts folder and run "python gen_data.py" to compute the necessary data needed by the code.
+
+After running gen_data.py, you should get a list of binary files in your pth_data_out folder including
+
+ reflect_x.bin
+ reflect_y.bin
+ z_to_k_lookup_table.bin
+ k_to_z_lookup_table.bin.
+
+
+ 
+Lagrangian particle simulation
+--------------------------------
 
 Steps to run:
 
