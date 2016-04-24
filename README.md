@@ -1,6 +1,5 @@
 # Octopus
-Offline calculation of particle trajectories
-==============================================
+##Offline calculation of particle trajectories
 
 This model is in a development stage. Email me for questions.
 
@@ -17,42 +16,33 @@ Before running the model, go to scripts folder and run "python gen_data.py" to c
 
 After running gen_data.py, you should get a list of binary files in your pth_data_out folder including
 
- reflect_x.bin
- reflect_y.bin
- z_to_k_lookup_table.bin
- k_to_z_lookup_table.bin.
+ 1. reflect_x.bin
+ 1. reflect_y.bin
+ 1. z_to_k_lookup_table.bin
+ 1. k_to_z_lookup_table.bin.
 
+###Lagrangian particle simulation
 
- 
-Lagrangian particle simulation
---------------------------------
+#### Steps to run:
 
-Steps to run:
-
-1. The model is currently setup for the Southern Ocean State Estimate (SOSE). But it can be easily modified to fit any MITgcm output or any C-grid model output.
-
-   To run the code, first make sure the model knows where to find your model output and correctly reads them. Edit the parameters in src/size.h to fit the data you have.
-
-2. Set parameters in the namelist file. I include an example in the src/NML.TEST_0000. The parameters are explained line by line in src/NML.TEST_0000.explained.
-
-
-3. Go to src/ folder. Compile the code using
+ 1. The model is currently setup for the Southern Ocean State Estimate (SOSE). But it can be easily modified to fit any MITgcm output or any C-grid model output. To run the code, first make sure the model knows where to find your model output and correctly reads them. Edit the parameters in src/size.h to fit the data you have.
+ 1. Set parameters in the namelist file **data.nml**. The parameters are explained line by line in src/data.nml.explained.
+ 1. Go to src/ folder. Compile the code using
 
      make
 
-   You will get an excutable file named opt.ensemble.
+   You will get an excutable file named **O.particle**.
 
-4. Prepare the initialization file using scritps/init_particl_xyz.py. Copy the binary file to src/.
+ 1. Prepare the initialization file using scritps/init_particl_xyz.py. Copy the binary file to src/.
+ 1. Download necessary binary files:
 
-5. Download necessary binary files:
+    bash sync_data.sh
 
-   bash sync_data.sh
+ 1. In the src/ folder, run the model
 
-5. In the src/ folder, run the model
+    >./O.particle
 
-     ./opt.ensemble < NML.TEST_0000
-
-6. Outputs are saved in the src/output folder.
+ 1. Outputs are saved in the src/output folder.
 
 
 Good luck!
