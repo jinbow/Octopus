@@ -26,7 +26,7 @@ The model is currently setup for the Southern Ocean State Estimate (SOSE). But i
  1. Within **src/** folder. Compile the code using
      >make
 
-   You will get an excutable file named **O.particle**.
+   You will get an executable file named **O.particle**.
 
  1. Prepare the initialization file using **scritps/init_particl_xyz.py**. Copy the binary file to **src/**.
  1. If you run particle with the SOSE 1/6th degree simulation, download necessary binary files:
@@ -58,7 +58,7 @@ Most of the steps are the same as for Lagrangian particle simulation with few ex
 
 1. Make sure **isArgo** is defined in **cpp_options.h**:  **#define isArgo**
 1. Use *"make argo"*  to compile the code. 
-1. You will get a excutable **O.argo** after successfully compiling the code. 
+1. You will get a executable **O.argo** after successfully compiling the code. 
 1. Run the code using
 
    >./O.argo
@@ -82,7 +82,7 @@ The idea is that the vertical mixing induced by mixed layer instability, which i
 
 The model needs the following to run with mixed layer parameterization:
 
-1. turn on the paramterization in **cpp_options.h**: **#define use_mixedlayer_shuffle**
+1. turn on the parameterization in **cpp_options.h**: **#define use_mixedlayer_shuffle**
 1. prepare a data file with mixed layer depth (MLD)
 1. specific the parameters in **data.nml**
  1. **fn_MLD='your mixed layer depth file name'**
@@ -104,10 +104,10 @@ Occasionally, particles enter continent, i.e., the dry cells. You can either kee
 
 ####Looping condition
 
-With usually short duration of a numerical simulation, a common practice to obtain a Lagrangian simulation with a longer duration than the Eularian fields is to loop the velocity from the starting point. This is rather a poor-man's solution, and strongly discouraged. However, if it is preferred, there are too options.
+With usually short duration of a numerical simulation, a common practice to obtain a Lagrangian simulation with a longer duration than the Eulerian fields is to loop the velocity from the starting point. This is rather a poor-man's solution, and strongly discouraged. However, if it is preferred, there are too options.
 
-1. Before compilation, use  **#define jump_looping** in **cpp_options.h** to turn on the jumping condition for looping, i.e., applying an artifical jump to make sure particle stay on the same isopycnal level before and after looping.
-1. Use **undef jump_looping** to turn it off. The code will just use the first step velocity to continue to advect particles once it reaches the end of the Eularian field without doing anything on particle positions.
+1. Before compilation, use  **#define jump_looping** in **cpp_options.h** to turn on the jumping condition for looping, i.e., applying an artificial jump to make sure particle stay on the same isopycnal level before and after looping.
+1. Use **undef jump_looping** to turn it off. The code will just use the first step velocity to continue to advect particles once it reaches the end of the Eulerian field without doing anything on particle positions.
 
 
 
@@ -116,8 +116,5 @@ Good luck!
 
 
 Jinbo Wang
+
 April 24, 2016
-~                                                                                                                                                                                                           
-~                                                                                                                                                                                                           
-~                                                                                                                                                                                                           
-~                          
