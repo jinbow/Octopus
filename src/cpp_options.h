@@ -1,9 +1,9 @@
 #undef saveTSG
 #undef isArgo
-#undef useKh
+#define use_horizontal_diffusion
 #define boundaryCondition 1
-#undef useMLD
-#undef saveGradient
+#define use_mixedlayer_shuffle
+#define saveGradient
 #define reflective_northern_boundary
 #define jump_looping
-#define monitoring
+#undef monitoring

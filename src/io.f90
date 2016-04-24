@@ -1,5 +1,7 @@
 subroutine load_z_lookup_table()
+#include "cpp_options.h"
 
+#ifdef use_mixedlayer_shuffle
     use global, only: z2k,k2z,path2uvw
     implicit none
     real*4::tmp(5701),tmp1(0:420)
@@ -16,11 +18,13 @@ subroutine load_z_lookup_table()
     read(64,rec=1) tmp1
     k2z=real(tmp1,8)
     close(64)
+#endif
 
 end subroutine load_z_lookup_table
 
 subroutine load_mld(tt)
-
+#include "cpp_options.h"
+#ifdef use_mixedlayer_shuffle
     use global, only: Nx,Ny,dt_mld,tend_file,fn_id_mld,mld
     real*8, intent(in) :: tt
     integer*8 :: i
@@ -31,6 +35,7 @@ subroutine load_mld(tt)
 
     mld(-2:-1,:) = mld(Nx-2:Nx-1,:)
     mld(Nx:Nx+1,:)=mld(0:1,:)
+#endif
 
 end subroutine load_mld
 
@@ -95,11 +100,11 @@ subroutine load_uvw(irec,isw)
 
     !$OMP PARALLEL SECTIONS
     !$OMP SECTION
-    call load_3d(fn_uvwtsg_ids(1),i,uu(:,:,:,isw))
+    call load_3d(fn_uvwtsg_ids(1),i,uu(:,0:Ny-1,:,isw))
     uu(:,:,-1,isw)=uu(:,:,0,isw)
     uu(:,:,Nz,isw)=uu(:,:,Nz-1,isw)
     !$OMP SECTION
-    call load_3d(fn_uvwtsg_ids(2),i,vv(:,:,:,isw))
+    call load_3d(fn_uvwtsg_ids(2),i,vv(:,0:Ny-1,:,isw))
     vv(:,:,-1,isw)=vv(:,:,0,isw)
     vv(:,:,Nz,isw)=vv(:,:,Nz-1,isw)
 #ifdef reflective_northern_boundary
@@ -107,7 +112,7 @@ subroutine load_uvw(irec,isw)
     vv(:,-2:-1,:,isw) = 1d0
 #endif
     !$OMP SECTION
-    call load_3d(fn_uvwtsg_ids(3),i,ww(:,:,:,isw))
+    call load_3d(fn_uvwtsg_ids(3),i,ww(:,0:Ny-1,:,isw))
     ww(:,:,-1,isw)=-1d-5 !reflective surface ghost cell 
     ww(:,:,Nz,isw)=1d-5 !reflective bottom  ghost cell
 
@@ -116,7 +121,7 @@ subroutine load_uvw(irec,isw)
     print*, "====>> load VVEL", irec, "max() =", maxval(vv(:,:,:,isw))
     print*, "====>> load UVEL", irec, "min() =", minval(uu(:,:,:,isw))
     print*, "====>> load UVEL", irec, "max() =", maxval(uu(:,:,:,isw))
-    print*, "====>> load WVEL", i, "min() =", minval(ww(:,:,:,isw))
+    print*, "====>> load WVEL", irec, "min() =", minval(ww(:,:,:,isw))
     print*, "====>> load WVEL", irec, "max() =", maxval(ww(:,:,:,isw))
 #endif
 
@@ -173,7 +178,7 @@ subroutine load_grid()
     print*, "================================================="
     print*, "loading grid ......... "
 
-    open(91,file=trim(path2uvw)//'dxg.bin',&
+    open(91,file=trim(path2uvw)//'DXG.data',&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
         status='old',recl=4*Nx*Ny)
     read(91,rec=1) tmp
@@ -183,7 +188,7 @@ subroutine load_grid()
     dxg_r = 1.0/dxg_r
     close(91)
 
-    open(92,file=trim(path2uvw)//'dyg.bin',&
+    open(92,file=trim(path2uvw)//'DYG.data',&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
         status='old',recl=4*Nx*Ny)
     read(92,rec=1) tmp
@@ -193,7 +198,7 @@ subroutine load_grid()
     dyg_r = 1.0/dyg_r
     close(92)
 
-    open(93,file=trim(path2uvw)//'drf.bin',&
+    open(93,file=trim(path2uvw)//'DRF.data',&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
         status='old',recl=4*Nz)
     read(93,rec=1) tmp1
@@ -203,7 +208,7 @@ subroutine load_grid()
     drf_r = 1.0/drf_r
     close(93)
     print*, '11'
-    open(94,file=trim(path2uvw)//'hFacC.bin',&
+    open(94,file=trim(path2uvw)//'hFacC.data',&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
         status='old',recl=4*Nz*Ny*Nx)
     read(94,rec=1) hFacC(0:Nx-1,0:Ny-1,0:Nz-1)
@@ -268,7 +273,7 @@ subroutine save_data(IPP)
 
 #endif
 
-#ifdef useMLD
+#ifdef use_mixedlayer_shuffle
     !$OMP SECTION
     open(fn_ids(3,IPP),file=trim(output_dir)//'/'//trim(casename)//'_'//trim(fn1)//'.MLD.'//trim(fn)//'.data',&
         access='direct',form='unformatted',convert='BIG_ENDIAN',recl=4*Npts,status='unknown')

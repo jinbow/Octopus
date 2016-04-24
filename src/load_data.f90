@@ -33,7 +33,7 @@ subroutine load_data(IPP)
     tsg(:,:,IPP)=real(xyz2,8)
 #endif
 
-#ifdef useMLD
+#ifdef use_mixedlayer_shuffle
     !$OMP SECTION
     open(fn_ids(3,IPP),file=trim(output_dir)//'/'//trim(casename)//'_'//trim(fn1)//'.MLD.'//trim(fn)//'.data',&
         access='direct',form='unformatted',convert='BIG_ENDIAN',recl=4*Npts,status='old')

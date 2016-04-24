@@ -24,7 +24,8 @@ obj_argo = global.o allocate_vars.o \
 	
 FORTRAN_COMPILER = gfortran
 
-FFLAGS = -x f95-cpp-input  -Wall -fopenmp -O3 -mcmodel=large -fdefault-integer-8 -fdefault-real-8
+#FFLAGS = -x f95-cpp-input  -Wall -fopenmp -O3 -mcmodel=large -fdefault-integer-8 -fdefault-real-8
+FFLAGS = -x f95-cpp-input -fopenmp -O3 -mcmodel=large -fdefault-integer-8 -fdefault-real-8
 
 opt: $(objects); $(FORTRAN_COMPILER) -o O.particle -fopenmp $(objects)
 

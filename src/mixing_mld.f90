@@ -1,6 +1,8 @@
 subroutine apply_mixing_mld(IPP)
 #include "cpp_options.h"
 
+#ifdef use_mixedlayer_shuffle
+
     use global, only: Npts,hFacC,xyz,z2k,k2z,Nx,Ny,dt_mld,tt,mld,&
         parti_mld,kvdt2,khdt2,dxg_r,dyg_r,drf_r,pi2f
     use random, only: random_normal
@@ -47,6 +49,8 @@ subroutine apply_mixing_mld(IPP)
         print*, "%              MLD            +"
         print*, "%Total ",icount," particles in the mixed layer at day ", tt/86400.
         print*, "%============================================================"
+
+#endif
 
 end subroutine apply_mixing_mld
 

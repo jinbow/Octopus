@@ -35,11 +35,11 @@ subroutine rk4(SNPP)
         enddo
 !$OMP END PARALLEL DO
 
-#ifdef useKh
+#ifdef use_horizontal_diffusion
     call apply_mixing_Kh(IPP)
 #endif
 
-#ifdef useMLD
+#ifdef use_mixedlayer_shuffle
     call apply_mixing_mld(IPP)
 #endif
 

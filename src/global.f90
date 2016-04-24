@@ -8,7 +8,7 @@ module global
 
 
     CHARACTER(32) :: fn_particle_init
-    REAL*4 , DIMENSION(-2:Nx+1,0:Ny-1,-1:Nz,0:1) :: uu,vv,ww
+    REAL*4 , DIMENSION(-2:Nx+1,-2:Ny+1,-1:Nz,0:1) :: uu=0d0,vv=0d0,ww=0d0
     REAL*4 , DIMENSION(-2:Nx+1,0:Ny-1,-1:Nz,0:1) :: theta=0e0,salt=0e0,gam=0e0
     REAL*4 , DIMENSION(-2:Nx+1,0:Ny-1,-1:Nz) :: hFacC
     REAL*4 , DIMENSION(-2:Nx+1,0:Ny-1, -1:Nz) :: reflect_x,reflect_y
