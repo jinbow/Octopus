@@ -14,12 +14,6 @@ Use "make" to compile the code for Lagrangian particle simulation. Use "make arg
 
 Before running the model, go to scripts folder and run "python gen_data.py" to compute the necessary data needed by the code.
 
-After running gen_data.py, you should get a list of binary files in your pth_data_out folder including
-
- 1. reflect_x.bin
- 1. reflect_y.bin
- 1. z_to_k_lookup_table.bin
- 1. k_to_z_lookup_table.bin.
 
 ###Lagrangian particle simulation
 
@@ -34,15 +28,25 @@ After running gen_data.py, you should get a list of binary files in your pth_dat
    You will get an excutable file named **O.particle**.
 
  1. Prepare the initialization file using scritps/init_particl_xyz.py. Copy the binary file to src/.
- 1. Download necessary binary files:
+ 1. If you run particle with the SOSE 1/6th degree simulation, download necessary binary files:
+    >bash sync_data.sh
+    otherwise, go to scripts folder and run
+    >python gen_data.py
+    to generate the binary files.
+    
+    After running gen_data.py, you should get a list of binary files in your pth_data_out folder including
 
-    bash sync_data.sh
+    1. reflect_x.bin
+    1. reflect_y.bin
+    1. z_to_k_lookup_table.bin
+    1. k_to_z_lookup_table.bin.
+    
 
  1. In the src/ folder, run the model
 
     >./O.particle
 
- 1. Outputs are saved in the src/output folder.
+ 1. Outputs are saved in the folder  **output_dir** specified in **data.nml**.
 
 
 Good luck!
