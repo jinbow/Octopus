@@ -30,8 +30,10 @@ Before running the model, go to scripts folder and run "python gen_data.py" to c
  1. Prepare the initialization file using scritps/init_particl_xyz.py. Copy the binary file to src/.
  1. If you run particle with the SOSE 1/6th degree simulation, download necessary binary files:
     >bash sync_data.sh
+
     otherwise, go to scripts folder and run
     >python gen_data.py
+
     to generate the binary files.
     
     After running gen_data.py, you should get a list of binary files in your pth_data_out folder including
