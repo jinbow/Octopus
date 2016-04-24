@@ -1,8 +1,13 @@
  &PARAM
  #The case name. It will be used as a prefix for output files.
  casename='TEST_0000', 
+
  #the folder containing all the external data files. You can use softlink (ln -s datasource datatarget) to link all necessary files into one folder. 
  path2uvw='../data/',
+
+ #path2grid refers to the folder where the grid output is stored, i.e., DXG.data, DYG.data, DRF.data and hFacC.data
+ path2grid='../data/',
+
  #The data filename for each variable. These files should be in or linked to the path2uvw folder. 
  fn_UVEL='UVEL.0000000100.data',
  fn_VVEL='VVEL.0000000100.data',
@@ -10,45 +15,59 @@
  fn_THETA='THETA.0000000100.data',
  fn_SALT='SALT.0000000100.data',
  fn_GAMMA='GAMMA.0000000100.data',
+
  # If you have a 2D field to interpolate onto particle trajectories, use fn_PHIHYD to specify the filename. The program ignores it if empty. The time stepping of the 2D output should be the same as uvwtsg.
  fn_PHIHYD='',
+
  #The file for the particle initialization. The initialization file can be generated using scripts/init_parti_xyz.py.
 fn_parti_init='particle_init.bin',
+
  #The neutral density level if you want to release particles on certain isopycnal level. This will overwrite your initial particle depth. Use -1 to avoid interpolation.
 target_density=27.4,
+
  #Whether the velocity field is stationary.
 vel_stationary=.False.,
+
  #The number of particles. It should be the same as specified fn_parti_init file. 
 Npts=100,
+
  #The frequency of reinitialization (in seconds).
 dt_reinit=-1,
+
  #The time step in the mixed layer depth data. I use 5 days. The mixed layer depth is used to shuffle particles in the mixed layer every five days. Use with caution. The MLD has not been tested yet.
 dt_mld=432000.,
+
  #The time step for particle advection. I found 0.5 day is optimal. 
 dt=43200,
+
  #The starting time relative to the SOSE first snapshot (in seconds). 
 tstart=0.,
+
  #The final time. If it is larger than the duration of the SOSE output, the model will loop from the beginning and shift the partical vertical position to keep the same density. You will find jumps in particle z. 
 tend=86400.,
+
  #The number of ensemble. If NPP>1, the model will run NPP cases with the same initialization but seperated by dt_case seconds. 
 NPP=1,
+
 dt_case=864000,
- #I don't use pickup any longer. 
+
+ #model will run from pickup timestep if pickup>0.
 pickup=0.,
+
  #The output frequecy. Use 86400 (1 day) for relative smooth trajectories.
-dumpFreq=86400.,
- #diagFreq is not very useful now. 
+saveFreq=86400.,
+
+ #diagFreq 
 diagFreq=864000.,
+
  #Frequency for saving pickup files. Obsolete.
 pickupFreq=7776000.,
- #Record and save temperature, salinity, and gamma
-saveTSG=.TRUE.,
- #Use mixed layer parameterization.
-useMLD=.TRUE.,
- #Use horizontal random walk model to simulate sub-grid diffusion.
-useKh=.TRUE.,
+
  #Parameterized horizontal diffusivity. ~25 for SOSE.
 Khdiff=25.0,
+
  #Parameterized vertical diffusivity.
 Kvdiff=1e-5,
+
+DumpClock=60, #The output file name TEST.0000001000.XYZ.data corresponds to the output at t=1000*DumpClock seconds. 
 /
