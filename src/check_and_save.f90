@@ -30,9 +30,11 @@ subroutine check_and_save(SNPP)
 
     !$OMP SECTION
     !call count_stagnant()
+#ifdef monitoring
     if (mod(tt,diagFreq) .eq. 0) then
         call diag()
     endif
+#endif
 
 !    !$OMP SECTION
 !    if (mod(tt,pickupFreq) .eq. 0) then

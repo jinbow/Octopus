@@ -5,11 +5,6 @@ subroutine init_particles(IPP)
     implicit none
     integer*8, intent(in):: IPP
 
-    if (pickup>0) then
-        call load_data(IPP)
-        rec_num = floor(tt/dt_file)+1
-        print*, "pickup data maxval z, pk2f, rec_num", maxval(xyz(:,3,:)),maxval(pk2f),rec_num
-    else
         print*, "------------------------------------"
         print*, "initialize particles for case", IPP
         open(10,file=trim(fn_parti_init),form='unformatted',&
@@ -28,12 +23,7 @@ subroutine init_particles(IPP)
         endif
 #endif
 
-    endif
         print*, "maximum init", maxval(xyz(:,1,IPP)),maxval(xyz(:,2,IPP)),maxval(xyz(:,3,IPP))
-    !call load_uv(rec_num,u0,v0,w0)
-    !call load_uv(rec_num+1,u1,v1,w1)
-    !call load_tsg(rec_num,theta0,salt0,gamma0)
-    !call load_tsg(rec_num+1,theta1,salt1,gamma1)
 
 end subroutine init_particles
 

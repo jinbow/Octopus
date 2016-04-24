@@ -8,14 +8,14 @@ subroutine set_boundary(IPP)
 !$OMP PARALLEL DO PRIVATE(ip) SCHEDULE(dynamic)
     do ip =1,Npts
         !print*, ip, xyz(ip,:,IPP)
-        if (xyz(ip,3,IPP)<0) then
-            xyz(ip,3,IPP)=-xyz(ip,3,IPP)
-        endif
+        !if (xyz(ip,3,IPP)<0) then 
+        !   print*, ip,IPP,xyz(ip,3,IPP)
+        !endif
 
-        if (xyz(ip,3,IPP)>Nz-1) then
-            xyz(ip,3,IPP)=real(Nz-2d0,8)
-        endif
-        
+        xyz(ip,3,IPP) = min(abs(xyz(ip,3,IPP)),real(Nz-1,8))
+        xyz(ip,2,IPP) = sign(xyz(ip,2,IPP),1e0)
+        xyz(ip,2,IPP) = min(xyz(ip,2,IPP),real(Ny-1,8))
+
         call find_index(ip,IPP)
 
         !reflective boundary condition

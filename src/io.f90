@@ -52,11 +52,13 @@ end subroutine load_PHIHYD
 
 
 subroutine load_3d(fn_id,irec,dout)
+#include "cpp_options.h"
+
     use global, only : Nx,Ny,Nz,Nrecs,xyz
     implicit none
     INTEGER*8, intent(in) :: irec,fn_id
     real*4, dimension(-2:Nx+1,0:Ny-1,-1:Nz), intent(out) :: dout
-    integer*8 :: i,k,k0,k1
+    integer*8 :: i=0,k=0,k0=0,k1=0
 
     i=mod(irec,Nrecs)
     if (i .eq. 0) then
@@ -75,34 +77,49 @@ subroutine load_3d(fn_id,irec,dout)
 end subroutine load_3d
 
 subroutine load_uvw(irec,isw)
+
     use global, only : fn_uvwtsg_ids,Nx,Ny,Nz,uu,vv,ww,theta,gam,salt,Nrecs
     implicit none
     INTEGER*8, intent(in) :: irec,isw
     !real*4, dimension(-1:Nx+1,0:Ny-1,-1:Nz) :: tmp
     integer*8 :: i
     i=mod(irec,Nrecs)
+
+#ifdef monitoring
+    print*, "----load uvw at irec,mod(irec,Nrecs),iswitch",irec,i,isw
+#endif
+
     if (i .eq. 0) then
         i=Nrecs
     endif
+
     !$OMP PARALLEL SECTIONS
     !$OMP SECTION
     call load_3d(fn_uvwtsg_ids(1),i,uu(:,:,:,isw))
     uu(:,:,-1,isw)=uu(:,:,0,isw)
     uu(:,:,Nz,isw)=uu(:,:,Nz-1,isw)
-    print*, "====>> load UVEL", irec, "min() =", minval(uu(:,:,:,isw))
     !$OMP SECTION
     call load_3d(fn_uvwtsg_ids(2),i,vv(:,:,:,isw))
-
     vv(:,:,-1,isw)=vv(:,:,0,isw)
     vv(:,:,Nz,isw)=vv(:,:,Nz-1,isw)
-    print*, "====>> load VVEL", irec, "min() =", minval(vv(:,:,:,isw))
+#ifdef reflective_northern_boundary
+    vv(:,Ny:Ny+1,:,isw) = -1d0
+    vv(:,-2:-1,:,isw) = 1d0
+#endif
     !$OMP SECTION
     call load_3d(fn_uvwtsg_ids(3),i,ww(:,:,:,isw))
-   
-    ww(:,:,-1,isw)=0d0 !reflective surface ghost cell 
-    ww(:,:,Nz,isw)=0d0 !reflective bottom  ghost cell
+    ww(:,:,-1,isw)=-1d-5 !reflective surface ghost cell 
+    ww(:,:,Nz,isw)=1d-5 !reflective bottom  ghost cell
 
+#ifdef monitoring
+    print*, "====>> load VVEL", irec, "min() =", minval(vv(:,:,:,isw))
+    print*, "====>> load VVEL", irec, "max() =", maxval(vv(:,:,:,isw))
+    print*, "====>> load UVEL", irec, "min() =", minval(uu(:,:,:,isw))
+    print*, "====>> load UVEL", irec, "max() =", maxval(uu(:,:,:,isw))
     print*, "====>> load WVEL", i, "min() =", minval(ww(:,:,:,isw))
+    print*, "====>> load WVEL", irec, "max() =", maxval(ww(:,:,:,isw))
+#endif
+
     !$OMP END PARALLEL SECTIONS
 
 end subroutine load_uvw

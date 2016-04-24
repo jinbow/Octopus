@@ -9,7 +9,7 @@ module global
 
     CHARACTER(32) :: fn_particle_init
     REAL*4 , DIMENSION(-2:Nx+1,0:Ny-1,-1:Nz,0:1) :: uu,vv,ww
-    REAL*4 , DIMENSION(-2:Nx+1,0:Ny-1,-1:Nz,0:1) :: theta,salt,gam
+    REAL*4 , DIMENSION(-2:Nx+1,0:Ny-1,-1:Nz,0:1) :: theta=0e0,salt=0e0,gam=0e0
     REAL*4 , DIMENSION(-2:Nx+1,0:Ny-1,-1:Nz) :: hFacC
     REAL*4 , DIMENSION(-2:Nx+1,0:Ny-1, -1:Nz) :: reflect_x,reflect_y
     REAL*4 , DIMENSION(-2:Nx+1,0:Ny-1) :: mld,phihyd
@@ -28,6 +28,7 @@ module global
 
     !pickup
     REAL*8 :: pickup=0
+    integer*8 :: marker(2)=0
     REAL*8 :: pickupFreq=7776000.0
 
     INTEGER*8, DIMENSION(:,:), ALLOCATABLE :: pi2f,pj2f,pk2f,pi2c,pj2c,pk2c
@@ -40,11 +41,11 @@ module global
     REAL*8 :: z2k(5701), k2z(0:420)
 
     !timing parameters
-    REAL*8 :: t_amend, saveFreq,DumpClock=86400, diagFreq, target_density
+    REAL*8 :: t_amend, saveFreq,DumpClock=60, diagFreq, target_density
     REAL*8 :: tt,dtp,dt,dt_mld,tstart,tend,tend_file,dt_reinit,dt_case=15*86400
     INTEGER*8 :: rec_num
     logical :: vel_stationary
-    integer*8 :: iswitch
+    integer*8 :: iswitch,count_step=0
 
 
     !file names

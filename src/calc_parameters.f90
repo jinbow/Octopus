@@ -6,13 +6,10 @@ subroutine calc_parameters()
     implicit none
     integer*8 :: i,j
 
-    if (pickup>0) then
-        tt=(pickup-1)*DumpClock
-        rec_num = floor(tt/dt_file)+1
-    else
-        tt=tstart
-        rec_num = floor(tt/dt_file)+1
-    endif
+    tt=tstart
+    rec_num = floor(tt/dt_file)+1
+    print*, 'record number in calc_par...',rec_num,tt,tstart
+
     kvdt2 = sqrt(2*Kvdiff*dt)
     khdt2 = sqrt(2*Khdiff*dt)
     !time stepping

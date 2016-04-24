@@ -16,6 +16,7 @@ subroutine allocate_parti()
         dxyz_fac(Npts,3,NPP) )
 
     ALLOCATE (tsg(Npts,4,NPP))
+    tsg=0e0
 
 
 #ifdef saveGradient
