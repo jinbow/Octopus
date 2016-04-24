@@ -8,7 +8,7 @@ August 26, 2015 """
 from numpy import *
 from pylab import *
 
-fn='/net/mazdata2/jinbo/mdata5-jinbo/Project_data/opt/DIMES_ensemble/glued/DIMES_0004_0033.XYZ.0000000166.0000002161.data' #put a glued XYZ data filename 
+fn='DIMES_0004_0033.XYZ.0000000166.0000002161.data' #put a glued XYZ data filename 
 npts=35000 #specify particle numbers
 opt=fromfile(fn,'>f4').reshape(-1,3,npts)
 
