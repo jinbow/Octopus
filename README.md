@@ -57,14 +57,10 @@ The model is currently setup for the Southern Ocean State Estimate (SOSE). But i
 Most of the steps are the same as for Lagrangian particle simulation with few exceptions. 
 
 1. Make sure **isArgo** is defined in **cpp_options.h**:  **#define isArgo**
-1. Use 
-  >make argo
-
-  to compile the code. 
-
+1. Use *make argo* to compile the code. 
 1. You will get a excutable **O.argo** after successfully compiling the code. 
 1. Run the code using
- >./O.argo
+   >./O.argo
 
 
 
