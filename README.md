@@ -22,7 +22,7 @@ Before running the model, go to scripts folder and run "python gen_data.py" to c
 The model is currently setup for the Southern Ocean State Estimate (SOSE). But it can be easily modified to fit any MITgcm output or any C-grid model output. To run the code, first make sure the model knows where to find your model output and correctly reads them. 
 
  1. Edit the parameters in **src/size.h** to fit the data you have.
- 1. Edit cpp_options.h to include or exclude features.
+ 1. Edit cpp_options.h to include or exclude features. Make sure **isArgo** is turned off in **cpp_options.h**: **#undef isArgo**
  1. Within **src/** folder. Compile the code using
      >make
 
@@ -80,6 +80,7 @@ This is a rather ad-hoc solution. No existing study has confirmed the robustness
 The idea is that the vertical mixing induced by mixed layer instability, which is usually parameterized by KPP (large et al. 1997), is missing for velocity-based Lagrangian trajectory integration. If we use particle density to represent passive tracers, we need to add random walk to particle position to mimic the parameterized vertical mixing in coarse resolution models. It is computationally too expensive to explicitly calculate the vertical mixing according to for example a K-profile of KPP. Our ad-hoc solution is to find particles within mixed layer and reshuffle them using a random-displacement model. 
 
 The model needs the following to run with mixed layer parameterization:
+
 1. turn on the paramterization in **cpp_options.h**: **#define use_mixedlayer_shuffle**
 1. prepare a data file with mixed layer depth (MLD)
 1. specific the parameters in **data.nml**
