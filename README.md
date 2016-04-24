@@ -1,5 +1,5 @@
 # Octopus
-##Offline calculation of particle trajectories
+##Offline calculation of Lagrangian trajectories
 
 This model is in a development stage. Email me for questions.
 
@@ -102,10 +102,10 @@ Occasionally, particles enter continent, i.e., the dry cells. You can either kee
 
 ####Looping condition
 
-With usually short duration of a numerical simulation, a common practice to obtain a Lagrangian simulation with a longer duration than the Eularian fields is to loop the velocity from the starting point. This is rather a poor-man's solution, and stronly discouraged. However, if you insist to do it, there are too options.
+With usually short duration of a numerical simulation, a common practice to obtain a Lagrangian simulation with a longer duration than the Eularian fields is to loop the velocity from the starting point. This is rather a poor-man's solution, and strongly discouraged. However, if it is preferred, there are too options.
 
-1. Before compilation, use  **#define jump_looping** in **cpp_options.h** to turn on the jumping condition for the looping, i.e., an artifical jump to make sure particle stay on the same isopycnal layer before and after looping.
-1. Use **undef jump_looping** to turn it off. The code will just use the first step velocity to continue to advect particles once it reaches the end of the Eularian field.
+1. Before compilation, use  **#define jump_looping** in **cpp_options.h** to turn on the jumping condition for looping, i.e., applying an artifical jump to make sure particle stay on the same isopycnal level before and after looping.
+1. Use **undef jump_looping** to turn it off. The code will just use the first step velocity to continue to advect particles once it reaches the end of the Eularian field without doing anything on particle positions.
 
 
 
