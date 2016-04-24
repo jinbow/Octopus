@@ -60,6 +60,7 @@ Most of the steps are the same as for Lagrangian particle simulation with few ex
 1. Use *"make argo"*  to compile the code. 
 1. You will get a excutable **O.argo** after successfully compiling the code. 
 1. Run the code using
+
    >./O.argo
 
 ###Parameterizations
