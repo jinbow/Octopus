@@ -169,7 +169,7 @@ end subroutine load_tsg
 
 subroutine load_grid()
 
-    use global, only : dxg_r,dyg_r,drf_r,Nx,Ny,Nz,hFacC,path2uvw!,hFacS,hFacW
+    use global, only : dxg_r,dyg_r,drf_r,Nx,Ny,Nz,hFacC,path2grid!,hFacS,hFacW
     
     implicit none
     real*4 :: tmp(0:Nx-1,0:Ny-1),tmp1(0:Nz-1)
@@ -178,7 +178,7 @@ subroutine load_grid()
     print*, "================================================="
     print*, "loading grid ......... "
 
-    open(91,file=trim(path2uvw)//'DXG.data',&
+    open(91,file=trim(path2grid)//'DXG.data',&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
         status='old',recl=4*Nx*Ny)
     read(91,rec=1) tmp
@@ -188,7 +188,7 @@ subroutine load_grid()
     dxg_r = 1.0/dxg_r
     close(91)
 
-    open(92,file=trim(path2uvw)//'DYG.data',&
+    open(92,file=trim(path2grid)//'DYG.data',&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
         status='old',recl=4*Nx*Ny)
     read(92,rec=1) tmp
@@ -198,7 +198,7 @@ subroutine load_grid()
     dyg_r = 1.0/dyg_r
     close(92)
 
-    open(93,file=trim(path2uvw)//'DRF.data',&
+    open(93,file=trim(path2grid)//'DRF.data',&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
         status='old',recl=4*Nz)
     read(93,rec=1) tmp1
@@ -208,7 +208,7 @@ subroutine load_grid()
     drf_r = 1.0/drf_r
     close(93)
     print*, '11'
-    open(94,file=trim(path2uvw)//'hFacC.data',&
+    open(94,file=trim(path2grid)//'hFacC.data',&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
         status='old',recl=4*Nz*Ny*Nx)
     read(94,rec=1) hFacC(0:Nx-1,0:Ny-1,0:Nz-1)
@@ -217,24 +217,6 @@ subroutine load_grid()
     hFacC(:,:,-1)=hFacC(:,:,0)
     hFacC(:,:,Nz)=0d0
     close(94)
-!
-!    open(4,file='hFacS.bin',&
-!        form='unformatted',access='direct',convert='BIG_ENDIAN',&
-!        status='old',recl=4*Nz*Ny*Nx)
-!    read(4,rec=1) hFacS(0:Nx-1,:,0:Nz-1)
-!    hFacS(Nx:Nx+1,:,:)=hFacS(0:1,:,:)
-!    hFacS(-1,:,:)=hFacS(Nx-1,:,:)
-!    hFacS(:,:,-1)=hFacS(:,:,0)
-!    close(4)
-
-!    open(4,file='hFacW.bin',&
-!        form='unformatted',access='direct',convert='BIG_ENDIAN',&
-!        status='old',recl=4*Nz*Ny*Nx)
-!   read(4,rec=1) hFacW(0:Nx-1,:,0:Nz-1)
-!    hFacW(Nx:Nx+1,:,:)=hFacW(0:1,:,:)
-!    hFacW(-1,:,:)=hFacW(Nx-1,:,:)
-!    hFacW(:,:,-1)=hFacW(:,:,0)
-!    close(4)
 
 end subroutine load_grid
 
@@ -243,8 +225,7 @@ subroutine save_data(IPP)
     !output particle data
     use omp_lib
     use global
-    !, only: casename,tt,fn_ids,xyz,tsg,&
-    !    Npts,parti_mld,DumpClock,NPP,output_dir,grad
+
     implicit none
     character(len=128) :: fn
     character(len=16) :: fn1

@@ -53,7 +53,7 @@ module global
     INTEGER*8 :: fn_uvwtsg_ids(7),fn_xyz_tsg_mld_ids(3),fn_id_mld
 
     INTEGER*8 :: file_i0
-    CHARACTER(255) :: casename,path2uvw,fn_parti_init,fn_UVEL,&
+    CHARACTER(255) :: casename,path2uvw,path2grid,fn_parti_init,fn_UVEL,&
         fn_VVEL,fn_WVEL,fn_THETA,fn_SALT,fn_GAMMA,&
         output_dir="output",fn_PHIHYD,fn_MLD
     !mixing parameters
