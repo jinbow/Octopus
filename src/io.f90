@@ -107,7 +107,7 @@ subroutine load_uvw(irec,isw)
     call load_3d(fn_uvwtsg_ids(2),i,vv(:,0:Ny-1,:,isw))
     vv(:,:,-1,isw)=vv(:,:,0,isw)
     vv(:,:,Nz,isw)=vv(:,:,Nz-1,isw)
-#ifdef reflective_northern_boundary
+#ifdef reflective_meridional_boundary
     vv(:,Ny:Ny+1,:,isw) = -1d0
     vv(:,-2:-1,:,isw) = 1d0
 #endif

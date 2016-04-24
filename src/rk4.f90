@@ -35,15 +35,15 @@ subroutine rk4(SNPP)
         enddo
 !$OMP END PARALLEL DO
 
-#ifdef use_horizontal_diffusion
-    call apply_mixing_Kh(IPP)
+#ifdef use_Laplacian_diffusion
+    call apply_Laplacian_diffusion(IPP)
 #endif
 
 #ifdef use_mixedlayer_shuffle
     call apply_mixing_mld(IPP)
 #endif
 
-#if boundaryCondition == 1
+#ifdef reflective_continent
     call set_boundary(IPP)
 #endif
 

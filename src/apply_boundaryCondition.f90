@@ -12,9 +12,9 @@ subroutine set_boundary(IPP)
         !   print*, ip,IPP,xyz(ip,3,IPP)
         !endif
 
-        xyz(ip,3,IPP) = min(abs(xyz(ip,3,IPP)),real(Nz-1,8))
-        xyz(ip,2,IPP) = sign(xyz(ip,2,IPP),1e0)
-        xyz(ip,2,IPP) = min(xyz(ip,2,IPP),real(Ny-1,8))
+        !xyz(ip,3,IPP) = min(abs(xyz(ip,3,IPP)),real(Nz-1,8))
+        !xyz(ip,2,IPP) = sign(xyz(ip,2,IPP),1e0)
+        !xyz(ip,2,IPP) = min(xyz(ip,2,IPP),real(Ny-1,8))
 
         call find_index(ip,IPP)
 
