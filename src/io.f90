@@ -130,7 +130,12 @@ subroutine load_uvw(irec,isw)
 end subroutine load_uvw
 
 subroutine load_tsg(irec,isw)
-    use global, only : fn_uvwtsg_ids,Nx,Ny,Nz,uu,vv,ww,theta,gam,salt,Nrecs
+#include "cpp_options.h"
+
+#ifdef saveTSG
+
+use global, only : fn_uvwtsg_ids,Nx,Ny,Nz,uu,vv,ww,theta,gam,salt,Nrecs
+
     implicit none
     INTEGER*8, intent(in) :: irec,isw
     !real*4, dimension(-1:Nx+1,0:Ny-1,-1:Nz) :: tmp
@@ -164,6 +169,9 @@ subroutine load_tsg(irec,isw)
     !$OMP END PARALLEL SECTIONS
 
     print*, "end loading data"
+
+#endif
+
 end subroutine load_tsg
 
 
