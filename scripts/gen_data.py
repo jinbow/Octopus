@@ -2,7 +2,7 @@
 This file generates the binary files need to run Octopus based on MITgcm grid files.
 
 You only need to specify the path to the folder containing grid files, including
-RF.data, hFacF.data
+DRF.data, hFacF.data
 
 Jinbo Wang
 <jinbow@gmail.com>

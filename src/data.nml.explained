@@ -20,7 +20,7 @@
  fn_PHIHYD='',
 
  #The file for the particle initialization. The initialization file can be generated using scripts/init_parti_xyz.py.
-fn_parti_init='particle_init.bin',
+fn_parti_init='particle_initial_xyz.bin',
 
  #The neutral density level if you want to release particles on certain isopycnal level. This will overwrite your initial particle depth. Use -1 to avoid interpolation.
 target_density=27.4,
@@ -37,10 +37,10 @@ dt_reinit=-1,
  #The time step in the mixed layer depth data. I use 5 days. The mixed layer depth is used to shuffle particles in the mixed layer every five days. Use with caution. The MLD has not been tested yet.
 dt_mld=432000.,
 
- #The time step for particle advection. I found 0.5 day is optimal. 
+ #The time step for particle advection. I found 0.5 day is optimal with daily velocities. 
 dt=43200,
 
- #The starting time relative to the SOSE first snapshot (in seconds). 
+ #The starting time referenced to the first step of the model output(in seconds). 
 tstart=0.,
 
  #The final time. If it is larger than the duration of the SOSE output, the model will loop from the beginning and shift the partical vertical position to keep the same density. You will find jumps in particle z. 

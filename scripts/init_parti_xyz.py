@@ -19,4 +19,5 @@ def test():
 
 
 if __name__=='__main__':
+    npts=100  #the number of particles
     test()

@@ -1,9 +1,9 @@
 #undef saveTSG
-#undef isArgo
-#define use_Laplacian_diffusion
-#define reflective_continent
-#define use_mixedlayer_shuffle
-#define saveGradient
-#define reflective_meridional_boundary
-#define jump_looping
+#define isArgo
+#undef use_Laplacian_diffusion
+#undef reflective_continent
+#undef use_mixedlayer_shuffle
+#undef saveGradient
+#undef reflective_meridional_boundary
+#undef jump_looping
 #undef monitoring
