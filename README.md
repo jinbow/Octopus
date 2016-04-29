@@ -3,11 +3,11 @@
 
 This model is in a development stage. Email me for questions.
 
-More details can be found in the Wiki pages.
-
-
 Jinbo Wang <jinbow@gmail.com>
 
 Scripps Institution of Oceanography
 
-August 26, 2015
+April 26, 2016
+
+##Documentation
+[Wiki](https://github.com/jinbow/Octopus/wiki)
