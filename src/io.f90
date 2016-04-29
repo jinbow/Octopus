@@ -112,9 +112,11 @@ subroutine load_uvw(irec,isw)
     vv(:,-2:-1,:,isw) = 1d0
 #endif
     !$OMP SECTION
+#ifndef isArgo
     call load_3d(fn_uvwtsg_ids(3),i,ww(:,0:Ny-1,:,isw))
     ww(:,:,-1,isw)=-1d-5 !reflective surface ghost cell 
     ww(:,:,Nz,isw)=1d-5 !reflective bottom  ghost cell
+#endif
 
 #ifdef monitoring
     print*, "====>> load VVEL", irec, "min() =", minval(vv(:,:,:,isw))
@@ -133,6 +135,7 @@ subroutine load_tsg(irec,isw)
 #include "cpp_options.h"
 
 #ifdef saveTSG
+#ifndef isArgo
 
 use global, only : fn_uvwtsg_ids,Nx,Ny,Nz,uu,vv,ww,theta,gam,salt,Nrecs
 
@@ -171,11 +174,13 @@ use global, only : fn_uvwtsg_ids,Nx,Ny,Nz,uu,vv,ww,theta,gam,salt,Nrecs
     print*, "end loading data"
 
 #endif
+#endif
 
 end subroutine load_tsg
 
 
 subroutine load_grid()
+#include "cpp_options.h"
 
     use global, only : dxg_r,dyg_r,drf_r,Nx,Ny,Nz,hFacC,path2grid!,hFacS,hFacW
     
@@ -215,7 +220,8 @@ subroutine load_grid()
     drf_r(Nz)=drf_r(Nz-1)
     drf_r = 1.0/drf_r
     close(93)
-    print*, '11'
+
+#ifndef isArgo
     open(94,file=trim(path2grid)//'hFacC.data',&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
         status='old',recl=4*Nz*Ny*Nx)
@@ -225,6 +231,7 @@ subroutine load_grid()
     hFacC(:,:,-1)=hFacC(:,:,0)
     hFacC(:,:,Nz)=0d0
     close(94)
+#endif
 
 end subroutine load_grid
 

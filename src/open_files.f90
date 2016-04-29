@@ -11,29 +11,34 @@ subroutine open_files()
     open(fn_uvwtsg_ids(2),file=trim(path2uvw)//trim(fn_VVEL),&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
         status='old',recl=4*Nx*Ny)
+#ifndef isArgo
     open(fn_uvwtsg_ids(3),file=trim(path2uvw)//trim(fn_WVEL),&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
         status='old',recl=4*Nx*Ny)
+    if (trim(fn_PHIHYD) .ne. '') then
+    open(fn_uvwtsg_ids(7),file=trim(path2uvw)//trim(fn_PHIHYD),&
+        form='unformatted',access='direct',convert='BIG_ENDIAN',&
+        status='old',recl=4*Nx*Ny)
+    endif
+
     open(fn_uvwtsg_ids(4),file=trim(path2uvw)//trim(fn_THETA),&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
         status='old',recl=4*Nx*Ny)
     open(fn_uvwtsg_ids(5),file=trim(path2uvw)//trim(fn_SALT),&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
         status='old',recl=4*Nx*Ny)
-
     if (trim(fn_GAMMA) .ne. '') then
     open(fn_uvwtsg_ids(6),file=trim(path2uvw)//trim(fn_GAMMA),&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
         status='old',recl=4*Nx*Ny)
     endif
 
-    if (trim(fn_PHIHYD) .ne. '') then
-    open(fn_uvwtsg_ids(7),file=trim(path2uvw)//trim(fn_PHIHYD),&
-        form='unformatted',access='direct',convert='BIG_ENDIAN',&
-        status='old',recl=4*Nx*Ny)
-    endif
+#ifdef use_mixedlayer_shuffle
     open(fn_id_mld,file=trim(path2uvw)//trim(fn_MLD),&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
         status='old',recl=4*Nx*Ny)
+#endif
+
+#endif
 
 end subroutine open_files

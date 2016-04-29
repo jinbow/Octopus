@@ -26,7 +26,9 @@ program main
    
     call load_grid()
    
+#ifndef isArgo
     call load_reflect()
+#endif
    
 
     ! initilize particles on neutral density surfaces
