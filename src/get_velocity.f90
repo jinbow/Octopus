@@ -55,6 +55,7 @@ subroutine find_particle_uvw(t_amend,ip,IPP,t0,t1,uvw)
 #ifdef isArgo
     call get_argo_w(uvw(3))
 #else
+
     j=pj2c(ip,IPP)
     k=pk2f(ip,IPP)
 
@@ -64,6 +65,7 @@ subroutine find_particle_uvw(t_amend,ip,IPP,t0,t1,uvw)
         ww(i:i+1,j:j+1,k:k+1,t1),tmp1)
 
     uvw(3) = (-tmp1+tmp0)*deltat - tmp0 !positive velocity points downward
+
 #endif
 
     if (ip==1) then 

@@ -39,7 +39,7 @@ def reflective_boundary():
     newy=np.zeros((nz,ny,nx+20))
     
     for k in np.arange(nz):
-        print k
+        print "calculating reflective boundary condition for model level",k
         hfc=hfac[k,...]
         hf=np.c_[hfc[:,-10:],hfc,hfc[:,:10]]
         ip=(hf.flatten()>0)
@@ -51,20 +51,10 @@ def reflective_boundary():
     
     newx[...,8:-8].astype('>f4').tofile(pth_data_out+'/reflect_x.bin')
     newy[...,8:-8].astype('>f4').tofile(pth_data_out+'/reflect_y.bin')
+    print "+"*40
+    print "  Saved files reflect_x.bin reflect_y.bin to %s "%pth_data_out
+    print "+"*40
     
-    #popy.io.saveh5('reflect_dy.h5','d',newy)
-    #popy.io.saveh5('reflect_dx.h5','d',newx)
-    #i0,i1,j0,j1=0,200,116,320
-    #pcolor(newx[20,...])
-    #show()
-    # i0,i1,j0,j1=0,180,0,80
-    # for i in range(i0,i1):
-    #     for j in range(j0,j1):
-    #         plot(r_[newx[15,j,i]+3.5,xx[j,i]+3.5],r_[newy[15,j,i]+0.5-j0,yy[j,i]+0.5-j0])
-    #dx=newx[38,...]-xx
-    #dy=newy[38,...]-yy
-    #print dy[:5,:]
-    #show()
     return
 
 def k2zbin():
@@ -100,8 +90,19 @@ def check_folder_existence():
 if __name__=='__main__':
     '''change pth_data_out and pth_data_in according to your system,
        run the program using "python gen_data.py" '''
-    pth_data_out='../data/' #path to Octopus grid data, sofe link works too
-    pth_data_in='../data/' #path to MITgcm grid data, soft link works too
+    #the folder for saveing binary data used by Octopus, 
+    #do not change pth_data_out, '../data/' is hard-coded in load_reflect.f90
+    pth_data_out='../data/' 
+
+    #path to MITgcm grid data, i.e., DXG.data,DYG.data etc.
+    #this script will look for hFacC.data and RF.data in this folder to
+    #generate necessary binary files for Ocotpus
+    pth_data_in='../data/' 
+
     check_folder_existence()
+ 
+    #generate reflect_x.bin and reflect_y.bin
     reflective_boundary()
+
+    #generate k_to_z_lookup_table.bin and 
     k2zbin()

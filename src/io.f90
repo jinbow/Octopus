@@ -5,14 +5,14 @@ subroutine load_z_lookup_table()
     use global, only: z2k,k2z,path2uvw
     implicit none
     real*4::tmp(5701),tmp1(0:420)
-    open(63,file=trim(path2uvw)//'z_to_k_lookup_table.bin',&
+    open(63,file='../data/z_to_k_lookup_table.bin',&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
         status='old',recl=4*5701)
     read(63,rec=1) tmp
     z2k=real(tmp,8)
     close(63)
 
-    open(64,file=trim(path2uvw)//'k_to_z_lookup_table.bin',&
+    open(64,file='../data/k_to_z_lookup_table.bin',&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
         status='old',recl=4*421)
     read(64,rec=1) tmp1
@@ -187,7 +187,6 @@ subroutine load_grid()
     implicit none
     real*4 :: tmp(0:Nx-1,0:Ny-1),tmp1(0:Nz-1)
 
-    print*, '11'
     print*, "================================================="
     print*, "loading grid ......... "
 
