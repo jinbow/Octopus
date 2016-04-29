@@ -123,6 +123,7 @@ April 24, 2016
 
 ###compiling errors
 1. use "make argo" instead of "make" to compile if you got the following:
+
  get_velocity.o: In function find_particle_uvw_:
  get_velocity.f90:(.text+0xa01): undefined reference to get_argo_w_
  collect2: error: ld returned 1 exit status
