@@ -9,13 +9,17 @@ subroutine get_argo_w(argow)
 
     implicit none
     real*8,intent(out) :: argow
-    integer*8 :: ia
+    integer*8 :: ia,i
     ia=argo_clock(1)
 
     if ( ia==0 ) then
         argo_clock(1)=1
         argow = 0.047
-        call save_data(SNPP)
+        
+        do i=1, SNPP
+            call save_data(SNPP)
+        enddo
+        
         print*, "==========================================" 
         print*, "output Argo data"
     elseif (ia==1) then
