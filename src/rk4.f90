@@ -18,20 +18,20 @@ subroutine rk4(SNPP)
             x0=xyz(ip,:,IPP)
             x1=xyz(ip,:,IPP)
 
-            call find_particle_uvw(0.0d0,ip,IPP,t0,t1,uvw)
-            x1=x1+dt*uvw/6d0
-            xyz(ip,:,IPP)=x0+dt*uvw/2d0
+            call find_particle_uvw(0.0,ip,IPP,t0,t1,uvw)
+            x1=x1+dt*uvw/6.0
+            xyz(ip,:,IPP)=x0+dt*uvw/2.0
 
             call find_particle_uvw(t_amend,ip,IPP,t0,t1,uvw)
-            x1=x1+dt*uvw/3d0
-            xyz(ip,:,IPP)=x0+dt*uvw/2d0
+            x1=x1+dt*uvw/3.0
+            xyz(ip,:,IPP)=x0+dt*uvw/2.0
 
             call find_particle_uvw(t_amend,ip,IPP,t0,t1,uvw)
-            x1=x1+dt*uvw/3d0
+            x1=x1+dt*uvw/3.0
             xyz(ip,:,IPP)=x0+dt*uvw
 
-            call find_particle_uvw(t_amend*2d0,ip,IPP,t0,t1,uvw)
-            xyz(ip,:,IPP)=x1+dt*uvw/6d0
+            call find_particle_uvw(t_amend*2.0,ip,IPP,t0,t1,uvw)
+            xyz(ip,:,IPP)=x1+dt*uvw/6.0
         enddo
 !$OMP END PARALLEL DO
 
