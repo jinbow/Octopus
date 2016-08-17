@@ -1,5 +1,5 @@
 #undef saveTSG
-#define isArgo
+#undef isArgo
 #define data_file_type 1
 #undef use_Laplacian_diffusion
 #undef reflective_continent

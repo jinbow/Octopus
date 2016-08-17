@@ -19,7 +19,7 @@ program main
 
     call calc_parameters()
   
-    call open_files()
+    !call open_files()
 
     ! load z to k lookup table for mixed layer process
     call load_z_lookup_table() 
@@ -96,7 +96,7 @@ program main
     enddo
     CALL DATE_AND_TIME(date,time1,zone,time)
     print*, "Program started at", time0, "and ended ", time1
-    call close_files()
+    !call close_files()
 
 end program main
 

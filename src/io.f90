@@ -29,12 +29,19 @@ subroutine load_mld(tt)
     real*8, intent(in) :: tt
     integer*8 :: i
     
+    open(fn_id_mld,file=trim(path2uvw)//trim(fn_MLD),&
+        form='unformatted',access='direct',convert='BIG_ENDIAN',&
+        status='old',recl=4*Nx*Ny)
+
     i=int(mod(tt,tend_file)/dt_mld)+1
     print*, "load mixed layer depth data at time ",tt, "and step", i
     read(fn_id_mld,rec=i) mld(0:Nx-1,0:Ny-1)
 
     mld(-2:-1,:) = mld(Nx-2:Nx-1,:)
     mld(Nx:Nx+1,:)=mld(0:1,:)
+
+    close(fn_id_mld)
+
 #endif
 
 end subroutine load_mld
@@ -85,7 +92,8 @@ end subroutine load_3d
 
 subroutine load_uvw(irec,isw)
 
-    use global, only : fn_uvwtsg_ids,Nx,Ny,Nz,uu,vv,ww,theta,gam,salt,Nrecs
+    use global, only : fn_uvwtsg_ids,Nx,Ny,Nz,uu,vv,ww,theta,gam,salt,Nrecs,&
+                       fn_UVEL,fn_VVEL,fn_WVEL,path2uvw
     implicit none
     INTEGER*8, intent(in) :: irec,isw
     !real*4, dimension(-1:Nx+1,0:Ny-1,-1:Nz) :: tmp
@@ -177,11 +185,40 @@ use global, only : fn_uvwtsg_ids,Nx,Ny,Nz,uu,vv,ww,theta,gam,salt,Nrecs
     implicit none
     INTEGER*8, intent(in) :: irec,isw
     !real*4, dimension(-1:Nx+1,0:Ny-1,-1:Nz) :: tmp
-    integer*8 :: i
-    i=mod(irec,Nrecs)
-    if (i .eq. 0) then
-        i=Nrecs
+    integer*8 :: i,ifile
+
+    ifile=mod(irec,Nrecs)
+    if (ifile .eq. 0) then
+        ifile=Nrecs
     endif
+#ifdef one_file_per_step
+    i=1 !always read the first record if the file only contains one step
+#else
+    i=ifile
+#endif
+
+#ifdef one_file_per_step
+open(fn_uvwtsg_ids(4),file=trim(path2uvw)//trim(fn_THETA(ifile)),&
+        form='unformatted',access='direct',convert='BIG_ENDIAN',&
+        status='old',recl=4*Nx*Ny)
+open(fn_uvwtsg_ids(5),file=trim(path2uvw)//trim(fn_SALT(ifile)),&
+        form='unformatted',access='direct',convert='BIG_ENDIAN',&
+        status='old',recl=4*Nx*Ny)
+open(fn_uvwtsg_ids(6),file=trim(path2uvw)//trim(fn_GAMMA(ifile)),&
+        form='unformatted',access='direct',convert='BIG_ENDIAN',&
+        status='old',recl=4*Nx*Ny)
+#else
+open(fn_uvwtsg_ids(4),file=trim(path2uvw)//trim(fn_THETA),&
+        form='unformatted',access='direct',convert='BIG_ENDIAN',&
+        status='old',recl=4*Nx*Ny)
+open(fn_uvwtsg_ids(5),file=trim(path2uvw)//trim(fn_SALT),&
+        form='unformatted',access='direct',convert='BIG_ENDIAN',&
+        status='old',recl=4*Nx*Ny)
+open(fn_uvwtsg_ids(6),file=trim(path2uvw)//trim(fn_GAMMA),&
+        form='unformatted',access='direct',convert='BIG_ENDIAN',&
+        status='old',recl=4*Nx*Ny)
+#endif
+
     !$OMP PARALLEL SECTIONS
     !$OMP SECTION
     call load_3d(fn_uvwtsg_ids(4),i,theta(:,:,:,isw))
@@ -208,8 +245,13 @@ use global, only : fn_uvwtsg_ids,Nx,Ny,Nz,uu,vv,ww,theta,gam,salt,Nrecs
 
     print*, "end loading data"
 
+    do i = 4, 6
+        close(fn_uvwtsg_ids(i))
+    enddo
+
 #endif
 #endif
+
 
 end subroutine load_tsg
 
