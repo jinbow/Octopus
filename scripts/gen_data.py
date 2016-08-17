@@ -11,6 +11,7 @@ August 26, 2015
 
 """
 import numpy as np
+import scipy as sp
 import pylab as plt
 import os,sys
 
@@ -71,7 +72,7 @@ def k2zbin():
     z[0]=0
     print z
     print z.shape
-    ff=np.interp1d(np.linspace(0,42,43),z,'cubic')
+    ff=sp.interpolate.interp1d(np.linspace(0,42,43),z,'cubic')
     newz = ff(np.linspace(0,42,421))
     newz.astype('>f4').tofile('k_to_z_lookup_table.bin')
     plt.plot(np.linspace(0,42,43),z,'o')
