@@ -69,7 +69,9 @@ subroutine load_3d(fn_id,irec,dout)
     if (i .eq. 0) then
         i=Nrecs
     endif
+
     i=(i-1)*Nz+1
+    !selectively reading data from k0 to k1 levels
     k0=max(minval(floor(xyz(:,3,:)))-1,0)
     k1=min(maxval(ceiling(xyz(:,3,:)))+1,Nz-1)
     !$OMP PARALLEL DO PRIVATE(k)
@@ -87,22 +89,50 @@ subroutine load_uvw(irec,isw)
     implicit none
     INTEGER*8, intent(in) :: irec,isw
     !real*4, dimension(-1:Nx+1,0:Ny-1,-1:Nz) :: tmp
-    integer*8 :: i
-    i=mod(irec,Nrecs)
+    integer*8 :: i,ifile
 
 #ifdef monitoring
     print*, "----load uvw at irec,mod(irec,Nrecs),iswitch",irec,i,isw
 #endif
 
-    if (i .eq. 0) then
-        i=Nrecs
+
+    ifile=mod(irec,Nrecs)
+    if (ifile .eq. 0) then
+        ifile=Nrecs
     endif
+#ifdef one_file_per_step
+    i=1 !always read the first record if the file only contains one step
+#else
+    i=ifile
+#endif
 
     !$OMP PARALLEL SECTIONS
     !$OMP SECTION
+#ifdef one_file_per_step
+open(fn_uvwtsg_ids(1),file=trim(path2uvw)//trim(fn_UVEL(ifile)),&
+        form='unformatted',access='direct',convert='BIG_ENDIAN',&
+        status='old',recl=4*Nx*Ny)
+open(fn_uvwtsg_ids(2),file=trim(path2uvw)//trim(fn_VVEL(ifile)),&
+        form='unformatted',access='direct',convert='BIG_ENDIAN',&
+        status='old',recl=4*Nx*Ny)
+open(fn_uvwtsg_ids(3),file=trim(path2uvw)//trim(fn_WVEL(ifile)),&
+        form='unformatted',access='direct',convert='BIG_ENDIAN',&
+        status='old',recl=4*Nx*Ny)
+#else
+open(fn_uvwtsg_ids(1),file=trim(path2uvw)//trim(fn_UVEL),&
+        form='unformatted',access='direct',convert='BIG_ENDIAN',&
+        status='old',recl=4*Nx*Ny)
+open(fn_uvwtsg_ids(2),file=trim(path2uvw)//trim(fn_VVEL),&
+        form='unformatted',access='direct',convert='BIG_ENDIAN',&
+        status='old',recl=4*Nx*Ny)
+open(fn_uvwtsg_ids(3),file=trim(path2uvw)//trim(fn_WVEL),&
+        form='unformatted',access='direct',convert='BIG_ENDIAN',&
+        status='old',recl=4*Nx*Ny)
+#endif
     call load_3d(fn_uvwtsg_ids(1),i,uu(:,0:Ny-1,:,isw))
     uu(:,:,-1,isw)=uu(:,:,0,isw)
     uu(:,:,Nz,isw)=uu(:,:,Nz-1,isw)
+
     !$OMP SECTION
     call load_3d(fn_uvwtsg_ids(2),i,vv(:,0:Ny-1,:,isw))
     vv(:,:,-1,isw)=vv(:,:,0,isw)
@@ -129,7 +159,12 @@ subroutine load_uvw(irec,isw)
 
     !$OMP END PARALLEL SECTIONS
 
+    do i = 1, 3
+        close(fn_uvwtsg_ids(i))
+    enddo
+
 end subroutine load_uvw
+
 
 subroutine load_tsg(irec,isw)
 #include "cpp_options.h"

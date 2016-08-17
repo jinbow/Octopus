@@ -8,3 +8,4 @@
 #undef reflective_meridional_boundary
 #undef jump_looping
 #undef monitoring
+#define one_file_per_step
