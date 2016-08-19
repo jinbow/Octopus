@@ -19,7 +19,7 @@ program main
 
     call calc_parameters()
   
-    !call open_files()
+    call c_filenames()
 
     ! load z to k lookup table for mixed layer process
     call load_z_lookup_table() 

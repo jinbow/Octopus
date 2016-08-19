@@ -39,8 +39,8 @@ def gen_grid(nx,ny,nz):
     drf=np.ones((nz))*10.0
 
     hfacc.astype('>f4').tofile('hFacC.data')
-    dx.astype('>f4').tofile('DYC.data')
-    dy.astype('>f4').tofile('DYC.data')
+    dx.astype('>f4').tofile('DXG.data')
+    dy.astype('>f4').tofile('DYG.data')
     drf.astype('>f4').tofile('DRF.data')
 
     for i in range(20):

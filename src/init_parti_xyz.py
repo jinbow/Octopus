@@ -9,6 +9,10 @@ def case_test():
     xyz[:,1]= 218 #constant y
     xyz[:,2]=20 # at k=20 level, z level will be overwritten if the target_density in the namelist is larger than 0.
 
+    xyz[:,0] = 10.0
+    xyz[:,1] = 10.0
+    xyz[:,2] = 1.0
+
     xyz.T.astype('>f8').tofile('particle_init.bin') #the saving sequence should be x[:], y[:], z[:], not [x1,y1,z1],[x2,y2,z2]...
 
     return

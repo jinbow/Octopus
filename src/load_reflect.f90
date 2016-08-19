@@ -1,6 +1,8 @@
 subroutine load_reflect()
 #include "cpp_options.h"
 
+#ifdef reflective_continent
+
     use global, only: reflect_x,reflect_y,Nx,Ny,Nz,path2uvw
     implicit none
     open(43,file='../data/reflect_x.bin',&
@@ -27,5 +29,6 @@ subroutine load_reflect()
     print*, "=================================================="
     print*, "loading reflect_y"
 
+#endif
 
 end subroutine load_reflect

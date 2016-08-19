@@ -68,9 +68,6 @@ subroutine find_particle_uvw(t_amend,ip,IPP,t0,t1,uvw)
 
 #endif
 
-    if (ip==1) then 
-      print*, i,j,k,uvw
-    endif
 
     uvw=uvw*dxyz_fac
 

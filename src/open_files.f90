@@ -1,5 +1,6 @@
 subroutine open_files()
 #include "cpp_options.h"
+
     use global,only:fn_uvwtsg_ids,fn_ids,fn_id_mld,path2uvw,fn_UVEL,&
                     fn_VVEL,fn_WVEL,fn_THETA,fn_SALT,fn_GAMMA,fn_PHIHYD,&
                     Nx,Ny,Nz,fn_MLD
@@ -11,6 +12,7 @@ subroutine open_files()
     open(fn_uvwtsg_ids(2),file=trim(path2uvw)//trim(fn_VVEL),&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
         status='old',recl=4*Nx*Ny)
+
 #ifndef isArgo
     open(fn_uvwtsg_ids(3),file=trim(path2uvw)//trim(fn_WVEL),&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
@@ -40,5 +42,6 @@ subroutine open_files()
 #endif
 
 #endif
+
 
 end subroutine open_files

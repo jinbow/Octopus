@@ -93,50 +93,47 @@ end subroutine load_3d
 subroutine load_uvw(irec,isw)
 
     use global, only : fn_uvwtsg_ids,Nx,Ny,Nz,uu,vv,ww,theta,gam,salt,Nrecs,&
-                       fn_UVEL,fn_VVEL,fn_WVEL,path2uvw
+                       fn_UVEL,fn_VVEL,fn_WVEL,path2uvw,filenames
     implicit none
     INTEGER*8, intent(in) :: irec,isw
     !real*4, dimension(-1:Nx+1,0:Ny-1,-1:Nz) :: tmp
-    integer*8 :: i,ifile
+    integer*8 :: i,ifile,ii
 
 #ifdef monitoring
     print*, "----load uvw at irec,mod(irec,Nrecs),iswitch",irec,i,isw
 #endif
 
 
+#ifdef one_file_per_step
     ifile=mod(irec,Nrecs)
     if (ifile .eq. 0) then
         ifile=Nrecs
     endif
-#ifdef one_file_per_step
     i=1 !always read the first record if the file only contains one step
 #else
-    i=ifile
+
+#ifdef stationary_velocity
+    i=1
+#else
+    i=mod(irec,Nrecs)
+    if (i .eq. 0) then
+        i=Nrecs
+    endif
+#endif
+    ifile=1
+
 #endif
 
     !$OMP PARALLEL SECTIONS
     !$OMP SECTION
-#ifdef one_file_per_step
-open(fn_uvwtsg_ids(1),file=trim(path2uvw)//trim(fn_UVEL(ifile)),&
+
+do ii = 1, 3
+open(fn_uvwtsg_ids(ii),file=trim(path2uvw)//trim(filenames(ifile,ii)),&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
         status='old',recl=4*Nx*Ny)
-open(fn_uvwtsg_ids(2),file=trim(path2uvw)//trim(fn_VVEL(ifile)),&
-        form='unformatted',access='direct',convert='BIG_ENDIAN',&
-        status='old',recl=4*Nx*Ny)
-open(fn_uvwtsg_ids(3),file=trim(path2uvw)//trim(fn_WVEL(ifile)),&
-        form='unformatted',access='direct',convert='BIG_ENDIAN',&
-        status='old',recl=4*Nx*Ny)
-#else
-open(fn_uvwtsg_ids(1),file=trim(path2uvw)//trim(fn_UVEL),&
-        form='unformatted',access='direct',convert='BIG_ENDIAN',&
-        status='old',recl=4*Nx*Ny)
-open(fn_uvwtsg_ids(2),file=trim(path2uvw)//trim(fn_VVEL),&
-        form='unformatted',access='direct',convert='BIG_ENDIAN',&
-        status='old',recl=4*Nx*Ny)
-open(fn_uvwtsg_ids(3),file=trim(path2uvw)//trim(fn_WVEL),&
-        form='unformatted',access='direct',convert='BIG_ENDIAN',&
-        status='old',recl=4*Nx*Ny)
-#endif
+enddo
+
+
     call load_3d(fn_uvwtsg_ids(1),i,uu(:,0:Ny-1,:,isw))
     uu(:,:,-1,isw)=uu(:,:,0,isw)
     uu(:,:,Nz,isw)=uu(:,:,Nz-1,isw)
@@ -167,8 +164,8 @@ open(fn_uvwtsg_ids(3),file=trim(path2uvw)//trim(fn_WVEL),&
 
     !$OMP END PARALLEL SECTIONS
 
-    do i = 1, 3
-        close(fn_uvwtsg_ids(i))
+    do ii = 1, 3
+        close(fn_uvwtsg_ids(ii))
     enddo
 
 end subroutine load_uvw
@@ -185,39 +182,27 @@ use global, only : fn_uvwtsg_ids,Nx,Ny,Nz,uu,vv,ww,theta,gam,salt,Nrecs
     implicit none
     INTEGER*8, intent(in) :: irec,isw
     !real*4, dimension(-1:Nx+1,0:Ny-1,-1:Nz) :: tmp
-    integer*8 :: i,ifile
+    integer*8 :: i,ifile,ii
 
+#ifdef one_file_per_step
     ifile=mod(irec,Nrecs)
     if (ifile .eq. 0) then
         ifile=Nrecs
     endif
-#ifdef one_file_per_step
     i=1 !always read the first record if the file only contains one step
 #else
-    i=ifile
+    i=mod(irec,Nrecs)
+    if (i .eq. 0) then
+        i=Nrecs
+    endif
+    ifile=1
 #endif
 
-#ifdef one_file_per_step
-open(fn_uvwtsg_ids(4),file=trim(path2uvw)//trim(fn_THETA(ifile)),&
+do ii = 4, 6
+open(fn_uvwtsg_ids(ii),file=trim(path2uvw)//trim(filenames(ifile,ii)),&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
         status='old',recl=4*Nx*Ny)
-open(fn_uvwtsg_ids(5),file=trim(path2uvw)//trim(fn_SALT(ifile)),&
-        form='unformatted',access='direct',convert='BIG_ENDIAN',&
-        status='old',recl=4*Nx*Ny)
-open(fn_uvwtsg_ids(6),file=trim(path2uvw)//trim(fn_GAMMA(ifile)),&
-        form='unformatted',access='direct',convert='BIG_ENDIAN',&
-        status='old',recl=4*Nx*Ny)
-#else
-open(fn_uvwtsg_ids(4),file=trim(path2uvw)//trim(fn_THETA),&
-        form='unformatted',access='direct',convert='BIG_ENDIAN',&
-        status='old',recl=4*Nx*Ny)
-open(fn_uvwtsg_ids(5),file=trim(path2uvw)//trim(fn_SALT),&
-        form='unformatted',access='direct',convert='BIG_ENDIAN',&
-        status='old',recl=4*Nx*Ny)
-open(fn_uvwtsg_ids(6),file=trim(path2uvw)//trim(fn_GAMMA),&
-        form='unformatted',access='direct',convert='BIG_ENDIAN',&
-        status='old',recl=4*Nx*Ny)
-#endif
+enddo
 
     !$OMP PARALLEL SECTIONS
     !$OMP SECTION
@@ -245,8 +230,8 @@ open(fn_uvwtsg_ids(6),file=trim(path2uvw)//trim(fn_GAMMA),&
 
     print*, "end loading data"
 
-    do i = 4, 6
-        close(fn_uvwtsg_ids(i))
+    do ii = 4, 6
+        close(fn_uvwtsg_ids(ii))
     enddo
 
 #endif

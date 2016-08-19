@@ -54,13 +54,9 @@ module global
 
     INTEGER*8 :: file_i0
     CHARACTER (len=255) :: casename,path2uvw,path2grid,fn_parti_init,output_dir,fn_phihyd,fn_mld
-
-#ifdef one_file_per_step
-    CHARACTER (len=255),dimension(Nrecs) :: fn_UVEL,fn_VVEL,fn_WVEL,fn_THETA,fn_SALT,fn_GAMMA
-#else
     CHARACTER (len=255) :: fn_UVEL,fn_VVEL,fn_WVEL,fn_THETA,fn_SALT,fn_GAMMA
-#endif
 
+    CHARACTER (len=255), dimension(Nrecs, Nvar2read) :: filenames
 
     !mixing parameters
     REAL*8 :: Khdiff, Kvdiff, kvdt2, khdt2
