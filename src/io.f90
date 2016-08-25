@@ -105,7 +105,7 @@ subroutine load_uvw(irec,isw)
 
 
 #ifdef one_file_per_step
-    ifile=mod(irec,Nrecs)
+    ifile=mod(irec,Nrecs) !gives the index of the filename
     if (ifile .eq. 0) then
         ifile=Nrecs
     endif
@@ -120,7 +120,7 @@ subroutine load_uvw(irec,isw)
         i=Nrecs
     endif
 #endif
-    ifile=1
+    ifile=1 !if all records are saved in one file, the program always reads filename(1,i)
 
 #endif
 

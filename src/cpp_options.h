@@ -8,5 +8,5 @@
 #undef reflective_meridional_boundary
 #undef jump_looping
 #undef monitoring
-#undef one_file_per_step
-#define stationary_velocity
+#define one_file_per_step
+#undef stationary_velocity

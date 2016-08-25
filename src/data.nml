@@ -1,8 +1,8 @@
 &PARAM
 pickup=0,
 casename='TEST_0000',
-path2uvw='../data_in/',
-path2grid='../data_in/',
+path2uvw='../data_simple/',
+path2grid='../data_simple/',
 output_dir='../output/',
 fn_MLD='',
 fn_PHIHYD='',

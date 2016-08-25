@@ -53,6 +53,7 @@ module global
     INTEGER*8 :: fn_uvwtsg_ids(7),fn_xyz_tsg_mld_ids(3),fn_id_mld
 
     INTEGER*8 :: file_i0
+    INTEGER*8 :: filename_increment
     CHARACTER (len=255) :: casename,path2uvw,path2grid,fn_parti_init,output_dir,fn_phihyd,fn_mld
     CHARACTER (len=255) :: fn_UVEL,fn_VVEL,fn_WVEL,fn_THETA,fn_SALT,fn_GAMMA
 
