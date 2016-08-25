@@ -11,3 +11,7 @@ April 26, 2016
 
 ##Documentation
 [Wiki](https://github.com/jinbow/Octopus/wiki)
+
+##Updates
+
+* add feature reading data from mutiple files with one file per step
