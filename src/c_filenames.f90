@@ -4,10 +4,10 @@ subroutine c_filenames()
     use global, only: filenames,Nrecs
     implicit none
     character(len=64) :: fn
-    character(len=20) :: variables(6)
+    character(len=5) :: variables(6)
     integer*8 :: i,j
 
-    variables=(/"UVEL","VVEL","WVEL","Theta","Salt","GAMMA"/)
+    variables=(/"UVEL ","VVEL ","WVEL ","Theta","Salt ","GAMMA"/)
 
     DO i = 1, Nrecs
         write(fn,"(I10.10)") i*20
