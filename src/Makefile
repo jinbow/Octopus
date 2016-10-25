@@ -19,8 +19,16 @@ obj_argo = global.o allocate_vars.o \
           get_velocity.o rk4.o interp_trilinear.o \
           init_particles.o mixing.o read_namelist.o \
           utils.o open_files.o close_files.o read_pickup.o\
-          save_pickup.o load_depth.o \
+          save_pickup.o load_depth.o c_filenames.o \
           check_and_save.o calc_parameters.o  interp_bilinear.o get_argo_w.o
+
+obj_glider= global.o allocate_vars.o \
+          random.o driver_omp.o  io.o  get_particle_index.o \
+          get_velocity.o rk4.o interp_trilinear.o \
+          init_particles.o mixing.o read_namelist.o \
+          utils.o open_files.o close_files.o read_pickup.o\
+          save_pickup.o load_depth.o c_filenames.o \
+          check_and_save.o calc_parameters.o  interp_bilinear.o get_glider_w.o
 	
 FORTRAN_COMPILER = gfortran
 
@@ -30,6 +38,8 @@ FFLAGS = -x f95-cpp-input -fopenmp -O3 -mcmodel=large -fdefault-integer-8 -fdefa
 opt: $(objects); $(FORTRAN_COMPILER) -o O.particle -fopenmp $(objects)
 
 argo: $(obj_argo); $(FORTRAN_COMPILER) -o O.argo -fopenmp $(obj_argo)
+
+glider: $(obj_argo); $(FORTRAN_COMPILER) -o O.glider -fopenmp $(obj_argo)
 
 %.o: %.f90; $(FORTRAN_COMPILER) ${FFLAGS} -c $<
 

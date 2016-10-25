@@ -64,5 +64,9 @@ module global
 #ifdef isArgo
     integer*8 :: argo_clock(2)=0,parking_time,surfacing_time
 #endif
+#ifdef isGlider
+    integer*8 :: parking_time=0,surfacing_time=600
+    INTEGER*8, ALLOCATABLE :: glider_clock(:,:,:),glider_position(:,:,:)
+#endif
 
 end module global

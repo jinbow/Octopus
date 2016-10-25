@@ -37,6 +37,12 @@ subroutine allocate_parti()
         dkc(Npts,NPP), &
         parti_mld(Npts,NPP) )
 
+#ifdef isGlider
+    ALLOCATE ( glider_clock(Npts,2,NPP),&
+               glider_position(Npts,4,NPP) )
+#endif
+
+
     ALLOCATE ( fn_ids(20,NPP) )
 
     print*, "end allocation of variables ......"

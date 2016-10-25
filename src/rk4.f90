@@ -13,8 +13,11 @@ subroutine rk4(SNPP)
     t0=abs(iswitch-1)
     t1=iswitch
     do IPP=1,SNPP
+
 !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(x0,x1,uvw,ip) SHARED(IPP,SNPP,Npts,xyz,t_amend,t0,t1,dt)
+
         do ip=1,Npts
+
             x0=xyz(ip,:,IPP)
             x1=xyz(ip,:,IPP)
 
@@ -32,7 +35,9 @@ subroutine rk4(SNPP)
 
             call find_particle_uvw(t_amend*2.0,ip,IPP,t0,t1,uvw)
             xyz(ip,:,IPP)=x1+dt*uvw/6.0
+
         enddo
+
 !$OMP END PARALLEL DO
 
 #ifdef use_Laplacian_diffusion

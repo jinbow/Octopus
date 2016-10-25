@@ -16,7 +16,7 @@ subroutine find_particle_uvw(t_amend,ip,IPP,t0,t1,uvw)
 
     real*8,dimension(3) :: dxyz_fac
     integer*8 :: i,j,k
-    real*8 :: tmp0,tmp1,tamend,deltat
+    real*8 :: tmp0,tmp1,tamend,deltat,uvw_g(3)
 
     if (dtp+t_amend>1) then
         tamend=0.0
@@ -66,6 +66,12 @@ subroutine find_particle_uvw(t_amend,ip,IPP,t0,t1,uvw)
 
     uvw(3) = (-tmp1+tmp0)*deltat - tmp0 !positive velocity points downward
 
+#endif
+
+
+#ifdef isGlider
+    call get_glider_velocity(uvw_g,ip,IPP)
+    uvw=uvw+uvw_g
 #endif
 
 
