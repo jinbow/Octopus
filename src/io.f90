@@ -81,6 +81,7 @@ subroutine load_3d(fn_id,irec,dout)
     !selectively reading data from k0 to k1 levels
     k0=max(minval(floor(xyz(:,3,:)))-1,0)
     k1=min(maxval(ceiling(xyz(:,3,:)))+1,Nz-1)
+
     !$OMP PARALLEL DO PRIVATE(k)
     do k=k0,k1
         read(fn_id,rec=i+k) dout(0:Nx-1,:,k)
@@ -120,6 +121,7 @@ subroutine load_uvw(irec,isw)
         i=Nrecs
     endif
 #endif
+
     ifile=1 !if all records are saved in one file, the program always reads filename(1,i)
 
 #endif
@@ -132,7 +134,6 @@ open(fn_uvwtsg_ids(ii),file=trim(path2uvw)//trim(filenames(ifile,ii)),&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
         status='old',recl=4*Nx*Ny)
 enddo
-
 
     call load_3d(fn_uvwtsg_ids(1),i,uu(:,0:Ny-1,:,isw))
     uu(:,:,-1,isw)=uu(:,:,0,isw)

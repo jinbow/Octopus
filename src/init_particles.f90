@@ -1,20 +1,37 @@
 subroutine init_particles(IPP)
 #include "cpp_options.h"
-    use global, only : Npts,iswitch,xyz,fn_parti_init,tsg,&
-        target_density,pickup,rec_num,tt,dt_file,pk2f,NPP
+
+!    use global, only : Npts,iswitch,xyz,tsg,&
+!                       target_density,pickup,&
+!                       rec_num,tt,dt_file,pk2f,&
+!                       NPP,FnPartiInit,glider_position
+     use global
+
     implicit none
     integer*8, intent(in):: IPP
 
-        print*, "------------------------------------"
         print*, "initialize particles for case", IPP
-        open(10,file=trim(fn_parti_init),form='unformatted',&
+
+        open(301,file=trim(FnPartiInit),form='unformatted',&
             recl=8*Npts*3,convert='BIG_ENDIAN',&
             access='direct',status='old')
-        read(10,rec=1) xyz(:,:,IPP)
-        close(10)
+        read(301,rec=1) xyz(:,:,IPP)
+        close(301)
+
+
 #ifdef isArgo
         xyz(:,3,IPP)=0
-#else
+#endif
+
+#ifdef isGlider
+       xyz(:,3,IPP)=0
+       glider_position(:,1,IPP)=xyz(:,1,IPP)
+       glider_position(:,2,IPP)=xyz(:,2,IPP)
+       glider_position(:,3,IPP)=0
+       glider_position(:,4,IPP)=0
+#endif
+
+#ifndef isArgo .OR. isGlider
         call set_boundary(IPP)
         ! Reset the particle depth to find the particle density
         if (target_density>0) then

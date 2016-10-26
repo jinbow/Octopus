@@ -20,6 +20,7 @@ program main
     call calc_parameters()
   
     call c_filenames()
+   
 
     ! load z to k lookup table for mixed layer process
     call load_z_lookup_table() 
@@ -50,10 +51,11 @@ program main
         call load_uvw(2,1)
     endif
 
+    
     do while (tt<=tend)
-    print*, "=========================================================="
+    !print*, "tend ==========================================================",tend
         SNPP = min(int(tt/dt_case)+1,NPP)
-    print*, "SNPP = ", SNPP
+    ! print*, "SNPP = ", SNPP
         if ( mod(tt,dt_case)==0 .and. int(tt/dt_case,8)+1<=NPP) then
             call init_particles(SNPP)
         endif
@@ -71,13 +73,17 @@ program main
             call load_uvw(2,1)
             rec_num=rec_num+2
             marker(1:2)=(/2,1/)
+
 #ifndef isArgo
+#ifndef isGlider
 #ifdef jump_looping
             do IPP=1,SNPP
                 call jump(IPP)
             enddo
 #endif
 #endif
+#endif
+
             iswitch=1
         else
             rec_num=rec_num+1
@@ -86,6 +92,7 @@ program main
             marker(1:2)=(/rec_num,iswitch/)
         endif
 #ifndef isArgo
+#ifndef isGlider
         if (mod(int(tt),int(saveFreq,8)) .eq. 0) then
             call check_and_save(SNPP)
         endif
@@ -93,7 +100,11 @@ program main
             call save_pickup()
         endif
 #endif
+#endif
+
+
     enddo
+
     CALL DATE_AND_TIME(date,time1,zone,time)
     print*, "Program started at", time0, "and ended ", time1
     !call close_files()

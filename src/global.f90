@@ -54,10 +54,10 @@ module global
 
     INTEGER*8 :: file_i0
     INTEGER*8 :: filename_increment
-    CHARACTER (len=255) :: casename,path2uvw,path2grid,fn_parti_init,output_dir,fn_phihyd,fn_mld
-    CHARACTER (len=255) :: fn_UVEL,fn_VVEL,fn_WVEL,fn_THETA,fn_SALT,fn_GAMMA
+    CHARACTER (len=64) :: casename,path2uvw,path2grid,FnPartiInit,output_dir,fn_phihyd,fn_mld
+    CHARACTER (len=64) :: fn_UVEL,fn_VVEL,fn_WVEL,fn_THETA,fn_SALT,fn_GAMMA
 
-    CHARACTER (len=255), dimension(Nrecs, Nvar2read) :: filenames
+    CHARACTER (len=64), dimension(Nrecs, Nvar2read) :: filenames
 
     !mixing parameters
     REAL*8 :: Khdiff, Kvdiff, kvdt2, khdt2
@@ -65,8 +65,9 @@ module global
     integer*8 :: argo_clock(2)=0,parking_time,surfacing_time
 #endif
 #ifdef isGlider
-    integer*8 :: parking_time=0,surfacing_time=600
-    INTEGER*8, ALLOCATABLE :: glider_clock(:,:,:),glider_position(:,:,:)
+    integer*8 :: parking_time=1,surfacing_time=60
+    real*8, ALLOCATABLE :: glider_clock(:,:,:),glider_position(:,:,:)
+    real*8 :: dive_depth
 #endif
 
 end module global

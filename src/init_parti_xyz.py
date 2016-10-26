@@ -5,12 +5,12 @@ import sys
 def case_test():
     npts=100
     xyz=zeros((npts,3))
-    xyz[:,0]= linspace(1500,1600,npts) # x index 100 points
-    xyz[:,1]= 218 #constant y
-    xyz[:,2]=20 # at k=20 level, z level will be overwritten if the target_density in the namelist is larger than 0.
+    xyz[:,0]= linspace(5,6,npts) # x index 100 points
+    xyz[:,1]= 15 #constant y
+    xyz[:,2]=2 # at k=20 level, z level will be overwritten if the target_density in the namelist is larger than 0.
 
-    xyz[:,0] = 10.0
-    xyz[:,1] = 10.0
+    xyz[:,0] = 5.0
+    xyz[:,1] = 15.0
     xyz[:,2] = 1.0
 
     xyz.T.astype('>f8').tofile('particle_init.bin') #the saving sequence should be x[:], y[:], z[:], not [x1,y1,z1],[x2,y2,z2]...

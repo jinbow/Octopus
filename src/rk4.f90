@@ -2,8 +2,13 @@ subroutine rk4(SNPP)
 #include "cpp_options.h"
 
     ! integrate in time using RK4 scheme
+#ifdef isGlider
+    use global, only : tt,Npts,iswitch,xyz,dt,Nx,Ny,Nz,&
+                       uvwp,dt_file,t_amend,glider_clock
+#else
     use global, only : tt,Npts,iswitch,xyz,dt,Nx,Ny,Nz,&
                        uvwp,dt_file,t_amend
+#endif
 
     implicit none
     real*8, dimension(3) :: x0,x1,uvw
@@ -14,9 +19,9 @@ subroutine rk4(SNPP)
     t1=iswitch
     do IPP=1,SNPP
 
-!$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(x0,x1,uvw,ip) SHARED(IPP,SNPP,Npts,xyz,t_amend,t0,t1,dt)
+!$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(x0,x1,uvw,ip) SHARED(glider_clock,IPP,SNPP,Npts,xyz,t_amend,t0,t1,dt)
 
-        do ip=1,Npts
+        do ip=1,1
 
             x0=xyz(ip,:,IPP)
             x1=xyz(ip,:,IPP)
@@ -36,6 +41,11 @@ subroutine rk4(SNPP)
             call find_particle_uvw(t_amend*2.0,ip,IPP,t0,t1,uvw)
             xyz(ip,:,IPP)=x1+dt*uvw/6.0
 
+
+#ifdef isGlider
+            glider_clock(ip,2,IPP)=glider_clock(ip,2,IPP)+dt
+#endif
+
         enddo
 
 !$OMP END PARALLEL DO
@@ -51,6 +61,9 @@ subroutine rk4(SNPP)
 #ifdef reflective_continent
     call set_boundary(IPP)
 #endif
+
+print*, '----',xyz(1,3,1)
+
 
     enddo
 
