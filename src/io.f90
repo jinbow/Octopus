@@ -129,11 +129,16 @@ subroutine load_uvw(irec,isw)
     !$OMP PARALLEL SECTIONS
     !$OMP SECTION
 
+#ifdef monitoring
+    print*, ifile,trim(path2uvw)//trim(filenames(ifile,1))
+#endif
+
 do ii = 1, 3
 open(fn_uvwtsg_ids(ii),file=trim(path2uvw)//trim(filenames(ifile,ii)),&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
         status='old',recl=4*Nx*Ny)
 enddo
+
 
     call load_3d(fn_uvwtsg_ids(1),i,uu(:,0:Ny-1,:,isw))
     uu(:,:,-1,isw)=uu(:,:,0,isw)

@@ -12,7 +12,10 @@ subroutine read_namelist()
 
     implicit none
 
+#ifdef isGlider
     namelist /PARAMG/ parking_time,surfacing_time,dive_depth
+#endif
+
     namelist /PARAM/ casename,path2uvw,path2grid,&
         dt,tend,&
         pickup,pickupFreq,saveFreq,diagFreq,tstart,FnPartiInit,&
@@ -24,7 +27,6 @@ subroutine read_namelist()
     close(212)
 
 #ifdef isGlider
-
 
     OPEN (UNIT=212, FILE='data.glider.nml')
     read (212,NML=PARAMG) !from the namelist file

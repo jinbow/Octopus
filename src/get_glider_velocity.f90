@@ -100,7 +100,7 @@ subroutine get_glider_velocity(uvw_g,ip,IPP)
     endif
 
 !    if (ip==1) then
-!       print*, '++++',xyz(ip,3,IPP),ia,uvw_g(3),surfacing_time, glider_clock(ip,2,IPP),dive_depth
+!       print*, '++++',xyz(ip,:,IPP),ia,uvw_g(:)
 !    endif
 
 #endif

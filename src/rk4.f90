@@ -19,7 +19,12 @@ subroutine rk4(SNPP)
     t1=iswitch
     do IPP=1,SNPP
 
+#ifdef isGlider
 !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(x0,x1,uvw,ip) SHARED(glider_clock,IPP,SNPP,Npts,xyz,t_amend,t0,t1,dt)
+#else
+!$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(x0,x1,uvw,ip) SHARED(IPP,SNPP,Npts,xyz,t_amend,t0,t1,dt)
+#endif
+
 
         do ip=1,1
 
@@ -62,8 +67,10 @@ subroutine rk4(SNPP)
     call set_boundary(IPP)
 #endif
 
-print*, '----',xyz(1,:,1),uvwp(1,:,1)
-
+!if (ip==1) then
+!   print*, "=====",xyz(1,:,1)
+!endif
+ 
 
     enddo
 

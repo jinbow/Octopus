@@ -53,7 +53,7 @@ module global
     INTEGER*8 :: fn_uvwtsg_ids(7),fn_xyz_tsg_mld_ids(3),fn_id_mld
 
     INTEGER*8 :: file_i0
-    INTEGER*8 :: filename_increment
+    INTEGER*8 :: filename_increment=1
     CHARACTER (len=64) :: casename,path2uvw,path2grid,FnPartiInit,output_dir,fn_phihyd,fn_mld
     CHARACTER (len=64) :: fn_UVEL,fn_VVEL,fn_WVEL,fn_THETA,fn_SALT,fn_GAMMA
 
@@ -65,7 +65,7 @@ module global
     integer*8 :: argo_clock(2)=0,parking_time,surfacing_time
 #endif
 #ifdef isGlider
-    integer*8 :: parking_time=1,surfacing_time=60
+    real*8 :: parking_time=1,surfacing_time=60
     real*8, ALLOCATABLE :: glider_clock(:,:,:),glider_position(:,:,:)
     real*8 :: dive_depth
 #endif
