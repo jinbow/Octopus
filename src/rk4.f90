@@ -62,7 +62,7 @@ subroutine rk4(SNPP)
     call set_boundary(IPP)
 #endif
 
-print*, '----',xyz(1,3,1)
+print*, '----',xyz(1,:,1),uvwp(1,:,1)
 
 
     enddo

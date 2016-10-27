@@ -49,7 +49,7 @@ subroutine get_glider_velocity(uvw_g,ip,IPP)
         !stay at the bottom after hitting the bottom
         if (xyz(ip,3,IPP)<dive_depth ) then
             !descending toward glider max depth 
-            uvw_g(3) = 0.047
+            uvw_g(3) = 0.2
         else
             !reached the max depth
             !start to ascend
@@ -65,12 +65,12 @@ subroutine get_glider_velocity(uvw_g,ip,IPP)
         else !-> ascend 
             glider_clock(ip,2,IPP) = 0.0
             glider_clock(ip,1,IPP) = 3.0
-            uvw_g(3) = -0.047
+            uvw_g(3) = -0.2
         endif
 
     elseif (ia==3.0) then
         !up from max depth 
-        if ( xyz(ip,3,IPP) > 0 ) then
+        if ( xyz(ip,3,IPP) > 0) then
             uvw_g(3) = -0.2
         else
             !reach the surface
@@ -84,6 +84,7 @@ subroutine get_glider_velocity(uvw_g,ip,IPP)
     elseif (ia==4.0) then
         if (glider_clock(ip,2,IPP) .le. surfacing_time) then
             uvw_g(3) = 0.0 !glider_w(3)
+            glider_clock(ip,2,IPP)=glider_clock(ip,2,IPP)+dt/4.0
         else
             glider_clock(ip,1,IPP) = 0
             glider_clock(ip,2,IPP) =0.0
@@ -98,7 +99,7 @@ subroutine get_glider_velocity(uvw_g,ip,IPP)
     endif
 
 !    if (ip==1) then
-!       print*, xyz(ip,3,IPP),ia,uvw_g(3),xyz(ip,1,IPP),',',glider_position(ip,1,IPP),glider_clock(ip,1,IPP),tt
+!       print*, '++++',xyz(ip,3,IPP),ia,uvw_g(3),surfacing_time, glider_clock(ip,2,IPP),dive_depth
 !    endif
 
 #endif

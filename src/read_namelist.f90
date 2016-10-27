@@ -1,4 +1,5 @@
 subroutine read_namelist()
+#include "cpp_options.h"
     !=========================================
     !      read configuration file
 !    use global, only : casename,path2uvw,path2grid,&
@@ -11,6 +12,7 @@ subroutine read_namelist()
 
     implicit none
 
+    namelist /PARAMG/ parking_time,surfacing_time,dive_depth
     namelist /PARAM/ casename,path2uvw,path2grid,&
         dt,tend,&
         pickup,pickupFreq,saveFreq,diagFreq,tstart,FnPartiInit,&
@@ -22,12 +24,13 @@ subroutine read_namelist()
     close(212)
 
 #ifdef isGlider
-    namelist /PARAMG/ parking_time,surfacing_time,dive_depth
+
 
     OPEN (UNIT=212, FILE='data.glider.nml')
     read (212,NML=PARAMG) !from the namelist file
     close(212)
 
+    print*, '====', dive_depth,parking_time
 
 #endif
 

@@ -31,13 +31,15 @@ subroutine init_particles(IPP)
        glider_position(:,4,IPP)=0
 #endif
 
-#ifndef isArgo .OR. isGlider
+#ifndef isArgo
+#ifndef isGlider
         call set_boundary(IPP)
         ! Reset the particle depth to find the particle density
         if (target_density>0) then
             tsg(:,3,IPP)=target_density
             call jump(IPP)
         endif
+#endif
 #endif
 
         print*, "maximum init", maxval(xyz(:,1,IPP)),maxval(xyz(:,2,IPP)),maxval(xyz(:,3,IPP))

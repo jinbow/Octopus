@@ -28,8 +28,6 @@ subroutine find_particle_uvw(t_amend,ip,IPP,t0,t1,uvw)
 
 #ifdef isGlider
     call get_glider_velocity(uvw_g,ip,IPP)
-    !uvw=uvw+uvw_g
-    uvw(3)=uvw_g(3)
 #endif
 
     call find_index(ip,IPP)
@@ -60,8 +58,6 @@ subroutine find_particle_uvw(t_amend,ip,IPP,t0,t1,uvw)
 #ifdef isArgo
     call get_argo_w(uvw(3))
 #else
-#ifndef isGlider
-
     j=pj2c(ip,IPP)
     k=pk2f(ip,IPP)
 
@@ -72,12 +68,12 @@ subroutine find_particle_uvw(t_amend,ip,IPP,t0,t1,uvw)
 
     uvw(3) = (-tmp1+tmp0)*deltat - tmp0 !positive velocity points downward
 #endif
+
+#ifdef isGlider
+    uvw=(uvw+uvw_g)*dxyz_fac
+#else
+    uvw=uvw*dxyz_fac
 #endif
 
-
-    uvw(1)=0d0
-    uvw(2)=0d0
-
-    uvw=uvw*dxyz_fac
 
 end subroutine find_particle_uvw
