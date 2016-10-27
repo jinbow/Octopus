@@ -26,6 +26,7 @@ subroutine get_glider_velocity(uvw_g,ip,IPP)
     j1=glider_position(ip,4,IPP) !- target position
     
     glider_direction=atan(real(abs(j1-j0))/real(abs(i1-i0)))
+
     uvw_g(1)=0.5 * sign( cos(atan(glider_direction)), i1-i0)
     uvw_g(2)=0.5 * sign( sin(atan(glider_direction)), j1-j0)
 
