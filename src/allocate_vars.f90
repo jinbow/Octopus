@@ -39,7 +39,8 @@ subroutine allocate_parti()
 
 #ifdef isGlider
     ALLOCATE ( glider_clock(Npts,2,NPP),&
-               glider_position(Npts,4,NPP) )
+               glider_position(Npts,4,NPP),&
+               glider_cycle(Npts) )
 #endif
 
 

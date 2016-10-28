@@ -37,7 +37,6 @@ subroutine get_glider_velocity(uvw_g,ip,IPP)
     !ia=0 indicates the instrument is at surface
     !save the position and start to descend
 
-
         glider_clock(ip,1,IPP)=1
         uvw_g(3) = 0.047
         
@@ -98,10 +97,6 @@ subroutine get_glider_velocity(uvw_g,ip,IPP)
         endif
 
     endif
-
-!    if (ip==1) then
-!       print*, '++++',xyz(ip,:,IPP),ia,uvw_g(:)
-!    endif
 
 #endif
 

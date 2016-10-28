@@ -66,6 +66,9 @@ program main
             call rk4(SNPP)
             tt=tt+dt
             count_step=count_step+1
+#ifndef isArgo
+            call check_and_save(SNPP)
+#endif
         enddo
 
         if (mod(rec_num,Nrecs)==0) then
@@ -92,16 +95,6 @@ program main
             marker(1:2)=(/rec_num,iswitch/)
         endif
 
-#ifndef isArgo
-#ifndef isGlider
-        if (mod(int(tt),int(saveFreq,8)) .eq. 0) then
-            call check_and_save(SNPP)
-        endif
-        if (mod(int(tt),int(pickupFreq,8)) .eq. 0) then
-            call save_pickup()
-        endif
-#endif
-#endif
 
 
     enddo

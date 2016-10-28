@@ -30,6 +30,7 @@ subroutine init_particles(IPP)
        glider_position(:,3,IPP)=350
        glider_position(:,4,IPP)=100
        glider_clock(:,1,IPP)=0
+       glider_cycle(:)=0
 #endif
 
 #ifndef isArgo

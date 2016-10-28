@@ -41,7 +41,8 @@ module global
     REAL*8 :: z2k(5701), k2z(0:420)
 
     !timing parameters
-    REAL*8 :: t_amend, saveFreq,DumpClock=60, diagFreq, target_density
+    REAL*8 :: t_amend, DumpClock=60, target_density
+    integer*8 :: saveFreq, diagFreq
     REAL*8 :: tt,dtp,dt,dt_mld,tstart,tend,tend_file,dt_reinit,dt_case=15*86400
     INTEGER*8 :: rec_num
     logical :: vel_stationary
@@ -67,7 +68,9 @@ module global
 #ifdef isGlider
     real*8 :: parking_time=1,surfacing_time=60
     real*8, ALLOCATABLE :: glider_clock(:,:,:),glider_position(:,:,:)
+    integer*8, ALLOCATABLE :: glider_cycle(:)
     real*8 :: dive_depth
+    integer*8 :: save_glider_FnIDs
 #endif
 
 end module global
