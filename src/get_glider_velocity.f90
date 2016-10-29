@@ -4,7 +4,8 @@ subroutine get_glider_velocity(uvw_g,ip,IPP)
 #ifdef isGlider
     use global, only : tt,dt,xyz,glider_clock,glider_position,&
                        parking_time,surfacing_time,SNPP,&
-                       dive_depth
+                       dive_depth,save_glider_FnIDs,glider_cycle,&
+                       output_dir
        !add noise to the vertical velocity
        !call random_number(tmp0)
        !tmp0=(tmp0-0.5)*0.05
@@ -13,6 +14,8 @@ subroutine get_glider_velocity(uvw_g,ip,IPP)
 
     integer*8,intent(in) :: ip, IPP
     real*8,dimension(3), intent(out) :: uvw_g
+    character*6 :: id_str,cycle_str,IPP_str
+    character(len=255) :: glider_fn
 
     integer*8 :: i
     real*8 :: i0,i1,j0,j1,glider_direction,ia
@@ -29,6 +32,9 @@ subroutine get_glider_velocity(uvw_g,ip,IPP)
 
     uvw_g(1)=0.5 * sign( cos(atan(glider_direction)), i1-i0)
     uvw_g(2)=0.5 * sign( sin(atan(glider_direction)), j1-j0)
+
+! temporary
+    uvw_g(:)=0
 
 
     ia=glider_clock(ip,1,IPP)
@@ -92,6 +98,22 @@ subroutine get_glider_velocity(uvw_g,ip,IPP)
             !==> save the glider position at the surface
             glider_position(ip,1,IPP)=xyz(ip,1,IPP)
             glider_position(ip,2,IPP)=xyz(ip,2,IPP)
+
+!==>  close data file
+            close(save_glider_FnIDs(ip,IPP))
+
+!==> reopen new data file
+
+            glider_cycle(ip,IPP)=glider_cycle(ip,IPP)+1
+            write(id_str,"(I6.6)") ip
+            write(IPP_str,"(I6.6)") IPP
+            write(cycle_str,"(I6.6)") glider_cycle(ip,IPP)
+
+            glider_fn=trim(output_dir)//"G.IPP."//IPP_str//".ip."//id_str//".cycle."//trim(cycle_str)//".data"
+
+            open(save_glider_FnIDs(ip,IPP),file=trim(glider_fn),&
+                form='formatted',access='append',&
+                status='new')
 
             uvw_g(3) = 0.2
         endif

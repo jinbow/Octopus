@@ -41,17 +41,15 @@ module global
     REAL*8 :: z2k(5701), k2z(0:420)
 
     !timing parameters
-    REAL*8 :: t_amend, DumpClock=60, target_density
-    integer*8 :: saveFreq, diagFreq
-    REAL*8 :: tt,dtp,dt,dt_mld,tstart,tend,tend_file,dt_reinit,dt_case=15*86400
-    INTEGER*8 :: rec_num
+    integer*8 :: saveFreq, diagFreq,iswitch,count_step=0,rec_num
+    REAL*8 :: t_amend, DumpClock=60, target_density,tt,dtp,&
+              dt,dt_mld,tstart=0,tend,tend_file,dt_reinit,dt_case=30*86400
     logical :: vel_stationary
-    integer*8 :: iswitch,count_step=0
 
 
     !file names
     INTEGER*8, ALLOCATABLE :: fn_ids(:,:)
-    INTEGER*8 :: fn_uvwtsg_ids(7),fn_xyz_tsg_mld_ids(3),fn_id_mld
+    INTEGER*8 :: fn_uvwtsg_ids(7),fn_xyz_tsg_mld_ids(3),fn_id_mld,FnPartiInitId
 
     INTEGER*8 :: file_i0
     INTEGER*8 :: filename_increment=1
@@ -62,15 +60,17 @@ module global
 
     !mixing parameters
     REAL*8 :: Khdiff, Kvdiff, kvdt2, khdt2
+
 #ifdef isArgo
     integer*8 :: argo_clock(2)=0,parking_time,surfacing_time
 #endif
+
 #ifdef isGlider
     real*8 :: parking_time=1,surfacing_time=60
     real*8, ALLOCATABLE :: glider_clock(:,:,:),glider_position(:,:,:)
-    integer*8, ALLOCATABLE :: glider_cycle(:)
+    integer*8, ALLOCATABLE :: glider_cycle(:,:)
     real*8 :: dive_depth
-    integer*8 :: save_glider_FnIDs
+    integer*8, allocatable :: save_glider_FnIDs(:,:)
 #endif
 
 end module global

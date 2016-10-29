@@ -12,11 +12,11 @@ subroutine init_particles(IPP)
 
         print*, "initialize particles for case", IPP
 
-        open(301,file=trim(FnPartiInit),form='unformatted',&
+        open(FnPartiInitId,file=trim(FnPartiInit),form='unformatted',&
             recl=8*Npts*3,convert='BIG_ENDIAN',&
             access='direct',status='old')
-        read(301,rec=1) xyz(:,:,IPP)
-        close(301)
+        read(FnPartiInitId,rec=1) xyz(:,:,IPP)
+        close(FnPartiInitId)
 
 
 #ifdef isArgo
@@ -27,10 +27,11 @@ subroutine init_particles(IPP)
        xyz(:,3,IPP)=0
        glider_position(:,1,IPP)=xyz(:,1,IPP)
        glider_position(:,2,IPP)=xyz(:,2,IPP)
-       glider_position(:,3,IPP)=350
-       glider_position(:,4,IPP)=100
+       glider_position(:,3,IPP)=110
+       glider_position(:,4,IPP)=210
        glider_clock(:,1,IPP)=0
-       glider_cycle(:)=0
+       glider_cycle(:,:)=0
+
 #endif
 
 #ifndef isArgo

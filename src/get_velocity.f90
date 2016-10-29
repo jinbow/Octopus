@@ -75,5 +75,6 @@ subroutine find_particle_uvw(t_amend,ip,IPP,t0,t1,uvw)
     uvw=uvw*dxyz_fac
 #endif
 
+    uvw(1:2)=0
 
 end subroutine find_particle_uvw

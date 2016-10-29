@@ -26,7 +26,7 @@ subroutine rk4(SNPP)
 #endif
 
 
-        do ip=1,1
+        do ip=1,Npts
 
             x0=xyz(ip,:,IPP)
             x1=xyz(ip,:,IPP)

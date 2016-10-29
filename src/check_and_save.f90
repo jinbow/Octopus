@@ -9,14 +9,14 @@ subroutine check_and_save(SNPP)
     !$OMP PARALLEL SECTIONS
 
     !$OMP SECTION
-    if (mod(count_step,saveFreq) .eq. 0.0) then
+
+    if (mod(count_step,saveFreq) .eq. 0) then
         t0=abs(iswitch-1)
         t1=iswitch
         print*, "write data to files at step ",rec_num,' tt=',tt/saveFreq
         do IPP=1,SNPP
 
 #ifdef saveTSG
-            call load_tsg(rec_num,iswitch)
             call interp_tracer(t0,t1,IPP)
 #endif
 
@@ -29,7 +29,7 @@ subroutine check_and_save(SNPP)
     endif
 
     !$OMP SECTION
-    !call count_stagnant()
+
 #ifdef monitoring
     if (mod(tt,diagFreq) .eq. 0) then
         call diag()

@@ -14,7 +14,7 @@ subroutine c_filenames()
     variables=(/"U    ","V    ","W    ","Theta","Salt ","GAMMA"/)
 
     DO i = 1, Nrecs
-        write(fnn,"(I5.5)") i*filename_increment+1
+        write(fnn,"(I5.5)") i*filename_increment+5760
         DO j = 1, 6
             filenames(i,j) = trim(variables(j))//'/'//trim(variables(j))//"_90x300x640_"//trim(fnn)//'.data'
         ENDDO
