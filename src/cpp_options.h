@@ -1,5 +1,6 @@
 #undef saveTSG
 #undef isArgo
+#define ArgoMode DeepSolo
 #undef reflective_continent
 #undef use_Laplacian_diffusion
 #undef reflective_continent
