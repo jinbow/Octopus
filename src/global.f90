@@ -73,4 +73,9 @@ module global
     integer*8, allocatable :: save_glider_FnIDs(:,:)
 #endif
 
+#if model==ROMS
+    real*8 :: roms_h(Nx,Ny)
+#endif
+
+
 end module global

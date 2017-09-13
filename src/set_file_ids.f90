@@ -2,8 +2,12 @@ subroutine set_file_ids()
 
 #include "cpp_options.h"
 
-    use global,only : FnPartiInitId,fn_ids,Npts,NPP,save_glider_FnIDs,&
+    use global,only : FnPartiInitId,fn_ids,Npts,NPP,&
+#ifdef isGlider 
+                      save_glider_FnIDs,&
+#endif
                      fn_uvwtsg_ids,fn_id_mld,output_dir
+
 
     implicit none
     integer*8 :: i,j,k

@@ -297,6 +297,7 @@ subroutine load_grid()
     dyg_r = 1.0/dyg_r
     close(92)
 
+#ifdef MITgcm
     open(93,file=trim(path2grid)//'DRF.data',&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
         status='old',recl=4*Nz)
@@ -306,6 +307,19 @@ subroutine load_grid()
     drf_r(Nz)=drf_r(Nz-1)
     drf_r = 1.0/drf_r
     close(93)
+#endif
+
+#ifdef ROMS
+    open(93,file=trim(path2grid)//'DRF.data',&
+        form='unformatted',access='direct',convert='BIG_ENDIAN',&
+        status='old',recl=4*Nz)
+    read(93,rec=1) tmp1
+    drf_r(0:Nz-1)=real(tmp1,8)
+    drf_r(-1)=drf_r(0)
+    drf_r(Nz)=drf_r(Nz-1)
+    drf_r = 1.0/drf_r
+    close(93)
+#endif
 
 #ifndef isArgo
     open(94,file=trim(path2grid)//'hFacC.data',&
@@ -377,10 +391,12 @@ end subroutine save_data
 
 subroutine save_glider_data(SNPP)
 #include "cpp_options.h"
+
+#ifdef isGlider
     use global, only :tt,saveFreq,Npts,&
                       iswitch,count_step,&
                       save_glider_FnIDs,xyz,tsg,&
-		      theta
+                      theta,
 
     implicit none
     INTEGER*8 :: i,IPP,t0,t1
@@ -388,8 +404,6 @@ subroutine save_glider_data(SNPP)
 
         t0=abs(iswitch-1)
         t1=iswitch
-
-
 
     if (mod(count_step,saveFreq) .eq. 0) then
         do IPP=1,SNPP
@@ -404,5 +418,7 @@ subroutine save_glider_data(SNPP)
             enddo
         enddo
     endif
+
+#endif
 
 end subroutine save_glider_data

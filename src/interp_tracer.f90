@@ -5,7 +5,7 @@ subroutine interp_tracer(t0,t1,IPP)
     integer*8,intent(in) :: t0,t1,IPP
     integer*8 :: i,j,k,ip
     real*8 :: tmp0,tmp1
-#if instrument==glider
+#ifdef isGlider
     real*4 :: tmp(2,2)
 #else
     real*4 :: tmp(2,2,2)
@@ -15,7 +15,7 @@ subroutine interp_tracer(t0,t1,IPP)
    call load_PHIHYD(tt)
    endif
 
-#if instrument==glider
+#ifdef isGlider
 
 !$OMP PARALLEL DO PRIVATE(ip,i,j,k,tmp0,tmp1) SHARED(IPP,t0,t1,dic,djc,dkc,theta,salt,gam,tsg,dtp,phihyd) SCHEDULE(dynamic)
         do ip=1,npts
