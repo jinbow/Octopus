@@ -227,7 +227,6 @@ enddo
     theta(:,:,-1,isw)=theta(:,:,0,isw)
     theta(:,:,Nz,isw)=theta(:,:,Nz-1,isw)
     print*, "====>> load THETA", irec, "min() =", minval(theta(:,:,:,isw)),maxval(theta(:,:,:,isw))
-    print*, theta(100,200,:,isw)
 
     !$OMP SECTION
     call load_3d(fn_uvwtsg_ids(5),i,salt(:,:,:,isw),read_flag)
@@ -238,7 +237,7 @@ enddo
     print*, "====>> load SALT", i, "min() =", minval(salt(:,:,:,isw)),maxval(salt(:,:,:,isw))
 
 
-#if instrument!=glider
+#ifndef isGlider
     !$OMP SECTION
     call load_3d(fn_uvwtsg_ids(6),i,gam(:,:,:,isw),read_flag)
 
@@ -379,8 +378,8 @@ subroutine save_glider_data(SNPP)
 #include "cpp_options.h"
     use global, only :tt,saveFreq,Npts,&
                       iswitch,count_step,&
-                      save_glider_FnIDs,xyz,tsg,&
-		      theta
+                      save_glider_FnIDs,xyz,uvwp,tsg,&
+		      theta,glider_uv,glider_angle
 
     implicit none
     INTEGER*8 :: i,IPP,t0,t1
@@ -397,10 +396,12 @@ subroutine save_glider_data(SNPP)
             call interp_tracer(t0,t1,IPP)
 #endif
            do i=1,Npts
-              write(save_glider_FnIDs(i,IPP),"(5F9.5)") xyz(i,:,IPP),tsg(i,1:2,IPP)
-              if (i==2) then
-              write(*,"(6F9.3)") xyz(i,:,IPP),tsg(i,1:2,IPP),theta(i,floor(xyz(i,2,IPP)),floor(xyz(i,3,IPP)),0)
-    endif
+              write(save_glider_FnIDs(i,IPP),"(11F13.5)") tt, xyz(i,:,IPP),&
+                    tsg(i,1:2,IPP),uvwp(i,1:2,IPP),glider_uv(i,:,IPP),&
+                    glider_angle(i,IPP)
+            !  if (i==2) then
+            !  write(*,"(6F9.3)") xyz(i,:,IPP),tsg(i,1:2,IPP),theta(i,floor(xyz(i,2,IPP)),floor(xyz(i,3,IPP)),0)
+            !  endif
             enddo
         enddo
     endif

@@ -9,4 +9,5 @@
 #undef jump_looping
 #undef monitoring
 #define one_file_per_step
+#define dive_angle adjustable
 #undef stationary_velocity
