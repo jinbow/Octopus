@@ -34,7 +34,12 @@ subroutine find_particle_uvw(t_amend,ip,IPP,t0,t1,uvw)
 
     dxyz_fac(1) = dxg_r(pi2f(ip,IPP),pj2c(ip,IPP))
     dxyz_fac(2) = dyg_r(pi2c(ip,IPP),pj2f(ip,IPP))
+
+#if model==2
+    dxyz_fac(3) = drf_r(pi2c(ip,IPP),pj2f(ip,IPP),pk2f(ip,IPP))
+#else
     dxyz_fac(3) = drf_r(pk2f(ip,IPP))
+#endif
 
     i=pi2f(ip,IPP)
     j=pj2c(ip,IPP)
@@ -75,6 +80,7 @@ subroutine find_particle_uvw(t_amend,ip,IPP,t0,t1,uvw)
     uvw=uvw*dxyz_fac
 #endif
 
-    uvw(1:2)=0
+!! code for testing, turn off horizonal velocities
+!    uvw(1:2)=0
 
 end subroutine find_particle_uvw

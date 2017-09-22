@@ -22,9 +22,9 @@ module global
     REAL*8, DIMENSION(:,:,:), ALLOCATABLE :: tsg
 
 
-!#ifdef saveGradient
+#ifdef saveGradient
     REAL*8, DIMENSION(:,:,:), ALLOCATABLE :: grad
-!#endif
+#endif
 
     !pickup
     REAL*8 :: pickup=0
@@ -37,7 +37,13 @@ module global
 
     !grid
     REAL*8, DIMENSION(-2:Nx+1,0:Ny-1) :: dxg_r, dyg_r
+
+#if model==2
+    REAL*8, DIMENSION(Nx,Ny,-1:Nz):: drf_r
+#else
     REAL*8, DIMENSION(-1:Nz):: drf_r
+#endif
+
     REAL*8 :: z2k(5701), k2z(0:420)
 
     !timing parameters
@@ -49,7 +55,7 @@ module global
 
     !file names
     INTEGER*8, ALLOCATABLE :: fn_ids(:,:)
-    INTEGER*8 :: fn_uvwtsg_ids(7),fn_xyz_tsg_mld_ids(3),fn_id_mld,FnPartiInitId
+    INTEGER*8 :: fn_uvwtsg_ids(20),fn_xyz_tsg_mld_ids(3),fn_id_mld,FnPartiInitId
 
     INTEGER*8 :: file_i0
     INTEGER*8 :: filename_increment=1
@@ -73,8 +79,8 @@ module global
     integer*8, allocatable :: save_glider_FnIDs(:,:)
 #endif
 
-#if model==ROMS
-    real*8 :: roms_h(Nx,Ny)
+#if model==2
+    real*4 :: roms_h(Nx,Ny),zeta(Nx,Ny)
 #endif
 
 

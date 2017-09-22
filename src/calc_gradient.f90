@@ -1,4 +1,7 @@
 subroutine calc_gradient(t0,IPP)
+#include "cpp_options.h"
+
+#ifdef saveGradient
 
     use global, only: uu,vv,dic,djc,dkc,dif,djf,dkf,pi2c,pj2c,pk2c,pi2f,pj2f,grad,npts,dxg_r,dyg_r,Npts
     implicit none
@@ -44,5 +47,8 @@ subroutine calc_gradient(t0,IPP)
 
     enddo
 !$OMP END PARALLEL DO
+
+#endif
+
 
 end subroutine calc_gradient

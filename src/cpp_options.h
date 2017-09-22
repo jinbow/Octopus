@@ -10,3 +10,4 @@
 #undef monitoring
 #define one_file_per_step
 #undef stationary_velocity
+#define model 2 

@@ -9,14 +9,19 @@ subroutine c_filenames()
     integer*8 :: i,j
 
     print*, trim(FnPartiInit)
+
     !using space to make sure " " has the same length as declared above
 
+#if model==2
+    variables=(/"U    ","V    ","W    ","Theta","Salt "," zeta"/)
+#else
     variables=(/"U    ","V    ","W    ","Theta","Salt ","GAMMA"/)
+#endif
 
     DO i = 1, Nrecs
-        write(fnn,"(I5.5)") i*filename_increment+5760
+        write(fnn,"(I5.5)") i*filename_increment
         DO j = 1, 6
-            filenames(i,j) = trim(variables(j))//'/'//trim(variables(j))//"_90x300x640_"//trim(fnn)//'.data'
+            filenames(i,j) = trim(variables(j))//'/'//trim(variables(j))//".L2."//trim(fnn)//'.data'
         ENDDO
     ENDDO
     print*, "filename(1,1) c_filename",trim(filenames(1,1))

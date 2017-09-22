@@ -46,7 +46,6 @@ subroutine load_mld(tt)
 
 end subroutine load_mld
 
-
 subroutine load_PHIHYD(tt)
 
     use global, only: Nx,Ny,dt_mld,tend_file,fn_uvwtsg_ids,phihyd
@@ -96,6 +95,14 @@ subroutine load_3d(fn_id,irec,dout,read_flag)
     enddo
 !$OMP END PARALLEL DO
 end subroutine load_3d
+
+subroutine load_2d(fn_id,dout)
+use global, only : Nx,Ny
+implicit none
+    INTEGER*8, intent(in) :: fn_id
+    real*4, dimension(Nx,Ny), intent(out) :: dout
+    read(fn_id,rec=1) dout
+end subroutine load_2d
 
 subroutine load_uvw(irec,isw)
 
@@ -191,8 +198,9 @@ subroutine load_tsg(irec,isw)
 #ifdef saveTSG
 #ifndef isArgo
 
-use global, only : fn_uvwtsg_ids,Nx,Ny,Nz,uu,path2uvw,filenames,&
-	           vv,ww,theta,gam,salt,Nrecs
+!use global, only : fn_uvwtsg_ids,Nx,Ny,Nz,uu,path2uvw,filenames,&
+!	           vv,ww,theta,gam,salt,Nrecs
+use global
 
     implicit none
     INTEGER*8, intent(in) :: irec,isw
@@ -238,7 +246,12 @@ enddo
     print*, "====>> load SALT", i, "min() =", minval(salt(:,:,:,isw)),maxval(salt(:,:,:,isw))
 
 
-#if instrument!=glider
+#ifndef isGlider
+#if model==2
+    !$OMP SECTION
+    call load_2d(fn_uvwtsg_ids(6),zeta)
+    print*, "====>> load ROMS zeta", irec, "min() =", minval(zeta)
+#else
     !$OMP SECTION
     call load_3d(fn_uvwtsg_ids(6),i,gam(:,:,:,isw),read_flag)
 
@@ -247,6 +260,7 @@ enddo
 
     where(gam(:,:,:,isw)<20) gam(:,:,:,isw)=0d0
     print*, "====>> load GAMMA", irec, "min() =", minval(gam(:,:,:,isw))
+#endif
 #endif
 
 
@@ -269,10 +283,23 @@ end subroutine load_tsg
 subroutine load_grid()
 #include "cpp_options.h"
 
+#if (model==2)
+    use global, only : dxg_r,dyg_r,roms_h,Nx,Ny,Nz,hFacC,path2grid!,hFacS,hFacW
+#else
     use global, only : dxg_r,dyg_r,drf_r,Nx,Ny,Nz,hFacC,path2grid!,hFacS,hFacW
-    
+#endif
+
+
     implicit none
-    real*4 :: tmp(0:Nx-1,0:Ny-1),tmp1(0:Nz-1)
+
+    real*4 :: tmp(0:Nx-1,0:Ny-1)
+
+!!! for vertical layer depth
+#if model==2
+    real*4 :: tmp1(0:Nx-1,0:Ny-1,0:Nz-1)   
+#else
+    real*4 :: tmp1(0:Nz-1)
+#endif
 
     print*, "================================================="
     print*, "loading grid ......... "
@@ -297,19 +324,14 @@ subroutine load_grid()
     dyg_r = 1.0/dyg_r
     close(92)
 
-#ifdef MITgcm
-    open(93,file=trim(path2grid)//'DRF.data',&
+#if model==2
+    open(93,file=trim(path2grid)//'bottom_depth.bin',&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
-        status='old',recl=4*Nz)
-    read(93,rec=1) tmp1
-    drf_r(0:Nz-1)=real(tmp1,8)
-    drf_r(-1)=drf_r(0)
-    drf_r(Nz)=drf_r(Nz-1)
-    drf_r = 1.0/drf_r
+        status='old',recl=4*Nx*Ny)
+    read(93,rec=1) roms_h
     close(93)
-#endif
-
-#ifdef ROMS
+    call get_roms_depth(roms_h*0)
+#else
     open(93,file=trim(path2grid)//'DRF.data',&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
         status='old',recl=4*Nz)

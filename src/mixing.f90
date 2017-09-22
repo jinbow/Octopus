@@ -20,7 +20,13 @@ subroutine apply_Laplacian_diffusion(IPP)
                 xyz(i,1,IPP) = xyz(i,1,IPP)+random_normal()*khdt2*dxg_r(ip,jp)
                 xyz(i,2,IPP) = xyz(i,2,IPP)+random_normal()*khdt2*dyg_r(ip,jp)
                 !vertical mixing
+
+#if model==2
+                xyz(i,3,IPP) = xyz(i,3,IPP)+random_normal()*kvdt2*drf_r(ip,jp,kp)
+#else
                 xyz(i,3,IPP) = xyz(i,3,IPP)+random_normal()*kvdt2*drf_r(kp)
+#endif
+
         enddo
 !$OMP END PARALLEL DO
 end subroutine apply_Laplacian_diffusion

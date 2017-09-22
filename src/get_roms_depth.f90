@@ -1,6 +1,6 @@
 subroutine get_roms_depth (zeta)
 #include "cpp_options.h"
-      use global, only: Nx,Ny,Nz,roms_h
+      use global, only: Nx,Ny,Nz,roms_h,drf_r
 
       implicit none
 
@@ -29,15 +29,16 @@ subroutine get_roms_depth (zeta)
       sc_w(0)=-1.0
       Cs_w(0)=-1.0
 
-      cff=1./float(N)
+      cff=1./real(N,8)
+
       do k=1,N,+1
         sc_w(k)=cff*float(k-N)
         Cs_w(k)=(1.-theta_b)*cff1*sinh(theta_s*sc_w(k)) &
                   +theta_b*(cff2*tanh(theta_s*(sc_w(k)+0.5))-0.5)
 
-        sc_r(k)=cff*(float(k-N)-0.5)
-        Cs_r(k)=(1.-theta_b)*cff1*sinh(theta_s*sc_r(k)) &
-                  +theta_b*(cff2*tanh(theta_s*(sc_r(k)+0.5))-0.5)
+!        sc_r(k)=cff*(float(k-N)-0.5)
+!        Cs_r(k)=(1.-theta_b)*cff1*sinh(theta_s*sc_r(k)) &
+!                  +theta_b*(cff2*tanh(theta_s*(sc_r(k)+0.5))-0.5)
       enddo
 
         do j=1,Ny! /or restart: copy initial
@@ -57,21 +58,29 @@ subroutine get_roms_depth (zeta)
           cff1_w=Cs_w(k)
           cff2_w=sc_w(k)+1.
 
-          cff_r=hc*(sc_r(k)-Cs_r(k))
-          cff1_r=Cs_r(k)
-          cff2_r=sc_r(k)+1.
+          !cff_r=hc*(sc_r(k)-Cs_r(k))
+          !cff1_r=Cs_r(k)
+          !cff2_r=sc_r(k)+1.
 
           do i=1,Nx
             z_w0=cff_w+cff1_w*h(i,j)                               !<
             z_w(i,j,k)=z_w0+Zt_avg1(i,j)*(1.+z_w0*hinv(i,j))       !<
 
-            z_r0=cff_r+cff1_r*h(i,j)                               !<
-            z_r(i,j,k)=z_r0+Zt_avg1(i,j)*(1.+z_r0*hinv(i,j))       !<
+            ! z_r0=cff_r+cff1_r*h(i,j)                               !<
+            ! z_r(i,j,k)=z_r0+Zt_avg1(i,j)*(1.+z_r0*hinv(i,j))       !<
 
             Hz(i,j,k)=z_w(i,j,k)-z_w(i,j,k-1)
           enddo
         enddo
 
       enddo
+
+
+      do k=Nz,1,-1
+         drf_r(:,:,Nz-k)=Hz(:,:,k) !reverse roms vertical grid, k=0 at the surface
+      enddo
+         drf_r(:,:,-1)=drf_r(:,:,0)
+         drf_r(:,:,Nz)=drf_r(:,:,Nz-1)
+
 
       end subroutine get_roms_depth
