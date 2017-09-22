@@ -13,7 +13,7 @@ subroutine read_namelist()
     implicit none
 
 #ifdef isGlider
-    namelist /PARAMG/ parking_time,surfacing_time,dive_depth
+    namelist /PARAMG/ parking_time,surfacing_time,dive_depth,absv
 #endif
 
     namelist /PARAM/ casename,path2uvw,path2grid,&

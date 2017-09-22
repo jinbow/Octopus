@@ -1,7 +1,6 @@
 #define saveTSG
 #undef isArgo
 #define isGlider
-#define instrument glider
 #undef reflective_continent
 #undef use_Laplacian_diffusion
 #undef reflective_continent
@@ -11,4 +10,5 @@
 #undef jump_looping
 #undef monitoring
 #define one_file_per_step
+#define dive_angle adjustable
 #undef stationary_velocity

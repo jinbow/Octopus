@@ -25,12 +25,25 @@ subroutine init_particles(IPP)
 
 #ifdef isGlider
        xyz(:,3,IPP)=0
+       !xyz(1,1,IPP)= 101.1
+       !xyz(1,2,IPP)= 200.1
+       !xyz(2,1,IPP)= 99.9
+       !xyz(2,2,IPP)= 199.9
+
+       glider_position(:,3,IPP)=xyz(:,1,IPP)
+       glider_position(:,4,IPP)=xyz(:,2,IPP)
+
+       xyz(:,1:2,IPP)=xyz(:,1:2,IPP)+0.01
+       !xyz(1,1:2,IPP)=2
        glider_position(:,1,IPP)=xyz(:,1,IPP)
        glider_position(:,2,IPP)=xyz(:,2,IPP)
-       glider_position(:,3,IPP)=110
-       glider_position(:,4,IPP)=210
+
+
+       
+
        glider_clock(:,1,IPP)=0
        glider_cycle(:,:)=0
+       glider_angle(:,:)=60
 
 #endif
 

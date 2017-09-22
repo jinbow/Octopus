@@ -42,7 +42,7 @@ program main
     do IPP = 1, NPP
         call init_particles(IPP)
 
-#if instrument==glider
+#ifdef isGlider
        do i=1,Npts
             write(id_str,"(I6.6)") i
             write(IPP_str,"(I6.6)") IPP
@@ -52,6 +52,7 @@ program main
                 status='new')
       enddo
 #endif
+
     enddo
 
     if (pickup>0) then
@@ -70,7 +71,7 @@ program main
 
     endif
 
-    
+        
     do while (tt<=tend)
     !print*, "tt,tend =====",tt,tend,xyz(1,1,1)
     print*, '====',xyz(1,:,1)
@@ -85,7 +86,6 @@ program main
             call rk4(SNPP)
             tt=tt+dt
             count_step=count_step+1
-
 #if instrument==glider
            call save_glider_data(SNPP)
 #else
@@ -129,11 +129,14 @@ program main
 
     enddo
 
+#if instrument==glider
     do i=1,Npts
        do IPP=1,NPP
          close(save_glider_FnIDs(i,IPP))
        enddo
     enddo
+#endif
+
     CALL DATE_AND_TIME(date,time1,zone,time)
     print*, "Program started at", time0, "and ended ", time1
     !call close_files()

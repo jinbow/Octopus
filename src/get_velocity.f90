@@ -3,7 +3,7 @@ subroutine find_particle_uvw(t_amend,ip,IPP,t0,t1,uvw)
 
     use global, only : Nx,Ny,Nz,Npts,xyz,&
         dxg_r,dyg_r,drf_r,dtp,&
-        uu,vv,ww,tt, &
+        uu,vv,ww,tt,uvwp, &
         pi2f,pj2f,pk2f,pi2c,pj2c,pk2c, &
         dif, djf, dkf, dic, djc, dkc
 
@@ -69,12 +69,15 @@ subroutine find_particle_uvw(t_amend,ip,IPP,t0,t1,uvw)
     uvw(3) = (-tmp1+tmp0)*deltat - tmp0 !positive velocity points downward
 #endif
 
+
 #ifdef isGlider
+    uvwp(ip,:,IPP)=uvw
     uvw=(uvw+uvw_g)*dxyz_fac
+    uvw(3)=uvw_g(3)*dxyz_fac(3)
 #else
     uvw=uvw*dxyz_fac
 #endif
 
-    uvw(1:2)=0
+!uvw(1:2)=0
 
 end subroutine find_particle_uvw

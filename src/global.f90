@@ -67,9 +67,9 @@ module global
 
 #ifdef isGlider
     real*8 :: parking_time=1,surfacing_time=60
-    real*8, ALLOCATABLE :: glider_clock(:,:,:),glider_position(:,:,:)
+    real*8, ALLOCATABLE :: glider_clock(:,:,:),glider_position(:,:,:),glider_uv(:,:,:),glider_angle(:,:)
     integer*8, ALLOCATABLE :: glider_cycle(:,:)
-    real*8 :: dive_depth
+    real*8 :: dive_depth,absv
     integer*8, allocatable :: save_glider_FnIDs(:,:)
 #endif
 
