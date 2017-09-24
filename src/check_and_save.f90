@@ -31,7 +31,7 @@ subroutine check_and_save(SNPP)
     !$OMP SECTION
 
 #ifdef monitoring
-    if (mod(tt,diagFreq) .eq. 0) then
+    if (mod(tt,real(diagFreq)) .eq. 0) then
         call diag()
     endif
 #endif

@@ -223,7 +223,7 @@ use global
     ifile=1
 #endif
 
-do ii = 4, 5
+do ii = 4, 6
 open(fn_uvwtsg_ids(ii),file=trim(path2uvw)//trim(filenames(ifile,ii)),&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
         status='old',recl=4*Nx*Ny)
@@ -246,7 +246,7 @@ enddo
     print*, "====>> load SALT", i, "min() =", minval(salt(:,:,:,isw)),maxval(salt(:,:,:,isw))
 
 
-#ifndef isGlider
+!!! #ifndef isGlider
 #if model==2
     !$OMP SECTION
     call load_2d(fn_uvwtsg_ids(6),zeta)
@@ -261,7 +261,7 @@ enddo
     where(gam(:,:,:,isw)<20) gam(:,:,:,isw)=0d0
     print*, "====>> load GAMMA", irec, "min() =", minval(gam(:,:,:,isw))
 #endif
-#endif
+!!! #endif
 
 
     !$OMP END PARALLEL SECTIONS
@@ -307,6 +307,7 @@ subroutine load_grid()
     open(91,file=trim(path2grid)//'DXG.data',&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
         status='old',recl=4*Nx*Ny)
+    print*, "open ",trim(path2grid)//'DXG.data'
     read(91,rec=1) tmp
     dxg_r(0:Nx-1,0:Ny-1)=real(tmp,8)
     dxg_r(Nx:Nx+1,:)=dxg_r(0:1,:)
@@ -330,7 +331,7 @@ subroutine load_grid()
         status='old',recl=4*Nx*Ny)
     read(93,rec=1) roms_h
     close(93)
-    call get_roms_depth(roms_h*0)
+    call get_roms_depth(real(roms_h*0,8))
 #else
     open(93,file=trim(path2grid)//'DRF.data',&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
@@ -343,7 +344,7 @@ subroutine load_grid()
     close(93)
 #endif
 
-#ifndef isArgo
+#ifdef reflective_continent 
     open(94,file=trim(path2grid)//'hFacC.data',&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
         status='old',recl=4*Nz*Ny*Nx)
@@ -418,7 +419,7 @@ subroutine save_glider_data(SNPP)
     use global, only :tt,saveFreq,Npts,&
                       iswitch,count_step,&
                       save_glider_FnIDs,xyz,tsg,&
-                      theta,
+                      theta
 
     implicit none
     INTEGER*8 :: i,IPP,t0,t1

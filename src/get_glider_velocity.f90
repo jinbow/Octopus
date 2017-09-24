@@ -18,7 +18,7 @@ subroutine get_glider_velocity(uvw_g,ip,IPP)
     character(len=255) :: glider_fn
 
     integer*8 :: i
-    real*8 :: i0,i1,j0,j1,glider_direction,ia
+    real*8 :: i0,i1,j0,j1,glider_direction,ia,real_depth
 
     !- get horizontal velocity
     !- set the glider horizontal velocity depending on the direction 
@@ -53,7 +53,14 @@ subroutine get_glider_velocity(uvw_g,ip,IPP)
     elseif (ia==1) then
         !descending
         !stay at the bottom after hitting the bottom
-        if (xyz(ip,3,IPP)<dive_depth ) then
+
+#if model==2
+    call roms_point_k2z(xyz(ip,:,IPP),real_depth)
+#else
+    real_depth=xyz(ip,3,IPP)
+#endif
+
+        if (real_depth<dive_depth ) then
             !descending toward glider max depth 
             uvw_g(3) = 0.2
         else

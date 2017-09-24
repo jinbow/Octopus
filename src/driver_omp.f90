@@ -29,6 +29,7 @@ program main
    
     call load_grid()
    
+    print*, "finish initialization"
 #ifndef isArgo
     call load_reflect()
 #endif
@@ -61,7 +62,9 @@ program main
         call load_uvw(marker(1)+1,abs(1-marker(2)))
     else
         iswitch=1
+#ifndef isGlider
         call check_and_save(NPP)
+#endif
         call load_uvw(1,0)
         call load_uvw(2,1)
 #ifdef saveTSG
