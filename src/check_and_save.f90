@@ -11,9 +11,10 @@ subroutine check_and_save(SNPP)
     !$OMP SECTION
 
     if (mod(count_step,saveFreq) .eq. 0) then
+
         t0=abs(iswitch-1)
         t1=iswitch
-        print*, "write data to files at step ",rec_num,' tt=',tt/saveFreq
+        print*, "write data to files at step, rec_num, count_step,tt ",rec_num,count_step,tt
         do IPP=1,SNPP
 
 #ifdef saveTSG

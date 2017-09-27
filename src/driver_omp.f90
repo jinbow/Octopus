@@ -23,7 +23,6 @@ program main
   
     call c_filenames()
    
-
     ! load z to k lookup table for mixed layer process
     call load_z_lookup_table() 
    
@@ -34,11 +33,9 @@ program main
     call load_reflect()
 #endif
    
-
     ! initilize particles on neutral density surfaces
     print*, "================================================="
     print*, "initializing particles ......... "
-
 
     do IPP = 1, NPP
         call init_particles(IPP)
@@ -62,27 +59,27 @@ program main
         call load_uvw(marker(1)+1,abs(1-marker(2)))
     else
         iswitch=1
-#ifndef isGlider
-        call check_and_save(NPP)
+
+#ifdef isGider
+           call save_glider_data(NPP)
+#else
+            call check_and_save(NPP)
 #endif
+
         call load_uvw(1,0)
         call load_uvw(2,1)
+
 #ifdef saveTSG
        call load_tsg(1,0)
        call load_tsg(2,1)
+       call get_roms_depth(real(zeta,8))
 #endif
 
     endif
-
-    
+        
     do while (tt<=tend)
-    !print*, "tt,tend =====",tt,tend,xyz(1,1,1)
-    print*, '====',xyz(1,:,1)
-        SNPP = min(int(tt/dt_case)+1,NPP)
 
-     !   if ( mod(tt,dt_case)==0 .and. int(tt/dt_case,8)+1<=NPP) then
-     !       call init_particles(SNPP)
-     !   endif
+        SNPP = min(int(tt/dt_case)+1,NPP)
 
         do i=1,int(dt_file/dt)
             dtp = real(mod(tt,dt_file))/real(dt_file)
@@ -90,11 +87,12 @@ program main
             tt=tt+dt
             count_step=count_step+1
 
-#ifdef isGider
+#ifdef isGlider
            call save_glider_data(SNPP)
 #else
             call check_and_save(SNPP)
 #endif
+
         enddo
 
         if (mod(rec_num,Nrecs)==0) then
@@ -109,14 +107,10 @@ program main
             rec_num=rec_num+2
             marker(1:2)=(/2,1/)
 
-#ifndef isArgo
-#ifndef isGlider
 #ifdef jump_looping
             do IPP=1,SNPP
                 call jump(IPP)
             enddo
-#endif
-#endif
 #endif
 
             iswitch=1
@@ -128,18 +122,22 @@ program main
             call load_tsg(rec_num,iswitch)
 #endif
             marker(1:2)=(/rec_num,iswitch/)
-        endif
 
-
-    enddo
-
-#ifdef isGlider
-    do i=1,Npts
-       do IPP=1,NPP
-         close(save_glider_FnIDs(i,IPP))
-       enddo
-    enddo
+#if model==2
+            call get_roms_depth(real(zeta,8))
 #endif
+
+        endif
+    enddo
+
+!#ifdef isGlider
+!    do i=1,Npts
+!       do IPP=1,NPP
+!         close(save_glider_FnIDs(i,IPP))
+!       enddo
+!    enddo
+!#endif
+
     CALL DATE_AND_TIME(date,time1,zone,time)
     print*, "Program started at", time0, "and ended ", time1
     !call close_files()

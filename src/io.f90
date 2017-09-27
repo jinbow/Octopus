@@ -235,7 +235,6 @@ enddo
     theta(:,:,-1,isw)=theta(:,:,0,isw)
     theta(:,:,Nz,isw)=theta(:,:,Nz-1,isw)
     print*, "====>> load THETA", irec, "min() =", minval(theta(:,:,:,isw)),maxval(theta(:,:,:,isw))
-    print*, theta(100,200,:,isw)
 
     !$OMP SECTION
     call load_3d(fn_uvwtsg_ids(5),i,salt(:,:,:,isw),read_flag)
@@ -246,11 +245,10 @@ enddo
     print*, "====>> load SALT", i, "min() =", minval(salt(:,:,:,isw)),maxval(salt(:,:,:,isw))
 
 
-!!! #ifndef isGlider
 #if model==2
     !$OMP SECTION
     call load_2d(fn_uvwtsg_ids(6),zeta)
-    print*, "====>> load ROMS zeta", irec, "min() =", minval(zeta)
+    print*, "====>> load ROMS zeta", irec, "min,max() =", minval(zeta),maxval(zeta)
 #else
     !$OMP SECTION
     call load_3d(fn_uvwtsg_ids(6),i,gam(:,:,:,isw),read_flag)
@@ -261,7 +259,6 @@ enddo
     where(gam(:,:,:,isw)<20) gam(:,:,:,isw)=0d0
     print*, "====>> load GAMMA", irec, "min() =", minval(gam(:,:,:,isw))
 #endif
-!!! #endif
 
 
     !$OMP END PARALLEL SECTIONS
@@ -331,7 +328,6 @@ subroutine load_grid()
         status='old',recl=4*Nx*Ny)
     read(93,rec=1) roms_h
     close(93)
-    call get_roms_depth(real(roms_h*0,8))
 #else
     open(93,file=trim(path2grid)//'DRF.data',&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
@@ -418,8 +414,8 @@ subroutine save_glider_data(SNPP)
 #ifdef isGlider
     use global, only :tt,saveFreq,Npts,&
                       iswitch,count_step,&
-                      save_glider_FnIDs,xyz,tsg,&
-                      theta
+                      save_glider_FnIDs,xyz,uvwp,tsg,&
+		      theta,glider_uv,glider_angle
 
     implicit none
     INTEGER*8 :: i,IPP,t0,t1
@@ -430,14 +426,14 @@ subroutine save_glider_data(SNPP)
 
     if (mod(count_step,saveFreq) .eq. 0) then
         do IPP=1,SNPP
-#ifdef saveTSG
             call interp_tracer(t0,t1,IPP)
-#endif
            do i=1,Npts
-              write(save_glider_FnIDs(i,IPP),"(5F9.5)") xyz(i,:,IPP),tsg(i,1:2,IPP)
-              if (i==2) then
-              write(*,"(6F9.3)") xyz(i,:,IPP),tsg(i,1:2,IPP),theta(i,floor(xyz(i,2,IPP)),floor(xyz(i,3,IPP)),0)
-    endif
+              write(save_glider_FnIDs(i,IPP),"(11F13.5)") tt, xyz(i,:,IPP),&
+                    tsg(i,1:2,IPP),uvwp(i,1:2,IPP),glider_uv(i,:,IPP),&
+                    glider_angle(i,IPP)
+           !   if (i==2) then
+           !  write(*,"(6F9.3)") xyz(i,:,IPP),tsg(i,1:2,IPP),theta(i,floor(xyz(i,2,IPP)),floor(xyz(i,3,IPP)),0)
+           !   endif
             enddo
         enddo
     endif

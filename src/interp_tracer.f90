@@ -20,10 +20,11 @@ subroutine interp_tracer(t0,t1,IPP)
 !$OMP PARALLEL DO PRIVATE(ip,i,j,k,tmp0,tmp1) SHARED(IPP,t0,t1,dic,djc,dkc,theta,salt,gam,tsg,dtp,phihyd) SCHEDULE(dynamic)
         do ip=1,npts
 
-            if (xyz(ip,2,IPP)<Ny-1) then
+            if (xyz(ip,2,IPP)<Ny-1) then !prevent leaking 
                 tmp0=0d0
                 tmp1=0d0
-                i=floor(mod(xyz(ip,1,IPP),real(Nx-1))-0.5d0)
+                !i=floor(mod(xyz(ip,1,IPP),real(Nx-1))-0.5d0)
+                i=floor(xyz(ip,1,IPP)-0.5d0)
                 j=floor(xyz(ip,2,IPP)-0.5d0)
                 k=floor(xyz(ip,3,IPP))
                 
@@ -40,9 +41,6 @@ subroutine interp_tracer(t0,t1,IPP)
                 call interp_bilinear(dic(ip,IPP),djc(ip,IPP),tmp,tmp1)
                 tsg(ip,2,IPP) = (tmp1-tmp0)*dtp + tmp0
 
-! if (ip==1 .and. IPP==1) then
-!  print*,i,j,k, tmp1,tmp0,tsg(ip,1:2,IPP),theta(i,j,k,0),salt(i,j,k,0),salt(1,1,1,0)
-!endif
             endif
     enddo
 
