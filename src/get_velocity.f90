@@ -73,7 +73,7 @@ subroutine find_particle_uvw(t_amend,ip,IPP,t0,t1,uvw)
 #ifdef isGlider
     uvwp(ip,:,IPP)=uvw
     uvw=(uvw+uvw_g)*dxyz_fac
-    uvw(3)=uvw_g(3)*dxyz_fac(3)
+    !uvw(3)=uvw_g(3)*dxyz_fac(3)
 #else
     uvw=uvw*dxyz_fac
 #endif

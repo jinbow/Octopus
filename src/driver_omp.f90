@@ -73,13 +73,12 @@ program main
 
         
     do while (tt<=tend)
-    !print*, "tt,tend =====",tt,tend,xyz(1,1,1)
-    print*, '====',xyz(1,:,1)
+    print*, "tt,tend =====",tt,tend,xyz(1,1,1)
         SNPP = min(int(tt/dt_case)+1,NPP)
 
-        if ( mod(tt,dt_case)==0 .and. int(tt/dt_case,8)+1<=NPP) then
-            call init_particles(SNPP)
-        endif
+     !   if ( mod(tt,dt_case)==0 .and. int(tt/dt_case,8)+1<=NPP) then
+     !       call init_particles(SNPP)
+     !   endif
 
         do i=1,int(dt_file/dt)
             dtp = real(mod(tt,dt_file))/real(dt_file)
