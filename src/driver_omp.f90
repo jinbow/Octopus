@@ -85,7 +85,7 @@ program main
             call rk4(SNPP)
             tt=tt+dt
             count_step=count_step+1
-#if instrument==glider
+#ifdef isGlider 
            call save_glider_data(SNPP)
 #else
             call check_and_save(SNPP)
@@ -128,7 +128,7 @@ program main
 
     enddo
 
-#if instrument==glider
+#ifdef isGlider
     do i=1,Npts
        do IPP=1,NPP
          close(save_glider_FnIDs(i,IPP))

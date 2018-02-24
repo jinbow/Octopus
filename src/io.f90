@@ -376,10 +376,11 @@ end subroutine save_data
 
 subroutine save_glider_data(SNPP)
 #include "cpp_options.h"
+#ifdef isGlider
     use global, only :tt,saveFreq,Npts,&
                       iswitch,count_step,&
-                      save_glider_FnIDs,xyz,uvwp,tsg,&
-		      theta,glider_uv,glider_angle
+                      save_glider_FnIDs,glider_uv,glider_angle,&
+                      xyz,uvwp,tsg,theta
 
     implicit none
     INTEGER*8 :: i,IPP,t0,t1
@@ -406,4 +407,5 @@ subroutine save_glider_data(SNPP)
         enddo
     endif
 
+#endif
 end subroutine save_glider_data
