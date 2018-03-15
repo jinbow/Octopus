@@ -71,7 +71,7 @@ def z2kbin(saveplot=False):
     z=abs(z)
 
     ff=sp.interpolate.interp1d(z,np.linspace(0,nz,nz+1),'linear',
-                               bounds_err=False,fill_value=nz)
+                               bounds_error=False,fill_value=nz)
     newz = ff(np.arange(6500))
     newz.astype('>f4').tofile(pth_data_out+'z_to_k_lookup_table.bin')
 

@@ -388,8 +388,6 @@ subroutine save_glider_data(SNPP)
         t0=abs(iswitch-1)
         t1=iswitch
 
-
-
     if (mod(count_step,saveFreq) .eq. 0) then
         do IPP=1,SNPP
 #ifdef saveTSG
