@@ -1,6 +1,6 @@
-#define saveTSG
-#undef isArgo
-#define isGlider
+#undef saveTSG
+#define isArgo
+#undef isGlider
 #undef reflective_continent
 #undef use_Laplacian_diffusion
 #undef use_mixedlayer_shuffle
@@ -9,5 +9,4 @@
 #undef jump_looping
 #undef monitoring
 #define one_file_per_step
-#define dive_angle adjustable
 #undef stationary_velocity
