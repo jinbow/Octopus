@@ -51,20 +51,19 @@ program main
     endif
 
     do while (tt<=tend)
-    print*, "=========================================================="
+    print*, "==============================t",tt
         SNPP = min(int(tt/dt_case)+1,NPP)
-    print*, "SNPP = ", SNPP
         if ( mod(tt,dt_case)==0 .and. int(tt/dt_case,8)+1<=NPP) then
             call init_particles(SNPP)
         endif
 
-        do i=1,int(dt_file/dt)
+       ! do i=1,int(dt_file/dt)
             !CALL DATE_AND_TIME(date,time,zone,time0)
             dtp = real(mod(tt,dt_file))/real(dt_file)
             call rk4(SNPP)
             tt=tt+dt
             count_step=count_step+1
-        enddo
+       ! enddo
 
         if (mod(rec_num,Nrecs)==0) then
             call load_uvw(1,0)

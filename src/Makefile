@@ -19,7 +19,7 @@ obj_argo = global.o allocate_vars.o \
           get_velocity.o rk4.o interp_trilinear.o \
           init_particles.o mixing.o read_namelist.o \
           utils.o open_files.o close_files.o read_pickup.o\
-          save_pickup.o load_depth.o \
+          save_pickup.o load_depth.o c_filenames.o \
           check_and_save.o calc_parameters.o  interp_bilinear.o get_argo_w.o
 	
 FORTRAN_COMPILER = gfortran

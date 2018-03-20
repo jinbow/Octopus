@@ -1,5 +1,5 @@
 #undef saveTSG
-#undef isArgo
+#define isArgo
 #undef reflective_continent
 #undef use_Laplacian_diffusion
 #undef reflective_continent
@@ -8,5 +8,5 @@
 #undef reflective_meridional_boundary
 #undef jump_looping
 #undef monitoring
-#define one_file_per_step
+#undef one_file_per_step
 #undef stationary_velocity
