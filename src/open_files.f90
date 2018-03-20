@@ -17,6 +17,9 @@ subroutine open_files()
     open(fn_uvwtsg_ids(3),file=trim(path2uvw)//trim(fn_WVEL),&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
         status='old',recl=4*Nx*Ny)
+
+#ifndef isGlider
+
     if (trim(fn_PHIHYD) .ne. '') then
     open(fn_uvwtsg_ids(7),file=trim(path2uvw)//trim(fn_PHIHYD),&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
@@ -35,10 +38,14 @@ subroutine open_files()
         status='old',recl=4*Nx*Ny)
     endif
 
+
 #ifdef use_mixedlayer_shuffle
     open(fn_id_mld,file=trim(path2uvw)//trim(fn_MLD),&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
         status='old',recl=4*Nx*Ny)
+
+#endif
+
 #endif
 
 #endif

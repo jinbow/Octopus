@@ -18,7 +18,6 @@ import os,sys
 def reflective_boundary():
     from scipy.interpolate import NearestNDInterpolator as npi 
     
-    nz,ny,nx=42,320,2160 #the model grid size
     
     
     fn_hFacC=pth_data_in+'hFacC.data'
@@ -58,7 +57,31 @@ def reflective_boundary():
     
     return
 
-def k2zbin():
+def z2kbin(saveplot=False):
+    
+    #edit fn_RF to point to the correct RF.data
+    fn_RF=pth_data_in+'RF.data'
+    try:
+        z=np.fromfile(fn_RF,'>f4')
+        print "There are %i values in RF.data"%z.size
+    except:
+        sys.exit(' ^o^ '*20+'%s does not exist, please double check.'%fn_RF+
+                ' ^p^ '*20)
+        
+    z=abs(z)
+
+    ff=sp.interpolate.interp1d(z,np.linspace(0,nz,nz+1),'linear',
+                               bounds_error=False,fill_value=nz)
+    newz = ff(np.arange(6500))
+    newz.astype('>f4').tofile(pth_data_out+'z_to_k_lookup_table.bin')
+
+    if saveplot:
+        plt.plot(np.linspace(0,nz,nz+1),z,'o')
+        plt.plot(newz,np.arange(6500),'-')
+        plt.savefig(pth_data_out+'z_to_k_lookup_table.bin.png')
+    return
+
+def k2zbin(saveplot=False):
     
     #edit fn_RF to point to the correct RF.data
     fn_RF=pth_data_in+'RF.data'
@@ -69,15 +92,13 @@ def k2zbin():
                 ' ^p^ '*20)
         
     z=abs(z)
-    z[0]=0
-    print z
-    print z.shape
-    ff=sp.interpolate.interp1d(np.linspace(0,42,43),z,'cubic')
-    newz = ff(np.linspace(0,42,421))
-    newz.astype('>f4').tofile('k_to_z_lookup_table.bin')
-    plt.plot(np.linspace(0,42,43),z,'o')
-    plt.plot(np.linspace(0,42,421),newz,'-')
-    plt.show()
+    ff=sp.interpolate.interp1d(np.linspace(0,nz,nz+1),z,'linear')
+    newz = ff(np.linspace(0,nz,nz*10+1))
+    newz.astype('>f4').tofile(pth_data_out+'k_to_z_lookup_table.bin')
+    if saveplot:
+        plt.plot(np.linspace(0,nz,nz+1),z,'o')
+        plt.plot(np.linspace(0,nz,nz*10+1),newz,'-')
+        plt.savefig(pth_data_out+'k_to_z_lookup_table.bin.png')
     return
     
 def check_folder_existence():
@@ -91,13 +112,15 @@ def check_folder_existence():
 if __name__=='__main__':
     '''change pth_data_out and pth_data_in according to your system,
        run the program using "python gen_data.py" '''
-    #the folder for saveing binary data used by Octopus, 
-    #do not change pth_data_out, '../data/' is hard-coded in load_reflect.f90
+
+    nz,ny,nx=42,320,2160 #the model grid size
+
     pth_data_out='../data/' 
 
     #path to MITgcm grid data, i.e., DXG.data,DYG.data etc.
     #this script will look for hFacC.data and RF.data in this folder to
     #generate necessary binary files for Ocotpus
+
     pth_data_in='../data/' 
 
     check_folder_existence()
@@ -107,3 +130,6 @@ if __name__=='__main__':
 
     #generate k_to_z_lookup_table.bin and 
     k2zbin()
+    #generate z_to_k_lookup_table.bin and 
+    z2kbin()
+

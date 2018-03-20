@@ -19,15 +19,6 @@ subroutine calc_parameters()
     endif
     t_amend=real(dt/dt_file/2d0,8)
 
-    ! file ids
-    do i=0,11
-       do j=0,NPP-1
-        fn_ids(i+1,j+1) = 1000+j*12+i
-       enddo
-    enddo
-    fn_uvwtsg_ids = (/2001,2002,2003,2004,2005,2006,2007/)
-    fn_id_mld=3000
-
-    call system('mkdir -p '//trim(output_dir))
+    call set_file_ids()
 
 end subroutine calc_parameters

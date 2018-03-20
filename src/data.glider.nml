@@ -1,0 +1,6 @@
+&PARAMG
+parking_time=10,
+absv=0.25,
+surfacing_time=600,
+dive_depth=40,
+/

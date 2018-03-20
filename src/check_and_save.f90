@@ -1,7 +1,7 @@
 subroutine check_and_save(SNPP)
 #include "cpp_options.h"
     use global, only :tt,saveFreq,diagFreq,pickupFreq,&
-        rec_num,dt_reinit,iswitch,pickup
+        rec_num,dt_reinit,iswitch,pickup,count_step
     implicit none
     INTEGER*8 :: t0,t1,IPP
     INTEGER*8, intent(in) :: SNPP
@@ -9,14 +9,14 @@ subroutine check_and_save(SNPP)
     !$OMP PARALLEL SECTIONS
 
     !$OMP SECTION
-    if (mod(tt,saveFreq) .eq. 0.0) then
+
+    if (mod(count_step,saveFreq) .eq. 0) then
         t0=abs(iswitch-1)
         t1=iswitch
         print*, "write data to files at step ",rec_num,' tt=',tt/saveFreq
         do IPP=1,SNPP
 
 #ifdef saveTSG
-            call load_tsg(rec_num,iswitch)
             call interp_tracer(t0,t1,IPP)
 #endif
 
@@ -29,20 +29,16 @@ subroutine check_and_save(SNPP)
     endif
 
     !$OMP SECTION
-    !call count_stagnant()
+
 #ifdef monitoring
     if (mod(tt,diagFreq) .eq. 0) then
         call diag()
     endif
 #endif
 
-!    !$OMP SECTION
-!    if (mod(tt,pickupFreq) .eq. 0) then
-!        print*, "==========================================="
-!        print*, " Dump pickup data at record ", rec_num
-!        print*, "==========================================="
-!        call save_pickup()
-!    endif
+    if (mod(tt,pickupFreq) .eq. 0) then
+        call save_pickup()
+    endif
 
     !$OMP SECTION
     !reinitialize particles if invoked

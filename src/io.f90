@@ -63,12 +63,12 @@ subroutine load_PHIHYD(tt)
 end subroutine load_PHIHYD
 
 
-subroutine load_3d(fn_id,irec,dout)
+subroutine load_3d(fn_id,irec,dout,read_flag)
 #include "cpp_options.h"
 
     use global, only : Nx,Ny,Nz,Nrecs,xyz
     implicit none
-    INTEGER*8, intent(in) :: irec,fn_id
+    INTEGER*8, intent(in) :: irec,fn_id,read_flag
     real*4, dimension(-2:Nx+1,0:Ny-1,-1:Nz), intent(out) :: dout
     integer*8 :: i=0,k=0,k0=0,k1=0
 
@@ -79,10 +79,17 @@ subroutine load_3d(fn_id,irec,dout)
 
     i=(i-1)*Nz+1
     !selectively reading data from k0 to k1 levels
-    k0=max(minval(floor(xyz(:,3,:)))-1,0)
-    k1=min(maxval(ceiling(xyz(:,3,:)))+1,Nz-1)
+    if (read_flag==1) then
+      k0=max(minval(floor(xyz(:,3,:)))-1,0)
+      k1=min(maxval(ceiling(xyz(:,3,:)))+1,Nz-1)
+    else
+      k0=0
+      k1=Nz-1
+    endif
+
     !$OMP PARALLEL DO PRIVATE(k)
-    do k=k0,k1
+    !do k=k0,k1
+    do k=0,Nz-1
         read(fn_id,rec=i+k) dout(0:Nx-1,:,k)
         dout(Nx:Nx+1,:,k)=dout(0:1,:,k)
         dout(-2:-1,:,k)=dout(Nx-2:Nx-1,:,k)
@@ -97,7 +104,9 @@ subroutine load_uvw(irec,isw)
     implicit none
     INTEGER*8, intent(in) :: irec,isw
     !real*4, dimension(-1:Nx+1,0:Ny-1,-1:Nz) :: tmp
-    integer*8 :: i,ifile,ii
+    integer*8 :: i,ifile,ii,read_flag
+
+    read_flag=1 ! 1--> read all vertical levels, selective otherwise
 
 #ifdef monitoring
     print*, "----load uvw at irec,mod(irec,Nrecs),iswitch",irec,i,isw
@@ -120,12 +129,17 @@ subroutine load_uvw(irec,isw)
         i=Nrecs
     endif
 #endif
+
     ifile=1 !if all records are saved in one file, the program always reads filename(1,i)
 
 #endif
 
     !$OMP PARALLEL SECTIONS
     !$OMP SECTION
+
+#ifdef monitoring
+    print*, ifile,trim(path2uvw)//trim(filenames(ifile,1))
+#endif
 
 do ii = 1, 3
 open(fn_uvwtsg_ids(ii),file=trim(path2uvw)//trim(filenames(ifile,ii)),&
@@ -134,12 +148,12 @@ open(fn_uvwtsg_ids(ii),file=trim(path2uvw)//trim(filenames(ifile,ii)),&
 enddo
 
 
-    call load_3d(fn_uvwtsg_ids(1),i,uu(:,0:Ny-1,:,isw))
+    call load_3d(fn_uvwtsg_ids(1),i,uu(:,0:Ny-1,:,isw),read_flag)
     uu(:,:,-1,isw)=uu(:,:,0,isw)
     uu(:,:,Nz,isw)=uu(:,:,Nz-1,isw)
 
     !$OMP SECTION
-    call load_3d(fn_uvwtsg_ids(2),i,vv(:,0:Ny-1,:,isw))
+    call load_3d(fn_uvwtsg_ids(2),i,vv(:,0:Ny-1,:,isw),read_flag)
     vv(:,:,-1,isw)=vv(:,:,0,isw)
     vv(:,:,Nz,isw)=vv(:,:,Nz-1,isw)
 #ifdef reflective_meridional_boundary
@@ -148,7 +162,7 @@ enddo
 #endif
     !$OMP SECTION
 #ifndef isArgo
-    call load_3d(fn_uvwtsg_ids(3),i,ww(:,0:Ny-1,:,isw))
+    call load_3d(fn_uvwtsg_ids(3),i,ww(:,0:Ny-1,:,isw),read_flag)
     ww(:,:,-1,isw)=-1d-5 !reflective surface ghost cell 
     ww(:,:,Nz,isw)=1d-5 !reflective bottom  ghost cell
 #endif
@@ -177,12 +191,15 @@ subroutine load_tsg(irec,isw)
 #ifdef saveTSG
 #ifndef isArgo
 
-use global, only : fn_uvwtsg_ids,Nx,Ny,Nz,uu,vv,ww,theta,gam,salt,Nrecs
+use global, only : fn_uvwtsg_ids,Nx,Ny,Nz,uu,path2uvw,filenames,&
+	           vv,ww,theta,gam,salt,Nrecs
 
     implicit none
     INTEGER*8, intent(in) :: irec,isw
     !real*4, dimension(-1:Nx+1,0:Ny-1,-1:Nz) :: tmp
-    integer*8 :: i,ifile,ii
+    integer*8 :: i,ifile,ii,read_flag
+
+    read_flag=1  !  1 : read all vertical levels, selective otherwise
 
 #ifdef one_file_per_step
     ifile=mod(irec,Nrecs)
@@ -198,7 +215,7 @@ use global, only : fn_uvwtsg_ids,Nx,Ny,Nz,uu,vv,ww,theta,gam,salt,Nrecs
     ifile=1
 #endif
 
-do ii = 4, 6
+do ii = 4, 5
 open(fn_uvwtsg_ids(ii),file=trim(path2uvw)//trim(filenames(ifile,ii)),&
         form='unformatted',access='direct',convert='BIG_ENDIAN',&
         status='old',recl=4*Nx*Ny)
@@ -206,27 +223,34 @@ enddo
 
     !$OMP PARALLEL SECTIONS
     !$OMP SECTION
-    call load_3d(fn_uvwtsg_ids(4),i,theta(:,:,:,isw))
+    call load_3d(fn_uvwtsg_ids(4),i,theta(:,:,:,isw),read_flag)
     theta(:,:,-1,isw)=theta(:,:,0,isw)
     theta(:,:,Nz,isw)=theta(:,:,Nz-1,isw)
     print*, "====>> load THETA", irec, "min() =", minval(theta(:,:,:,isw)),maxval(theta(:,:,:,isw))
 
     !$OMP SECTION
-    call load_3d(fn_uvwtsg_ids(5),i,salt(:,:,:,isw))
+    call load_3d(fn_uvwtsg_ids(5),i,salt(:,:,:,isw),read_flag)
 
     salt(:,:,-1,isw)=salt(:,:,0,isw)
     salt(:,:,Nz,isw)=salt(:,:,Nz-1,isw)
 
-    print*, "====>> load SALT", i, "min() =", minval(salt(:,:,:,isw))
+    print*, "====>> load SALT", i, "min() =", minval(salt(:,:,:,isw)),maxval(salt(:,:,:,isw))
+
+
+#ifndef isGlider
     !$OMP SECTION
-    call load_3d(fn_uvwtsg_ids(6),i,gam(:,:,:,isw))
+    call load_3d(fn_uvwtsg_ids(6),i,gam(:,:,:,isw),read_flag)
 
     gam(:,:,-1,isw)=gam(:,:,0,isw)
     gam(:,:,Nz,isw)=gam(:,:,Nz-1,isw)
 
     where(gam(:,:,:,isw)<20) gam(:,:,:,isw)=0d0
     print*, "====>> load GAMMA", irec, "min() =", minval(gam(:,:,:,isw))
+#endif
+
+
     !$OMP END PARALLEL SECTIONS
+
 
     print*, "end loading data"
 
@@ -350,3 +374,36 @@ subroutine save_data(IPP)
 end subroutine save_data
 
 
+subroutine save_glider_data(SNPP)
+#include "cpp_options.h"
+#ifdef isGlider
+    use global, only :tt,saveFreq,Npts,&
+                      iswitch,count_step,&
+                      save_glider_FnIDs,glider_uv,glider_angle,&
+                      xyz,uvwp,tsg,theta
+
+    implicit none
+    INTEGER*8 :: i,IPP,t0,t1
+    INTEGER*8, intent(in) :: SNPP
+
+        t0=abs(iswitch-1)
+        t1=iswitch
+
+    if (mod(count_step,saveFreq) .eq. 0) then
+        do IPP=1,SNPP
+#ifdef saveTSG
+            call interp_tracer(t0,t1,IPP)
+#endif
+           do i=1,Npts
+              write(save_glider_FnIDs(i,IPP),"(11F13.5)") tt, xyz(i,:,IPP),&
+                    tsg(i,1:2,IPP),uvwp(i,1:2,IPP),glider_uv(i,:,IPP),&
+                    glider_angle(i,IPP)
+            !  if (i==2) then
+            !  write(*,"(6F9.3)") xyz(i,:,IPP),tsg(i,1:2,IPP),theta(i,floor(xyz(i,2,IPP)),floor(xyz(i,3,IPP)),0)
+            !  endif
+            enddo
+        enddo
+    endif
+
+#endif
+end subroutine save_glider_data
