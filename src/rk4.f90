@@ -3,13 +3,17 @@ subroutine rk4(SNPP)
 
     ! integrate in time using RK4 scheme
 #ifdef isGlider
-    use global, only : tt,Npts,iswitch,xyz,dt,Nx,Ny,Nz,&
-                       uvwp,dt_file,t_amend,glider_clock
-#else
-    use global, only : tt,Npts,iswitch,xyz,dt,Nx,Ny,Nz,&
-                       uvwp,dt_file,t_amend
+    use global, only : tt,Npts,iswitch,xyz,dt,Nx,Ny,Nz,glider_clock,&
 #endif
-
+#ifdef isArgo
+    use global, only : tt,Npts,iswitch,xyz,dt,Nx,Ny,Nz,argo_clock,&
+#endif
+#ifndef isArgo
+#ifndef isGlider
+    use global, only : tt,Npts,iswitch,xyz,dt,Nx,Ny,Nz,&
+#endif
+#endif
+                       uvwp,dt_file,t_amend
     implicit none
     real*8, dimension(3) :: x0,x1,uvw
     integer*8 :: t0,t1,ip,IPP
@@ -21,8 +25,14 @@ subroutine rk4(SNPP)
 
 #ifdef isGlider
 !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(x0,x1,uvw,ip) SHARED(glider_clock,IPP,SNPP,Npts,xyz,t_amend,t0,t1,dt)
-#else
+#endif
+#ifdef isArgo
+!$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(x0,x1,uvw,ip) SHARED(argo_clock,IPP,SNPP,Npts,xyz,t_amend,t0,t1,dt)
+#endif
+#ifndef isGlider
+#ifndef isArgo
 !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(x0,x1,uvw,ip) SHARED(IPP,SNPP,Npts,xyz,t_amend,t0,t1,dt)
+#endif
 #endif
 
 
@@ -46,7 +56,9 @@ subroutine rk4(SNPP)
             call find_particle_uvw(t_amend*2.0,ip,IPP,t0,t1,uvw)
             xyz(ip,:,IPP)=x1+dt*uvw/6.0
 
-
+#ifdef isArgo
+            argo_clock(ip,2,IPP)=argo_clock(ip,2,IPP)+dt
+#endif
 #ifdef isGlider
             glider_clock(ip,2,IPP)=glider_clock(ip,2,IPP)+dt
 #endif

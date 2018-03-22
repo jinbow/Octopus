@@ -1,87 +1,91 @@
-subroutine get_argo_w(argow)
+SUBROUTINE get_argo_w(ip,ipp,argow)
 #include "cpp_options.h"
 
 #ifdef isArgo
-    use global, only : xyz,argo_clock,parking_time,surfacing_time,SNPP
-       !add noise to the vertical velocity
-       !call random_number(tmp0)
-       !tmp0=(tmp0-0.5)*0.05
+  USE global, ONLY : tt,xyz,argo_clock,parking_time,surfacing_time,SNPP,save_argo_FnID
+  !add noise to the vertical velocity
+  !call random_number(tmp0)
+  !tmp0=(tmp0-0.5)*0.05
 
-    implicit none
-    real*8,intent(out) :: argow
-    integer*8 :: ia,i
-    ia=argo_clock(1)
+  IMPLICIT NONE
+  REAL*8,INTENT(out) :: argow
+  INTEGER*8,INTENT(in) :: ip,ipp
+  INTEGER*8 :: ia,i
+  ia=argo_clock(ip,1,ipp)
 
-    if ( ia==0 ) then
-        argo_clock(1)=1
+  IF ( ia==0 ) THEN
+     argo_clock(ip,1,ipp)=1
+     argow = 0.047
+
+     WRITE(save_argo_FnID,*) tt,ip,ipp,xyz(i,:,IPP)
+
+     !do i=1, SNPP
+     !    call save_data(SNPP)
+     !enddo
+     IF (ip==1 .AND. ipp==1) THEN
+        PRINT*, "==========================================" 
+        PRINT*, "output Argo data at tt=",tt
+     ENDIF
+  ELSEIF (ia==1) THEN
+     !save the surface position
+     !descending
+     !stay at the bottom after hitting the bottom
+     IF (xyz(ip,3,ipp)<21.842105263157894 ) THEN
+        !descending toward 1000 meters
         argow = 0.047
-        
-        do i=1, SNPP
-            call save_data(SNPP)
-        enddo
-        
-        print*, "==========================================" 
-        print*, "output Argo data"
-    elseif (ia==1) then
-        !save the surface position
-        !descending
-        !stay at the bottom after hitting the bottom
-        if (xyz(1,3,1)<21.842105263157894 ) then
-            !descending toward 1000 meters
-            argow = 0.047
-        else
-            !reached parking depth
-            argo_clock(1)=2
-            argo_clock(2)=0
-            argow = 0
-        endif
+     ELSE
+        !reached parking depth
+        argo_clock(ip,1,ipp)=2
+        argo_clock(ip,2,ipp)=0
+        argow = 0
+     ENDIF
 
-    elseif (ia==2) then !-> spend parking time
-        if (argo_clock(2) .le. parking_time) then
-            argow = 0.0 !argo_w(3)
-        else !-> descend to 2000 meters
-            argo_clock(2) = 0.0
-            argo_clock(1) = 3
-            argow = 0.047
-        endif
+  ELSEIF (ia==2) THEN !-> spend parking time
+     IF (argo_clock(ip,2,ipp) .LE. parking_time) THEN
+        argow = 0.0 !argo_w(3)
+     ELSE !-> descend to 2000 meters
+        argo_clock(ip,2,ipp) = 0
+        argo_clock(ip,1,ipp) = 3
+        argow = 0.047
+     ENDIF
 
-    elseif (ia==3) then
-        !descending to 2000
-        !if ( xyz(1,3,1)<26.826741996233523 .and. &
-        !    depth<sose_depth(ixyz(ip,1),ixyz(ip,2))) then
+  ELSEIF (ia==3) THEN
+     !descending to 2000
+     !if ( xyz(1,3,1)<26.826741996233523 .and. &
+     !    depth<sose_depth(ixyz(ip,1),ixyz(ip,2))) then
 
-        if ( xyz(1,3,1)<26.826741996233523 ) then
-            argow = 0.047
-        else
-            argow = -0.055
-            argo_clock(1) = 4
-            argo_clock(2) =0.0
-        endif
+     IF ( xyz(ip,3,ipp)<26.826741996233523 ) THEN
+        argow = 0.047
+     ELSE
+        argow = -0.055
+        argo_clock(ip,1,ipp) = 4
+        argo_clock(ip,2,ipp) =0
+     ENDIF
 
-    elseif (ia==4) then
-        !up from 2000
-        if ( xyz(1,3,1) > 0.001 ) then
-            argow = -0.055
-           !argow = 0.06*depth/2000 - 0.12 + tmp0 !linearly increase above 2000m
-        else
-            !reach the surface
-            xyz(1,3,1)=0.001
-            argow = 0.0
-            argo_clock(1) = 5
-            argo_clock(2) =0.0
-        endif
+  ELSEIF (ia==4) THEN
+     !up from 2000
+     IF ( xyz(ip,3,ipp) > 0.001 ) THEN
+        argow = -0.055
+        !argow = 0.06*depth/2000 - 0.12 + tmp0 !linearly increase above 2000m
+     ELSE
+        !reach the surface
+        xyz(ip,3,ipp)=0.001
+        argow = 0.0
+        argo_clock(ip,1,ipp) = 5
+        argo_clock(ip,2,ipp) =0
+     ENDIF
 
-    elseif (ia==5) then
-        if (argo_clock(2) .le. surfacing_time) then
-            argow = 0.0 !argo_w(3)
-        else
-            argo_clock(1) = 0
-            argo_clock(2) =0.0
-            argow = 0.047
-        endif
+  ELSEIF (ia==5) THEN
+     IF (argo_clock(ip,2,ipp) .LE. surfacing_time) THEN
+        argow = 0.0 !argo_w(3)
+     ELSE
+        argo_clock(ip,1,ipp) = 0
+        argo_clock(ip,2,ipp) =0
+        argow = 0.047
+     ENDIF
 
-    endif
+  ENDIF
 
 #endif
 
-end subroutine get_argo_w
+END SUBROUTINE get_argo_w

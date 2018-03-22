@@ -56,7 +56,7 @@ subroutine find_particle_uvw(t_amend,ip,IPP,t0,t1,uvw)
     uvw(2) = (tmp1-tmp0)*deltat + tmp0
 
 #ifdef isArgo
-    call get_argo_w(uvw(3))
+    call get_argo_w(ip,ipp,uvw(3))
 #else
     j=pj2c(ip,IPP)
     k=pk2f(ip,IPP)

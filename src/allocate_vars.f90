@@ -16,6 +16,8 @@ subroutine allocate_parti()
         dxyz_fac(Npts,3,NPP) )
 
     ALLOCATE (tsg(Npts,4,NPP))
+    ALLOCATE (argo_clock(Npts,2,NPP))
+    argo_clock(:,2,:)=0
     tsg=0e0
 
 
