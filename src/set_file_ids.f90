@@ -4,7 +4,7 @@ subroutine set_file_ids()
 
     use global,only : FnPartiInitId,fn_ids,Npts,NPP,&
 #ifdef isArgo
-    save_argo_FnID,&
+    save_argo_FnIDs,&
 #endif
 #ifdef isGlider
     save_glider_FnIDs,&
@@ -14,7 +14,7 @@ subroutine set_file_ids()
     implicit none
     integer*8 :: i,j,k
 
-    k=1000
+    k=9000
     ! file ids
     do i=1,11
        do j=1,NPP
@@ -45,6 +45,17 @@ print*, '-------+++'
     fn_id_mld=k
     k=k+1
     FnPartiInitId=k
+    k=k+1
+
+#ifdef isArgo
+   do i =1, Npts
+      do j=1, NPP
+        save_argo_FnIDs(i,j)=k
+        k=k+1
+      enddo
+   enddo
+#endif
+       
 
     call system('mkdir -p '//trim(output_dir))
 

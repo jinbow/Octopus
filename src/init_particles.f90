@@ -18,6 +18,9 @@ subroutine init_particles(IPP)
         read(FnPartiInitId,rec=1) xyz(:,:,IPP)
         close(FnPartiInitId)
 
+print*, "initial x",xyz(:,1,IPP)
+print*, "initial y",xyz(:,2,IPP)
+print*, "initial z",xyz(:,3,IPP)
 
 #ifdef isArgo
         xyz(:,3,IPP)=0

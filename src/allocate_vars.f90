@@ -16,8 +16,13 @@ subroutine allocate_parti()
         dxyz_fac(Npts,3,NPP) )
 
     ALLOCATE (tsg(Npts,4,NPP))
-    ALLOCATE (argo_clock(Npts,2,NPP))
-    argo_clock(:,2,:)=0
+
+#ifdef isArgo
+    ALLOCATE (argo_clock(Npts,2,NPP),&
+              save_argo_FnIDs(Npts,NPP) )
+    argo_clock(:,:,:)=0
+#endif
+
     tsg=0e0
 
 

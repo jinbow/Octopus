@@ -2,7 +2,9 @@ SUBROUTINE get_argo_w(ip,ipp,argow)
 #include "cpp_options.h"
 
 #ifdef isArgo
-  USE global, ONLY : tt,xyz,argo_clock,parking_time,surfacing_time,SNPP,save_argo_FnID
+  USE global, ONLY : tt,xyz,argo_clock,parking_time,&
+                     surfacing_time,SNPP,save_argo_FnIDs,&
+                     output_dir
   !add noise to the vertical velocity
   !call random_number(tmp0)
   !tmp0=(tmp0-0.5)*0.05
@@ -11,13 +13,16 @@ SUBROUTINE get_argo_w(ip,ipp,argow)
   REAL*8,INTENT(out) :: argow
   INTEGER*8,INTENT(in) :: ip,ipp
   INTEGER*8 :: ia,i
+  character*6 :: id_str,IPP_str
+  character*512 :: argo_fn
   ia=argo_clock(ip,1,ipp)
 
   IF ( ia==0 ) THEN
      argo_clock(ip,1,ipp)=1
      argow = 0.047
 
-     WRITE(save_argo_FnID,*) tt,ip,ipp,xyz(i,:,IPP)
+     WRITE(save_argo_FnIDs(ip,ipp),*) real(tt,4),real(xyz(ip,:,ipp),4)
+     call flush(save_argo_FnIDs(ip,ipp))
 
      !do i=1, SNPP
      !    call save_data(SNPP)
@@ -64,7 +69,7 @@ SUBROUTINE get_argo_w(ip,ipp,argow)
 
   ELSEIF (ia==4) THEN
      !up from 2000
-     IF ( xyz(ip,3,ipp) > 0.001 ) THEN
+     IF ( xyz(ip,3,ipp) > 0.1 ) THEN
         argow = -0.055
         !argow = 0.06*depth/2000 - 0.12 + tmp0 !linearly increase above 2000m
      ELSE

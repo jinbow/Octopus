@@ -141,7 +141,12 @@ SUBROUTINE load_uvw(irec,isw)
   PRINT*, ifile,TRIM(path2uvw)//TRIM(filenames(ifile,1))
 #endif
 
+#ifdef isArgo
+  DO ii = 1, 2
+#else
   DO ii = 1, 3
+#endif
+
      OPEN(fn_uvwtsg_ids(ii),file=TRIM(path2uvw)//TRIM(filenames(ifile,ii)),&
           form='unformatted',access='direct',convert='BIG_ENDIAN',&
           status='old',recl=4*Nx*Ny)

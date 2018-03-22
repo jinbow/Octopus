@@ -62,8 +62,9 @@ module global
     REAL*8 :: Khdiff, Kvdiff, kvdt2, khdt2
 
 #ifdef isArgo
-    integer*8 :: parking_time=864000,surfacing_time=600,save_argo_FnID
+    integer*8 :: parking_time=3600,surfacing_time=600,save_argo_FnID
     integer*8, DIMENSION(:,:,:), ALLOCATABLE :: argo_clock
+    integer*8, allocatable :: save_argo_FnIDs(:,:)
 #endif
 
 #ifdef isGlider
