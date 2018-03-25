@@ -59,7 +59,7 @@ SUBROUTINE get_argo_w(ip,ipp,argow)
      !if ( xyz(1,3,1)<26.826741996233523 .and. &
      !    depth<sose_depth(ixyz(ip,1),ixyz(ip,2))) then
 
-     IF ( xyz(ip,3,ipp)<26.826741996233523 ) THEN
+     IF ( xyz(ip,3,ipp)<33) THEN
         argow = 0.047
      ELSE
         argow = -0.055

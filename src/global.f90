@@ -65,6 +65,12 @@ module global
     integer*8 :: parking_time=3600,surfacing_time=600,save_argo_FnID
     integer*8, DIMENSION(:,:,:), ALLOCATABLE :: argo_clock
     integer*8, allocatable :: save_argo_FnIDs(:,:)
+
+#ifdef saveArgoProfile
+    integer*8, allocatable :: save_argo_profileIDs(:,:)
+    integer*8 :: argoprofilerec=1
+#endif
+
 #endif
 
 #ifdef isGlider

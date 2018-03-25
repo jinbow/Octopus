@@ -21,6 +21,10 @@ subroutine allocate_parti()
     ALLOCATE (argo_clock(Npts,2,NPP),&
               save_argo_FnIDs(Npts,NPP) )
     argo_clock(:,:,:)=0
+#ifdef saveArgoProfile
+    ALLOCATE ( save_argo_profileIDs(Npts,NPP) )
+#endif
+
 #endif
 
     tsg=0e0

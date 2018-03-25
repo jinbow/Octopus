@@ -91,8 +91,8 @@ SUBROUTINE load_3d(fn_id,irec,dout,read_flag)
   !do k=k0,k1
   DO k=0,Nz-1
      READ(fn_id,rec=i+k) dout(0:Nx-1,:,k)
-     dout(Nx:Nx+1,:,k)=dout(0:1,:,k)
-     dout(-2:-1,:,k)=dout(Nx-2:Nx-1,:,k)
+     !dout(Nx:Nx+1,:,k)=dout(0:1,:,k)
+     !dout(-2:-1,:,k)=dout(Nx-2:Nx-1,:,k)
   ENDDO
   !$OMP END PARALLEL DO
 END SUBROUTINE load_3d
@@ -156,6 +156,10 @@ SUBROUTINE load_uvw(irec,isw)
   CALL load_3d(fn_uvwtsg_ids(1),i,uu(:,0:Ny-1,:,isw),read_flag)
   uu(:,:,-1,isw)=uu(:,:,0,isw)
   uu(:,:,Nz,isw)=uu(:,:,Nz-1,isw)
+#ifdef periodic_x
+  uu(-2:-1,:,:,isw)=uu(Nx-2:Nx-1,:,:,isw)
+  uu(Nx:Nx+1,:,:,isw)=uu(0:1,:,:,isw)
+#endif
 
   !$OMP SECTION
   CALL load_3d(fn_uvwtsg_ids(2),i,vv(:,0:Ny-1,:,isw),read_flag)
@@ -165,11 +169,20 @@ SUBROUTINE load_uvw(irec,isw)
   vv(:,Ny:Ny+1,:,isw) = -1d0
   vv(:,-2:-1,:,isw) = 1d0
 #endif
+#ifdef periodic_x
+  vv(-2:-1,:,:,isw)=vv(Nx-2:Nx-1,:,:,isw)
+  vv(Nx:Nx+1,:,:,isw)=vv(0:1,:,:,isw)
+#endif
+
   !$OMP SECTION
 #ifndef isArgo
   CALL load_3d(fn_uvwtsg_ids(3),i,ww(:,0:Ny-1,:,isw),read_flag)
   ww(:,:,-1,isw)=-1d-5 !reflective surface ghost cell 
   ww(:,:,Nz,isw)=1d-5 !reflective bottom  ghost cell
+#ifdef periodic_x
+  ww(-2:-1,:,:,isw)=ww(Nx-2:Nx-1,:,:,isw)
+  ww(Nx:Nx+1,:,:,isw)=ww(0:1,:,:,isw)
+#endif
 #endif
 
 #ifdef monitoring
@@ -335,13 +348,27 @@ SUBROUTINE save_data(IPP)
   IMPLICIT NONE
   CHARACTER(len=128) :: fn
   CHARACTER(len=16) :: fn1
-  INTEGER*8 :: iwrite
+  INTEGER*8 :: iwrite,ip
   INTEGER*8,INTENT(in) :: IPP
 
   iwrite=INT(tt/DumpClock)+1
 
   WRITE(fn,"(I10.10)") iwrite
   WRITE(fn1,"(I4.4)") IPP
+
+#ifdef saveArgoProfile
+ do ip=1,Npts
+   if (argo_clock(ip,1,IPP)==4) then
+     WRITE(save_argo_profileIDs(ip,ipp),rec=argoprofilerec) real(tt,4),real(xyz(ip,:,ipp),4),real(tsg(ip,1:2,ipp),4)
+     argoprofilerec=argoprofilerec+1
+     call flush(save_argo_profileIDs(ip,ipp))
+     if (ip==1 .and. ipp==1) then
+     print*, real(xyz(ip,:,ipp),4),real(uvwp(ip,:,ipp)),pi2c(ip,ipp),pj2c(ip,ipp),pk2c(ip,ipp)
+     endif
+
+   endif
+ enddo
+#else
 
   !$OMP PARALLEL SECTIONS
 
@@ -376,6 +403,9 @@ SUBROUTINE save_data(IPP)
   CLOSE(fn_ids(4,IPP))
 #endif
   !$OMP END PARALLEL SECTIONS
+
+#endif
+
 
 END SUBROUTINE save_data
 

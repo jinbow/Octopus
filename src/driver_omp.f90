@@ -57,10 +57,15 @@ program main
        do i=1,Npts
             write(id_str,"(I6.6)") i
             write(IPP_str,"(I6.6)") IPP
-            argo_fn=trim(output_dir)//"A.IPP."//IPP_str//".ip."//id_str//".cycle.000000.data"
+            argo_fn=trim(output_dir)//"A.IPP."//IPP_str//".ip."//id_str//".surfaceLoc.data"
             !OPEN(save_argo_FnIDs(i,IPP),file=TRIM(argo_fn),&
             !     access='sequential',form='unformatted', convert='BIG_ENDIAN',status='unknown')
+
             OPEN(save_argo_FnIDs(i,IPP),file=TRIM(argo_fn))
+#ifdef saveArgoProfile
+            OPEN(save_argo_profileIDs(i,IPP),file=trim(output_dir)//"A.IPP."//IPP_str//".ip."//id_str//".profiles.data",&
+                 access='direct',form='unformatted', recl=6*4*4,convert='BIG_ENDIAN',status='unknown')
+#endif
 
             WRITE(save_argo_FnIDs(i,IPP),*) real(0.0,4),REAL(xyz(i,:,IPP),4)
 
@@ -153,6 +158,9 @@ program main
     do i=1,Npts
        do IPP=1,NPP
          close(save_argo_FnIDs(i,IPP))
+#ifdef saveArgoProfile
+         close(save_argo_profileIDs(i,IPP))
+#endif
        enddo
     enddo
 #endif

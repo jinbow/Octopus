@@ -1,6 +1,6 @@
 
 subroutine diag()
-    use global, only : tsg,xyz
+    use global, only : tsg,xyz,uvwp
     implicit none
     print*, "========================================="
     print*, "particle diagnoses"
@@ -18,6 +18,9 @@ subroutine diag()
     print*, "y maximum            = ",maxval(xyz(:,2,:))
     print*, "z minimum            = ",minval(xyz(:,3,:))
     print*, "z maximum            = ",maxval(xyz(:,3,:))
+    print*, "u maximum            = ",maxval(uvwp(:,1,:))
+    print*, "v maximum            = ",maxval(uvwp(:,2,:))
+    print*, "w maximum            = ",maxval(uvwp(:,3,:))
 
 end subroutine diag
 
