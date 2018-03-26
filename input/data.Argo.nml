@@ -1,0 +1,6 @@
+&PARAMA
+parking_time=864000,
+surfacing_time=600,
+parking_depth=20,
+max_depth=33,
+/
