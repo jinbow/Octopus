@@ -21,6 +21,7 @@ August 26, 2015
    :caption: Contents:
 
    argo.mode.rst
+   build.rst
 
 Indices and tables
 ==================
