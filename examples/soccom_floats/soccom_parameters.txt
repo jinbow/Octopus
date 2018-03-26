@@ -1,5 +1,0 @@
-cruise_name='P16'
-start_date='01/01/2016'
-duration=40 #in days
-NPP=2 #number of cases to run
-dt_case=365*86400 #the time interval between each case
