@@ -4,12 +4,16 @@ subroutine set_file_ids()
 
     use global,only : FnPartiInitId,fn_ids,Npts,NPP,&
 #ifdef isArgo
-    save_argo_FnIDs,save_argo_profileIDs,&
+    save_argo_FnIDs,&
+#ifdef saveArgoProfile
+    save_argo_profileIDs,&
 #endif
+#endif
+
 #ifdef isGlider
     save_glider_FnIDs,&
 #endif
-                     fn_uvwtsg_ids,fn_id_mld,output_dir
+   fn_uvwtsg_ids,fn_id_mld,output_dir
 
     implicit none
     integer*8 :: i,j,k
@@ -52,8 +56,10 @@ print*, '-------+++'
       do j=1, NPP
         save_argo_FnIDs(i,j)=k
         k=k+1
+#ifdef saveArgoProfile
         save_argo_profileIDs(i,j)=k
         k=k+1
+#endif
       enddo
    enddo
 #endif

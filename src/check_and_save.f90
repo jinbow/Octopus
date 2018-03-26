@@ -14,7 +14,10 @@ subroutine check_and_save(SNPP)
     if (mod(count_step,saveFreq) .eq. 0) then
         t0=abs(iswitch-1)
         t1=iswitch
-        print*, "write data to files at step ",rec_num,' tt=',tt/saveFreq
+
+#ifdef monitoring
+        print*, "write data to files at step ",count_step,' tt=',tt
+#endif
 
         do IPP=1,SNPP
 

@@ -1,6 +1,6 @@
 #undef saveTSG
 #define isArgo
-#define saveArgoProfile
+#undef saveArgoProfile
 #undef isGlider
 #undef reflective_continent
 #undef use_Laplacian_diffusion

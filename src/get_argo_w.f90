@@ -4,7 +4,7 @@ SUBROUTINE get_argo_w(ip,ipp,argow)
 #ifdef isArgo
   USE global, ONLY : tt,xyz,argo_clock,parking_time,&
                      surfacing_time,SNPP,save_argo_FnIDs,&
-                     output_dir
+                     output_dir,parking_depth,max_depth
   !add noise to the vertical velocity
   !call random_number(tmp0)
   !tmp0=(tmp0-0.5)*0.05
@@ -35,8 +35,8 @@ SUBROUTINE get_argo_w(ip,ipp,argow)
      !save the surface position
      !descending
      !stay at the bottom after hitting the bottom
-     IF (xyz(ip,3,ipp)<21.842105263157894 ) THEN
-        !descending toward 1000 meters
+     IF (xyz(ip,3,ipp)<parking_depth ) THEN
+        !descending toward parking depth
         argow = 0.047
      ELSE
         !reached parking depth
@@ -48,18 +48,18 @@ SUBROUTINE get_argo_w(ip,ipp,argow)
   ELSEIF (ia==2) THEN !-> spend parking time
      IF (argo_clock(ip,2,ipp) .LE. parking_time) THEN
         argow = 0.0 !argo_w(3)
-     ELSE !-> descend to 2000 meters
+     ELSE !-> descend to max_depth
         argo_clock(ip,2,ipp) = 0
         argo_clock(ip,1,ipp) = 3
         argow = 0.047
      ENDIF
 
   ELSEIF (ia==3) THEN
-     !descending to 2000
-     !if ( xyz(1,3,1)<26.826741996233523 .and. &
+     !descending to max depth
+     !if ( xyz(1,3,1)<max_depth .and. &
      !    depth<sose_depth(ixyz(ip,1),ixyz(ip,2))) then
 
-     IF ( xyz(ip,3,ipp)<33) THEN
+     IF ( xyz(ip,3,ipp)<max_depth) THEN
         argow = 0.047
      ELSE
         argow = -0.055
@@ -68,13 +68,13 @@ SUBROUTINE get_argo_w(ip,ipp,argow)
      ENDIF
 
   ELSEIF (ia==4) THEN
-     !up from 2000
+     !up from max depth
      IF ( xyz(ip,3,ipp) > 0.1 ) THEN
         argow = -0.055
         !argow = 0.06*depth/2000 - 0.12 + tmp0 !linearly increase above 2000m
      ELSE
         !reach the surface
-        xyz(ip,3,ipp)=0.001
+        xyz(ip,3,ipp)=0.5
         argow = 0.0
         argo_clock(ip,1,ipp) = 5
         argo_clock(ip,2,ipp) =0

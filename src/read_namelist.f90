@@ -16,6 +16,10 @@ subroutine read_namelist()
     namelist /PARAMG/ parking_time,surfacing_time,dive_depth,absv
 #endif
 
+#ifdef isArgo
+    namelist /PARAMA/ parking_time,surfacing_time,parking_depth,max_depth
+#endif
+
     namelist /PARAM/ casename,path2uvw,path2grid,&
         dt,tend,&
         pickup,pickupFreq,saveFreq,diagFreq,tstart,FnPartiInit,&
@@ -35,6 +39,14 @@ subroutine read_namelist()
     print*, '====', dive_depth,parking_time
 
 #endif
+
+#ifdef isArgo
+
+    OPEN (UNIT=212, FILE='data.Argo.nml')
+    read (212,NML=PARAMA) !from the namelist file
+    close(212)
+#endif
+
 
 end subroutine read_namelist
 
