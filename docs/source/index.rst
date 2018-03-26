@@ -6,15 +6,9 @@
 Welcome to Octopus's documentation!
 ===================================
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+Offline calculation of Lagrangian trajectories
 
-
-Welcome to the Octopus wiki!
-##Offline calculation of Lagrangian trajectories
-
-This model is in a development stage. Email me for questions.
+This model is in a development stage. Email me for questions. There are two configurations: Lagrangian particle and Argo float.  Use "make" to compile the code for Lagrangian particle simulation. Use "make argo" for simulating Argo float. Before running the model, go to scripts folder and run "python gen_data.py" to compute the binary files used by the code.
 
 Jinbo Wang <jinbow@gmail.com>
 
@@ -22,14 +16,11 @@ Scripps Institution of Oceanography
 
 August 26, 2015
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
 
-There are two configurations: Lagrangian particle and Argo float. 
-
-Use "make" to compile the code for Lagrangian particle simulation. Use "make argo" for simulating Argo float. 
-
-Before running the model, go to scripts folder and run "python gen_data.py" to compute the binary files used 
-by the code.
-
+   argo.mode.rst
 
 Indices and tables
 ==================
