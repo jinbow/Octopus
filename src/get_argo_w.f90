@@ -31,6 +31,7 @@ SUBROUTINE get_argo_w(ip,ipp,argow)
         PRINT*, "==========================================" 
         PRINT*, "output Argo data at tt=",tt
      ENDIF
+
   ELSEIF (ia==1) THEN
      !save the surface position
      !descending
@@ -69,7 +70,7 @@ SUBROUTINE get_argo_w(ip,ipp,argow)
 
   ELSEIF (ia==4) THEN
      !up from max depth
-     IF ( xyz(ip,3,ipp) > 0.1 ) THEN
+     IF ( xyz(ip,3,ipp) > 0.5 ) THEN
         argow = -0.055
         !argow = 0.06*depth/2000 - 0.12 + tmp0 !linearly increase above 2000m
      ELSE
