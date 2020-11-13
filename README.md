@@ -16,7 +16,7 @@ Publications that used this code:
 
 1. Nakayama, Y., Manucharyan, G., Zhang, H. et al. Pathways of ocean heat towards Pine Island and Thwaites grounding lines. Sci Rep 9, 16649 (2019). https://doi.org/10.1038/s41598-019-53190-6
 
-1. Talley, L. D., Rosso, I., Kamenkovich, I.,Mazloff, M. R., Wang, J., Boss, E., et al.(2019). Southern Ocean biogeochemicaloat deployment strategy, withexample from the Greenwich Meridianline (GO-SHIP A12). Journal ofGeophysical Research: Oceans, 124,403–431. https://doi.org/10.1029/2018JC014059Received
+1. Talley, L. D., Rosso, I., Kamenkovich, I.,Mazloff, M. R., Wang, J., Boss, E., et al.(2019). Southern Ocean biogeochemical float deployment strategy, withexample from the Greenwich Meridianline (GO-SHIP A12). Journal ofGeophysical Research: Oceans, 124,403–431. https://doi.org/10.1029/2018JC014059Received
 
 1. Tamsitt, V., Talley, L. D., &Mazloff, M. R. (2019). A deepeastern boundary currentcarrying Indian Deep Water southof Australia. Journal of GeophysicalResearch: Oceans, 124, 2218–2238. https://doi.org/10.1029/2018JC014569
 
