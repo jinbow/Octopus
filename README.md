@@ -1,16 +1,17 @@
 Octopus
 =========
 
-Lagrangian trajectory calculation
+A tool for fast Lagrangian trajectory calculation
 -----------------------------------------------
 
 This fortran code is used to calculate particle trajectories using three dimensional velocity fields from numerical models, e.g., MITgcm (https://github.com/MITgcm/MITgcm). The current version is setup based on C-grid.
 
 You can find preliminary documentation here: [Wiki](https://github.com/jinbow/Octopus/wiki)
 
-Current status: testing the volume conservation.
+**Current status**: testing the volume conservation.
 
-Publications that used this code:
+Publications that used this code
+---------------------
 
 1. Wang, T., Gille, S. T., Mazloff, M. R., Zilberman, N. V., & Du, Y. (2020). Eddy-induced acceleration of Argo floats. Journal of Geophysical Research: Oceans, 125, e2019JC016042. https:// doi.org/10.1029/2019JC016042
 
@@ -32,6 +33,6 @@ Publications that used an early version of this code:
 1. Omand MM, D’Asaro E, Lee CM, Perry MJ, Briggs N, Cetinic I, Mahadevan A. 2015 Eddy driven subduction exports particulate organic carbon from the spring bloom. Science 348,
 222–225. (doi:10.1126/science.1260062)
 
-Contact: Jinbo Wang (Jinbo.Wang .at. jpl.nasa.gov)
+**Contact**: Jinbo Wang (Jinbo.Wang .at. jpl.nasa.gov)
 
 Updated on 11/12/2020
