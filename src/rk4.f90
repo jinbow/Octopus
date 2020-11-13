@@ -6,14 +6,14 @@ subroutine rk4(SNPP)
     use global, only : tt,Npts,iswitch,xyz,dt,Nx,Ny,Nz,glider_clock,&
 #endif
 #ifdef isArgo
-    use global, only : tt,Npts,iswitch,xyz,dt,Nx,Ny,Nz,argo_clock,&
+        use global, only : tt,Npts,iswitch,xyz,dt,Nx,Ny,Nz,argo_clock,&
 #endif
 #ifndef isArgo
 #ifndef isGlider
-    use global, only : tt,Npts,iswitch,xyz,dt,Nx,Ny,Nz,&
+        use global, only : tt,Npts,iswitch,xyz,dt,Nx,Ny,Nz,&
 #endif
 #endif
-                       uvwp,dt_file,t_amend
+        uvwp,dt_file,t_amend
     implicit none
     real*8, dimension(3) :: x0,x1,uvw
     integer*8 :: t0,t1,ip,IPP
@@ -24,17 +24,16 @@ subroutine rk4(SNPP)
     do IPP=1,SNPP
 
 #ifdef isGlider
-!$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(x0,x1,uvw,ip) SHARED(glider_clock,IPP,SNPP,Npts,xyz,t_amend,t0,t1,dt)
+        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(x0,x1,uvw,ip) SHARED(glider_clock,IPP,SNPP,Npts,xyz,t_amend,t0,t1,dt)
 #endif
 #ifdef isArgo
-!$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(x0,x1,uvw,ip) SHARED(argo_clock,IPP,SNPP,Npts,xyz,t_amend,t0,t1,dt)
+        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(x0,x1,uvw,ip) SHARED(argo_clock,IPP,SNPP,Npts,xyz,t_amend,t0,t1,dt)
 #endif
 #ifndef isGlider
 #ifndef isArgo
-!$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(x0,x1,uvw,ip) SHARED(IPP,SNPP,Npts,xyz,t_amend,t0,t1,dt)
+        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(x0,x1,uvw,ip) SHARED(IPP,SNPP,Npts,xyz,t_amend,t0,t1,dt)
 #endif
 #endif
-
 
         do ip=1,Npts
 
@@ -65,23 +64,23 @@ subroutine rk4(SNPP)
 
         enddo
 
-!$OMP END PARALLEL DO
+        !$OMP END PARALLEL DO
 
 #ifdef use_Laplacian_diffusion
-    call apply_Laplacian_diffusion(IPP)
+        call apply_Laplacian_diffusion(IPP)
 #endif
 
 #ifdef use_mixedlayer_shuffle
-    call apply_mixing_mld(IPP)
+        call apply_mixing_mld(IPP)
 #endif
 
 #ifdef reflective_continent
-    call set_boundary(IPP)
+        call set_boundary(IPP)
 #endif
 
-!if (ip==1) then
-!   print*, "=====",xyz(1,:,1)
-!endif
+    !if (ip==1) then
+    !   print*, "=====",xyz(1,:,1)
+    !endif
  
 
     enddo

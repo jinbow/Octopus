@@ -28,7 +28,6 @@ subroutine set_file_ids()
     enddo
 
 
-
 !===> glider file ID
 
 #ifdef isGlider

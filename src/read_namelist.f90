@@ -2,11 +2,11 @@ subroutine read_namelist()
 #include "cpp_options.h"
     !=========================================
     !      read configuration file
-!    use global, only : casename,path2uvw,path2grid,&
-!        dt,dt_reinit,tend,dt_case,&
-!        dt_mld,pickupFreq,pickup,saveFreq,diagFreq,tstart,FnPartiInit,&
-!        target_density,Khdiff,Kvdiff,NPP,Npts,output_dir,&
-!        fn_PHIHYD,fn_MLD,DumpClock
+    !    use global, only : casename,path2uvw,path2grid,&
+    !        dt,dt_reinit,tend,dt_case,&
+    !        dt_mld,pickupFreq,pickup,saveFreq,diagFreq,tstart,FnPartiInit,&
+    !        target_density,Khdiff,Kvdiff,NPP,Npts,output_dir,&
+    !        fn_PHIHYD,fn_MLD,DumpClock
 
     use global
 

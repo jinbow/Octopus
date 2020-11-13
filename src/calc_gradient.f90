@@ -6,7 +6,7 @@ subroutine calc_gradient(t0,IPP)
     real*8 :: tmp0,tmp1,dx,dy,dr
     integer*8:: i,j,k,ip
 
-    !$OMP PARALLEL DO PRIVATE(ip,i,j,k,dx,dy,dr,tmp0,tmp1) SHARED(IPP,t0,dic,djc,dkc,uu,vv,grad,dxg_r,dyg_r) SCHEDULE(dynamic)
+!$OMP PARALLEL DO PRIVATE(ip,i,j,k,dx,dy,dr,tmp0,tmp1) SHARED(IPP,t0,dic,djc,dkc,uu,vv,grad,dxg_r,dyg_r) SCHEDULE(dynamic)
     do ip=1,npts
 
         dx=dif(ip,IPP)
