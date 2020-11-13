@@ -1,17 +1,9 @@
-# Octopus
-##Offline calculation of Lagrangian trajectories
+Octopus
+=========
 
-This model is in a development stage. Email me for questions.
+Offline calculation of Lagrangian trajectories
+---------------------------------------------
 
-Jinbo Wang <jinbow@gmail.com>
+This fortran code is used to calculate particle trajectories using three dimensional velocity fields from numerical models, e.g., MITgcm (https://github.com/MITgcm/MITgcm). The current version is setup based on C-grid.
 
-Scripps Institution of Oceanography
-
-April 26, 2016
-
-##Documentation
-[Wiki](https://github.com/jinbow/Octopus/wiki)
-
-##Updates
-
-* add feature reading data from mutiple files with one file per step
+You can find preliminary documentation here: [Wiki](https://github.com/jinbow/Octopus/wiki)
