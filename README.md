@@ -12,6 +12,7 @@ You can find preliminary documentation here: [Wiki](https://github.com/jinbow/Oc
 
 Publications that used this code
 ---------------------
+**Please let me know if I missed your paper here if you used this code.**
 
 1. Wang, T., Gille, S. T., Mazloff, M. R., Zilberman, N. V., & Du, Y. (2020). Eddy-induced acceleration of Argo floats. Journal of Geophysical Research: Oceans, 125, e2019JC016042. https:// doi.org/10.1029/2019JC016042
 
