@@ -20,8 +20,11 @@ August 26, 2015
    :maxdepth: 2
    :caption: Contents:
 
-   argo.mode.rst
+   
+   customize_velocity.rst
    build.rst
+   argo.mode.rst
+   
 
 Indices and tables
 ==================
