@@ -1,5 +1,5 @@
 #undef saveTSG
-#define isArgo
+#undef isArgo
 #undef saveArgoProfile
 #undef isGlider
 #undef reflective_continent

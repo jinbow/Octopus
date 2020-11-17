@@ -7,6 +7,13 @@ subroutine find_particle_uvw(t_amend,ip,IPP,t0,t1,uvw)
         pi2f,pj2f,pk2f,pi2c,pj2c,pk2c, &
         dif, djf, dkf, dic, djc, dkc
 
+!===============================================
+! d?f represents the distance to the grid faces, western side for i and southern side for j
+! d?c represents the distances to the grid center
+! p??f particle position relative to the face
+! p??c particle position relative to the center
+!===============================================
+
     implicit none
 
     real*8, intent(in) :: t_amend
