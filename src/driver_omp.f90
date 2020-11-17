@@ -29,6 +29,9 @@ program main
    
     call load_grid()
    
+! The reflective boundary use a ad-hoc algorithm to expell particles that enter the continent.
+! This can happen if the time step is large.
+
 #ifndef isArgo
     call load_reflect()
 #endif
@@ -41,7 +44,6 @@ program main
 
     do IPP = 1, NPP
         call init_particles(IPP)
-       
 
 #ifdef isGlider
        do i=1,Npts
@@ -53,6 +55,7 @@ program main
                 status='new')
       enddo
 #endif
+
 #ifdef isArgo
        do i=1,Npts
             write(id_str,"(I6.6)") i
@@ -81,6 +84,7 @@ program main
     else
         iswitch=1
         call check_and_save(NPP)
+        !load the first two time steps
         call load_uvw(1,0)
         call load_uvw(2,1)
 #ifdef saveTSG
@@ -90,7 +94,6 @@ program main
 
     endif
 
-        
     do while (tt<=tend)
     print*, "tt,tend =====",tt,tend,xyz(1,1,1)
         SNPP = min(int(tt/dt_case)+1,NPP)
@@ -111,7 +114,8 @@ program main
 #endif
         enddo
 
-        if (mod(rec_num,Nrecs)==0) then
+        !reach the end of the records, start to loop velocity from the first record
+        if (mod(rec_num,Nrecs)==0) then 
             call load_uvw(1,0)
             call load_uvw(2,1)
 
@@ -136,6 +140,7 @@ program main
             iswitch=1
         else
             rec_num=rec_num+1
+
             iswitch=abs(iswitch-1)
             call load_uvw(rec_num,iswitch)
 #ifdef saveTSG

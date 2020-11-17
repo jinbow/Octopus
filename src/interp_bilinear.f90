@@ -2,6 +2,7 @@ SUBROUTINE interp_bilinear(di,dj,var,velp)
     !== give 4 corner points of a square, interpolate point values inside
     !== di is the distance of the particle to the left face
     !== dj is the distance of the particle to the southern face
+
     IMPLICIT NONE
     REAL*8, INTENT(in) :: di,dj
     REAL*4, INTENT(in), DIMENSION( 2, 2 ) :: var
