@@ -18,4 +18,3 @@ SUBROUTINE incompressibile_correction_2D(di,dj,varU,varV,delU,delV)
     delV =-0.5*alpha*dj*(dj-1.d0)
 
 END SUBROUTINE incompressibile_correction_2D
-
