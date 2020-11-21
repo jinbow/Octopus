@@ -5,6 +5,7 @@ SUBROUTINE velocity_2D_exact(x,y,z,U,V,W)
     REAL*8, INTENT(out) ::  :: U,V,W
     REAL*8,INTENT(in) ::  :: x,y,z
     REAL*8 :: Lx,Ly,a,b
+
     z=0.d0
     a=0.8d0
     b=1.2d0
