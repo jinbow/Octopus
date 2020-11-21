@@ -1,29 +1,51 @@
+"""Calculate the lookup table for k to z conversion
+Jinbo Wang
+<jinbow@gmail.com>
+Scripps Institution of Oceanography
+August 26, 2015 """
+
 from numpy import *
 import sys
-#to run this script in commandline:
-# python init_parti_xyz.py
 
-def glider_target(npts=2):
-
-    xyz=zeros((npts,2))
-    xy[:,0]=400
+def test():
+    center=r_[1500,107,25].reshape(-1,3)
+    delta=r_[10,10,0.1].reshape(-1,3)
+    xyz = random.random((npts,3)) - 0.5
+    xyz = xyz*2*delta+center
+    fn = 'particle_initial_xyz.bin'
+    xyz.T.astype('>f8').tofile(fn)
     return
 
+def test_transport():
+    """
+    xyz: array_like(npts,ndims)
+       npts: number of particles
+       ndims: number of dimensions (fixed to be 3 for x,y,z)
+    """
 
-def case_test(npts=2):
-    xyz=zeros((npts,3))
-    xyz[:,0]= linspace(5,6,npts) # x index 100 points
-    xyz[:,1]= 15 #constant y
-    xyz[:,2]=2 # at k=20 level, z level will be overwritten if the target_density in the namelist is larger than 0.
+    npts=4
+    xyz=ones((npts,3))
+    
+    #the first particle location: x=1, y=5
+    xyz[0,0]=1
+    xyz[0,1]=5
 
-    xyz[:,0] = 100.0
-    xyz[:,1] = linspace(200,220,npts)
-    xyz[:,2] = 0
+    #the second particle location: x=5, y=5
+    xyz[1,0]=5
+    xyz[1,1]=5
 
-    xyz.T.astype('>f8').tofile('particle_init.bin') #the saving sequence should be x[:], y[:], z[:], not [x1,y1,z1],[x2,y2,z2]...
+    #the third particle location: x=10, y=5
+    xyz[2,0]=10
+    xyz[2,1]=5
+    
+    #the fourth particle location: x=19.5, y=5
+    xyz[3,0]=19.5
+    xyz[3,1]=5
 
-    return
+    fn='test_transport.bin'
+    xyz.T.astype('>f8').tofile(fn)
 
 
 if __name__=='__main__':
-    case_test(npts=2)
+    npts=100  #the number of particles
+    test_transport()

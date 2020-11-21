@@ -21,8 +21,8 @@ program main
 
     call calc_parameters()
   
+#ifndef analytical
     call c_filenames()
-   
 
     ! load z to k lookup table for mixed layer process
     call load_z_lookup_table() 
@@ -36,11 +36,11 @@ program main
     call load_reflect()
 #endif
    
+#endif
 
     ! initilize particles on neutral density surfaces
     print*, "================================================="
     print*, "initializing particles ......... "
-
 
     do IPP = 1, NPP
         call init_particles(IPP)

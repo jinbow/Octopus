@@ -34,8 +34,8 @@ obj_glider= global.o allocate_vars.o interp_tracer.o \
           get_glider_velocity.o set_file_ids.o
 
 obj_transport = global.o allocate_vars.o interp_tracer.o \
-          random.o driver_omp.o  io.o  get_particle_index.o \
-          get_velocity_transport.o rk4.o interp_trilinear.o \
+          random.o driver_omp_analytical.o  io.o  get_particle_index.o \
+          get_velocity_transport.o velocity_2D_exact.o rk4.o interp_trilinear.o \
           apply_jump.o init_particles.o mixing.o read_namelist.o \
           apply_boundaryCondition.o utils.o c_filenames.o  read_pickup.o\
           save_pickup.o load_reflect.o load_depth.o mixing_mld.o\
