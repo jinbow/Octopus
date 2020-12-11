@@ -19,7 +19,7 @@ if __name__=='__main__':
         plt.vlines(i-2,-2,Ny+1,ls='--',lw=1)
     for j in range(Ny+4):
         plt.hlines(j-2,-2,Nx+1,ls='--',lw=1)
-    plt.plot([0,Nx,Nx,0,0],[0,0,Ny,Ny,0],lw=4,alpha=0.4,color='b')
+    plt.plot([-1,Nx,Nx,-1,-1],[-1,-1,Ny,Ny,-1],lw=4,alpha=0.4,color='b')
 
     
     for i in range(2,Nx+2):

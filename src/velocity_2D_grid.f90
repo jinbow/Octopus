@@ -1,13 +1,14 @@
 SUBROUTINE velocity_2D_grid(x,y,z,dx,dy,dz,U,V,W)
     !== generates positions x,y,z and velocity transport U,V,W 
     use global, only : Nx,Ny,dxg_r,dyg_r,drf_r,PI
-     IMPLICIT NONE
+    IMPLICIT NONE
     INTEGER*8 :: i,j,k
     REAL*8, DIMENSION(-2:Nx+1,-2:Ny+1), INTENT(out) ::  :: U,V,W
     REAL*8, DIMENSION(-2:Nx+1,-2:Ny+1),INTENT(out) ::  :: x,y
     REAL*8, DIMENSION(-2:Nx+1,-2:Ny+1),INTENT(out) ::  :: dx,dy
     REAL*8, DIMENSION(0:Nz-1),INTENT(out) ::  :: dz
     REAL*8 :: Lx,Ly,H,a,b,z,psi0
+
     z=0.d0
     a=0.8d0
     b=1.2d0
@@ -15,6 +16,7 @@ SUBROUTINE velocity_2D_grid(x,y,z,dx,dy,dz,U,V,W)
     Ly=1.d6
     H=1.d3
     U0=5.d0
+
     do k=0:Nz-1
     dz(k)=H/float(Nz)
     enddo

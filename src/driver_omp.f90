@@ -23,6 +23,7 @@ program main
   
 #ifndef analytical
     call c_filenames()
+print*, filenames
 
     ! load z to k lookup table for mixed layer process
     call load_z_lookup_table() 
@@ -37,6 +38,7 @@ program main
 #endif
    
 #endif
+
 
     ! initilize particles on neutral density surfaces
     print*, "================================================="

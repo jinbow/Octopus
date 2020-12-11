@@ -93,6 +93,8 @@ SUBROUTINE load_3d(fn_id,irec,dout,read_flag)
      READ(fn_id,rec=i+k) dout(0:Nx-1,:,k)
      !dout(Nx:Nx+1,:,k)=dout(0:1,:,k)
      !dout(-2:-1,:,k)=dout(Nx-2:Nx-1,:,k)
+     dout(Nx:Nx+1,:,k)=0
+     dout(-2:-1,:,k)=0
   ENDDO
   !$OMP END PARALLEL DO
 END SUBROUTINE load_3d
@@ -138,7 +140,7 @@ SUBROUTINE load_uvw(irec,isw)
   !$OMP SECTION
 
 #ifdef monitoring
-  PRINT*, ifile,TRIM(path2uvw)//TRIM(filenames(ifile,1))
+PRINT*, 'ifile, path2uvw/filenames',ifile,filenames(1,:),TRIM(path2uvw)//TRIM(filenames(ifile,1))
 #endif
 
 #ifdef isArgo

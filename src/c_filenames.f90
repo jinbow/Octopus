@@ -1,9 +1,9 @@
 subroutine c_filenames()
 #include "cpp_options.h"
 
-#ifdef one_file_per_step
     use global, only: filenames,Nrecs,filename_increment,FnPartiInit
     implicit none
+#ifdef one_file_per_step
     character(len=5) :: fnn
     character(len=5) :: variables(6)
     integer*8 :: i,j
@@ -21,7 +21,13 @@ subroutine c_filenames()
         ENDDO
     ENDDO
     print*, "filename(1,1) c_filename",trim(filenames(1,1))
-
 #endif
+
+#ifdef stationary_velocity
+filenames(:,1)="UVEL.data"
+filenames(:,2)="VVEL.data"
+filenames(:,3)="WVEL.data"
+#endif
+
 
 end subroutine c_filenames

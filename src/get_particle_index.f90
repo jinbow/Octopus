@@ -4,7 +4,7 @@ subroutine find_index(ip,IPP)
     integer*8, intent(in) :: ip,IPP
     real*8 :: x
 
-        x=mod(xyz(ip,1,IPP),real(Nx-1,8))
+        x=mod(xyz(ip,1,IPP),real(Nx,8))
 
         xyz(ip,3,IPP) = min(abs(xyz(ip,3,IPP)),real(Nz-1,8))
         xyz(ip,2,IPP) = min(abs(xyz(ip,2,IPP)),real(Ny-1,8))

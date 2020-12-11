@@ -21,7 +21,7 @@ subroutine read_namelist()
 #endif
 
     namelist /PARAM/ casename,path2uvw,path2grid,&
-        dt,tend,&
+        dt,tend,Fn_UVEl,fn_VVEL,&
         pickup,pickupFreq,saveFreq,diagFreq,tstart,FnPartiInit,&
         target_density,dt_reinit,dt_mld,dt_case,&
         Khdiff,Kvdiff,NPP,Npts,output_dir,fn_PHIHYD,fn_MLD,DumpClock

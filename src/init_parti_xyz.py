@@ -6,6 +6,7 @@ August 26, 2015 """
 
 from numpy import *
 import sys
+import numpy as np
 
 def test():
     center=r_[1500,107,25].reshape(-1,3)
@@ -15,6 +16,17 @@ def test():
     fn = 'particle_initial_xyz.bin'
     xyz.T.astype('>f8').tofile(fn)
     return
+
+def test_transport2():
+    npts=40
+    xyz=zeros((npts,3))
+    xyz[:,0]=np.linspace(0.1,99.8,npts)
+    xyz[:,1]=50
+    
+    fn = 'test_transport2.bin'
+    xyz.T.astype('>f8').tofile(fn)
+    return
+
 
 def test_transport():
     """
@@ -47,5 +59,4 @@ def test_transport():
 
 
 if __name__=='__main__':
-    npts=100  #the number of particles
-    test_transport()
+    test_transport2()

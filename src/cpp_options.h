@@ -10,7 +10,8 @@
 #undef jump_looping
 #undef periodic_x
 #undef monitoring
-#define one_file_per_step
-#undef stationary_velocity
+#undef one_file_per_step
+#define stationary_velocity
 #define transport
-#define analytical
+#undef analytical
+#define twoDimensional
