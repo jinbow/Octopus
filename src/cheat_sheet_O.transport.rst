@@ -66,3 +66,8 @@ This code is configured for testing 2D velocity generated from an analytical fun
    1. dt is the time step used in the rk4 integration. Smaller value leads to more accurate trajectories. Default is 1min .  
    1. Change the tend, i.e., the total running time. 
    1. saveFreq (in seconds), default is 2 hours. 
+
+1. postprocess:
+    1. Run 'python glue_xy_opt_data.py'
+    1. Change directory to test_grid/ using "cd test_grid/"
+    1. Run 'python p_xy.py' to visulize the results.
