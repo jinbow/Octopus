@@ -1,4 +1,4 @@
-#undef saveTSG
+#define saveTSG
 #undef isArgo
 #undef saveArgoProfile
 #undef isGlider
@@ -10,5 +10,5 @@
 #undef jump_looping
 #undef periodic_x
 #undef monitoring
-#define one_file_per_step
+#undef one_file_per_step
 #undef stationary_velocity

@@ -38,7 +38,7 @@ module global
     !grid
     REAL*8, DIMENSION(-2:Nx+1,0:Ny-1) :: dxg_r, dyg_r
     REAL*8, DIMENSION(-1:Nz):: drf_r
-    REAL*8 :: z2k(5701), k2z(0:420)
+    REAL*8 :: z2k(5701), k2z(0:1040)
 
     !timing parameters
     integer*8 :: saveFreq, diagFreq,iswitch,count_step=0,rec_num

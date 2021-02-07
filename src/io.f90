@@ -4,7 +4,7 @@ SUBROUTINE load_z_lookup_table()
 #ifdef use_mixedlayer_shuffle
   USE global, ONLY: z2k,k2z,path2uvw
   IMPLICIT NONE
-  REAL*4::tmp(5701),tmp1(0:420)
+  REAL*4::tmp(5701),tmp1(0:1040)
   OPEN(63,file='../data/z_to_k_lookup_table.bin',&
        form='unformatted',access='direct',convert='BIG_ENDIAN',&
        status='old',recl=4*5701)
@@ -109,7 +109,7 @@ SUBROUTINE load_uvw(irec,isw)
   read_flag=1 ! 1--> read all vertical levels, selective otherwise
 
 #ifdef monitoring
-  PRINT*, "----load uvw at irec,mod(irec,Nrecs),iswitch",irec,i,isw
+  PRINT*, "----load uvw at irec,mod(irec,Nrecs),iswitch",irec,mod(irec,Nrecs),isw
 #endif
 
 
@@ -121,6 +121,8 @@ SUBROUTINE load_uvw(irec,isw)
   i=1 !always read the first record if the file only contains one step
 #else
 
+  ifile=1 !if all records are saved in one file, the program always reads filename(1,i)
+
 #ifdef stationary_velocity
   i=1
 #else
@@ -130,7 +132,6 @@ SUBROUTINE load_uvw(irec,isw)
   ENDIF
 #endif
 
-  ifile=1 !if all records are saved in one file, the program always reads filename(1,i)
 
 #endif
 
@@ -153,6 +154,10 @@ SUBROUTINE load_uvw(irec,isw)
   ENDDO
 
 
+#ifdef monitoring
+    PRINT*, "next load ",TRIM(path2uvw)//TRIM(filenames(ifile,1))
+#endif
+
   CALL load_3d(fn_uvwtsg_ids(1),i,uu(:,0:Ny-1,:,isw),read_flag)
   uu(:,:,-1,isw)=uu(:,:,0,isw)
   uu(:,:,Nz,isw)=uu(:,:,Nz-1,isw)
@@ -161,6 +166,9 @@ SUBROUTINE load_uvw(irec,isw)
   uu(Nx:Nx+1,:,:,isw)=uu(0:1,:,:,isw)
 #endif
 
+#ifdef monitoring
+    PRINT*, "next load ",TRIM(path2uvw)//TRIM(filenames(ifile,2))
+#endif
   !$OMP SECTION
   CALL load_3d(fn_uvwtsg_ids(2),i,vv(:,0:Ny-1,:,isw),read_flag)
   vv(:,:,-1,isw)=vv(:,:,0,isw)
@@ -175,6 +183,9 @@ SUBROUTINE load_uvw(irec,isw)
 #endif
 
   !$OMP SECTION
+#ifdef monitoring
+    PRINT*, "next load ",TRIM(path2uvw)//TRIM(filenames(ifile,3))
+#endif
 #ifndef isArgo
   CALL load_3d(fn_uvwtsg_ids(3),i,ww(:,0:Ny-1,:,isw),read_flag)
   ww(:,:,-1,isw)=-1d-5 !reflective surface ghost cell 
@@ -210,7 +221,7 @@ SUBROUTINE load_tsg(irec,isw)
 #ifndef isArgo
 
   USE global, ONLY : fn_uvwtsg_ids,Nx,Ny,Nz,uu,path2uvw,filenames,&
-       vv,ww,theta,gam,salt,Nrecs
+       vv,ww,theta,gam,salt,Nrecs,fn_GAMMA
 
   IMPLICIT NONE
   INTEGER*8, INTENT(in) :: irec,isw
@@ -257,13 +268,19 @@ SUBROUTINE load_tsg(irec,isw)
 
 #ifndef isGlider
   !$OMP SECTION
-  CALL load_3d(fn_uvwtsg_ids(6),i,gam(:,:,:,isw),read_flag)
+  IF (fn_GAMMA .EQ. '') THEN
+    gam=0
+  ELSE
+    CALL load_3d(fn_uvwtsg_ids(6),i,gam(:,:,:,isw),read_flag)
 
-  gam(:,:,-1,isw)=gam(:,:,0,isw)
-  gam(:,:,Nz,isw)=gam(:,:,Nz-1,isw)
+    gam(:,:,-1,isw)=gam(:,:,0,isw)
+    gam(:,:,Nz,isw)=gam(:,:,Nz-1,isw)
 
   WHERE(gam(:,:,:,isw)<20) gam(:,:,:,isw)=0d0
+  ENDIF
+
   PRINT*, "====>> load GAMMA", irec, "min() =", MINVAL(gam(:,:,:,isw))
+
 #endif
 
 

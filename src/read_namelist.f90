@@ -20,11 +20,22 @@ subroutine read_namelist()
     namelist /PARAMA/ parking_time,surfacing_time,parking_depth,max_depth
 #endif
 
+#ifdef one_file_per_step
     namelist /PARAM/ casename,path2uvw,path2grid,&
         dt,tend,&
         pickup,pickupFreq,saveFreq,diagFreq,tstart,FnPartiInit,&
         target_density,dt_reinit,dt_mld,dt_case,&
         Khdiff,Kvdiff,NPP,Npts,output_dir,fn_PHIHYD,fn_MLD,DumpClock
+#else
+    namelist /PARAM/ casename,path2uvw,path2grid,&
+        dt,tend, fn_UVEL, fn_VVEL, fn_WVEL, fn_THETA, fn_SALT, fn_GAMMA,&
+        pickup,pickupFreq,saveFreq,diagFreq,tstart,FnPartiInit,&
+        target_density,dt_reinit,dt_mld,dt_case,&
+        Khdiff,Kvdiff,NPP,Npts,output_dir,fn_PHIHYD,fn_MLD,DumpClock
+#endif
+
+
+
 
     OPEN (UNIT=212, FILE='data.nml')
     read (212,NML=PARAM) !from the namelist file

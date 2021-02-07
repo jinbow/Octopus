@@ -16,8 +16,8 @@ def case_test(npts=2):
     xyz[:,1]= 15 #constant y
     xyz[:,2]=2 # at k=20 level, z level will be overwritten if the target_density in the namelist is larger than 0.
 
-    xyz[:,0] = 100.0
-    xyz[:,1] = linspace(200,220,npts)
+    xyz[:,0] = 1000.0
+    xyz[:,1] = linspace(100,1801,npts)
     xyz[:,2] = 0
 
     xyz.T.astype('>f8').tofile('particle_init.bin') #the saving sequence should be x[:], y[:], z[:], not [x1,y1,z1],[x2,y2,z2]...
@@ -26,4 +26,4 @@ def case_test(npts=2):
 
 
 if __name__=='__main__':
-    case_test(npts=2)
+    case_test(npts=20)
