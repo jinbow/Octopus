@@ -82,4 +82,6 @@ module global
     integer*8, allocatable :: save_glider_FnIDs(:,:)
 #endif
 
+    integer*8 :: barrier_north, barrier_south, barrier_east, barrier_west
+
 end module global

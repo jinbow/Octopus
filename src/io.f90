@@ -368,7 +368,7 @@ SUBROUTINE save_data(IPP)
   INTEGER*8 :: iwrite,ip
   INTEGER*8,INTENT(in) :: IPP
 
-  iwrite=INT(tt/DumpClock)+1
+  iwrite=INT(tt/DumpClock)
 
   WRITE(fn,"(I10.10)") iwrite
   WRITE(fn1,"(I4.4)") IPP

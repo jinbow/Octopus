@@ -12,3 +12,5 @@
 #undef monitoring
 #undef one_file_per_step
 #undef stationary_velocity
+#define barrier_lon
+#undef barrier_lat

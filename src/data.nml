@@ -28,4 +28,8 @@ pickupFreq=86400000,
 Khdiff=5,
 Kvdiff=1e-5,
 DumpClock=3600,
+barrier_east=1000,
+barrier_west=100,
+barrier_north=400,
+barrier_south=10,
 /

@@ -5,7 +5,8 @@ subroutine find_particle_uvw(t_amend,ip,IPP,t0,t1,uvw)
         dxg_r,dyg_r,drf_r,dtp,&
         uu,vv,ww,tt,uvwp, &
         pi2f,pj2f,pk2f,pi2c,pj2c,pk2c, &
-        dif, djf, dkf, dic, djc, dkc
+        dif, djf, dkf, dic, djc, dkc, &
+        barrier_north,barrier_south,barrier_west,barrier_east
 
 !===============================================
 ! d?f represents the distance to the grid faces, western side for i and southern side for j
@@ -32,6 +33,19 @@ subroutine find_particle_uvw(t_amend,ip,IPP,t0,t1,uvw)
         tamend=t_amend
         deltat=dtp+t_amend
     endif
+
+#ifdef barrier_lon
+    if (xyz(ip,1,IPP)>barrier_east .or. xyz(ip,1,IPP)<barrier_west) then
+      uvw(:)=0.0
+    else
+#endif
+
+#ifdef barrier_lat
+    if (xyz(ip,2,IPP)>barrier_north .or. xyz(ip,2,IPP)<barrier_south) then
+      uvw(:)=0.0
+    else
+#endif
+
 
 #ifdef isGlider
     call get_glider_velocity(uvw_g,ip,IPP)
@@ -92,5 +106,13 @@ endif
     uvw=uvw*dxyz_fac
 #endif
 
+
+#ifdef barrier_lat
+    endif
+#endif
+
+#ifdef barrier_lon
+    endif
+#endif
 
 end subroutine find_particle_uvw

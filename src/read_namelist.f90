@@ -25,14 +25,16 @@ subroutine read_namelist()
         dt,tend,&
         pickup,pickupFreq,saveFreq,diagFreq,tstart,FnPartiInit,&
         target_density,dt_reinit,dt_mld,dt_case,&
-        Khdiff,Kvdiff,NPP,Npts,output_dir,fn_PHIHYD,fn_MLD,DumpClock
+        Khdiff,Kvdiff,NPP,Npts,output_dir,fn_PHIHYD,fn_MLD,DumpClock,&
 #else
     namelist /PARAM/ casename,path2uvw,path2grid,&
         dt,tend, fn_UVEL, fn_VVEL, fn_WVEL, fn_THETA, fn_SALT, fn_GAMMA,&
         pickup,pickupFreq,saveFreq,diagFreq,tstart,FnPartiInit,&
         target_density,dt_reinit,dt_mld,dt_case,&
-        Khdiff,Kvdiff,NPP,Npts,output_dir,fn_PHIHYD,fn_MLD,DumpClock
+        Khdiff,Kvdiff,NPP,Npts,output_dir,fn_PHIHYD,fn_MLD,DumpClock,&
 #endif
+        barrier_north,barrier_south,barrier_east,barrier_west
+
 
 
 
