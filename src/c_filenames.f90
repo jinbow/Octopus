@@ -16,7 +16,7 @@ subroutine c_filenames()
     !Use space to make sure " " has the same length as declared above, len=5 in this case. (There should be a clever way doing
     !this.)
 
-    variables=(/"U    ","V    ","W    ","T    ","S    ","G    "/)
+    variables=(/"U    ","V    ","W    ","Theta","Salt ","GAMMA"/)
 
     !The variable 'filenames' is a two-dimensional array contaning the filenames for all variables at all steps. 
     !The first dimension in filenames(i,j) corresponds to the number of files/steps for each varaible. Dimension size = Nrecs.
@@ -24,10 +24,10 @@ subroutine c_filenames()
     !U/V/W/T/S/G where 'G' is neutral density. It was used in a paper related to DIMES where we release particles on a neutral
     !density surface. You can leave fn_GAMMA ='', G will not be used. 
     DO i = 1, Nrecs
-        write(fnn,"(I5.5)") i*filename_increment+4060
+        write(fnn,"(I5.5)") i*filename_increment+5760
         DO j = 1, 6
-            !filenames(i,j) = trim(variables(j))//'/'//trim(variables(j))//"_90x300x640_"//trim(fnn)//'.data'
-            filenames(i,j) = "rot_"//trim(variables(j))//"_"//trim(fnn)//'.bin'
+            filenames(i,j) = trim(variables(j))//'/'//trim(variables(j))//"_90x300x640_"//trim(fnn)//'.data'
+            !filenames(i,j) = "rot_"//trim(variables(j))//"_"//trim(fnn)//'.bin'
         ENDDO
     ENDDO
     print*, "filename(1,1) c_filename",trim(filenames(1,1))

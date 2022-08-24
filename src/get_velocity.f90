@@ -106,6 +106,12 @@ endif
     uvw=uvw*dxyz_fac
 #endif
 
+if (ip==1) then
+
+   print*, '-=-=-=-',xyz(ip,:,IPP)
+
+endif
+
 
 #ifdef barrier_lat
     endif

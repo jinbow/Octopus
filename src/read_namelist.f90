@@ -13,7 +13,9 @@ subroutine read_namelist()
     implicit none
 
 #ifdef isGlider
-    namelist /PARAMG/ parking_time,surfacing_time,dive_depth,absv
+    namelist /PARAMG/ parking_time,surfacing_time,&
+                      dive_depth,fixedangle,absv,&
+                      uv_factor,w_factor
 #endif
 
 #ifdef isArgo
@@ -49,7 +51,7 @@ subroutine read_namelist()
     read (212,NML=PARAMG) !from the namelist file
     close(212)
 
-    print*, '====', dive_depth,parking_time
+    print*, '====', dive_depth,parking_time,fixedangle
 
 #endif
 

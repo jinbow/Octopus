@@ -5,7 +5,9 @@ subroutine get_glider_velocity(uvw_g,ip,IPP)
     use global, only : tt,dt,xyz,glider_clock,glider_position,&
                        parking_time,surfacing_time,SNPP,&
                        dive_depth,save_glider_FnIDs,glider_cycle,&
-                       output_dir,glider_uv,glider_angle,absv
+                       output_dir,glider_uv,glider_angle,absv,fixedangle,&
+                       target_switch
+
        !add noise to the vertical velocity
        !call random_number(tmp0)
        !tmp0=(tmp0-0.5)*0.05
@@ -20,6 +22,7 @@ subroutine get_glider_velocity(uvw_g,ip,IPP)
     integer*8 :: i
     real*8 :: i0,i1,j0,j1,dx,dy,glider_direction,&
               ia,angle,gu,gw,dist
+    real*8 :: dis1,dis2
 
     angle=glider_angle(ip,IPP)
     gw=absv*sin(angle/180.0*3.1415926)
@@ -36,11 +39,42 @@ subroutine get_glider_velocity(uvw_g,ip,IPP)
     i0=glider_position(ip,1,IPP) !- old position
     j0=glider_position(ip,2,IPP) !- old position
 
-    i1=glider_position(ip,3,IPP) !- target position
-    j1=glider_position(ip,4,IPP) !- target position
+    
+    ! if glider reaches one target within certain distance, turn to another target
+
+    dis1=((i0-glider_position(ip,3,IPP))**2+(j0-glider_position(ip,4,IPP))**2 )**0.5
+    dis2=((i0-glider_position(ip,5,IPP))**2+(j0-glider_position(ip,6,IPP))**2 )**0.5
+
+    if (target_switch(ip,IPP)==1) then
+           i1=glider_position(ip,3,IPP) !- target position
+           j1=glider_position(ip,4,IPP) !- target position
+    else
+           i1=glider_position(ip,5,IPP) !- target position
+           j1=glider_position(ip,6,IPP) !- target position
+    endif
 
 
-#if dive_angle==adjustable
+    if (target_switch(ip,IPP)==1 .and. dis1<0.3) then
+           print*, "=========== switch target from 1 to 2"
+           target_switch(ip,IPP)=2 
+           i1=glider_position(ip,5,IPP) !- target position
+           j1=glider_position(ip,6,IPP) !- target position
+    endif
+
+    if (target_switch(ip,IPP)==2 .and. dis2<0.3) then
+           print*, "=========== switch target from 2 to 1"
+           target_switch(ip,IPP)=1 
+           i1=glider_position(ip,3,IPP) !- target position
+           j1=glider_position(ip,4,IPP) !- target position
+    endif
+
+
+
+    if (ip==1) then
+    print*, "target============",target_switch(ip,IPP), i0,j0,i1,j1,glider_uv(ip,:,IPP)
+    endif
+
+#ifdef dive_angle_adjustable
     dist=sqrt((real(i1-i0,8))**2+(real(j1-j0,8))**2)
     if (dist>3) then
         glider_angle(ip,IPP)=30.0
@@ -50,15 +84,18 @@ subroutine get_glider_velocity(uvw_g,ip,IPP)
     gw=absv*sin(angle/180.0*3.1415926)
     gu=absv*cos(angle/180.0*3.1415926)
 #else
-    glider_angle(ip,IPP)=60.0
+    glider_angle(ip,IPP)=fixedangle
     gw=absv*sin(angle/180.0*3.1415926)
     gu=absv*cos(angle/180.0*3.1415926)
 #endif
     
-    glider_direction=atan(real(abs(j1-j0))/real(abs(i1-i0)))
-
-    glider_uv(ip,1,IPP)=gu * sign( cos(glider_direction), i1-i0)
-    glider_uv(ip,2,IPP)=gu * sign( sin(glider_direction), j1-j0)
+    if ( j1==j0 .and. i1==i0) then
+        glider_uv(ip,1:2,IPP)=0.0
+    else
+        glider_direction=atan(real(abs(j1-j0))/real(abs(i1-i0)))
+        glider_uv(ip,1,IPP)=gu * sign( cos(glider_direction), i1-i0)
+        glider_uv(ip,2,IPP)=gu * sign( sin(glider_direction), j1-j0)
+    endif
 
     !ia=0 indicates the instrument is at surface
     !save the position and start to descend
@@ -120,26 +157,28 @@ subroutine get_glider_velocity(uvw_g,ip,IPP)
             glider_position(ip,2,IPP)=xyz(ip,2,IPP)
 
 !==>  close data file
-            close(save_glider_FnIDs(ip,IPP))
+            !close(save_glider_FnIDs(ip,IPP))
 
 !==> reopen new data file
 
             glider_cycle(ip,IPP)=glider_cycle(ip,IPP)+1
-            write(id_str,"(I6.6)") ip
-            write(IPP_str,"(I6.6)") IPP
-            write(cycle_str,"(I6.6)") glider_cycle(ip,IPP)
+            !write(id_str,"(I6.6)") ip
+            !write(IPP_str,"(I6.6)") IPP
+            !write(cycle_str,"(I6.6)") glider_cycle(ip,IPP)
 
-            glider_fn=trim(output_dir)//"G.IPP."//IPP_str//".ip."//id_str//".cycle."//trim(cycle_str)//".data"
+            !glider_fn=trim(output_dir)//"G.IPP."//IPP_str//".ip."//id_str//".cycle."//trim(cycle_str)//".data"
+            !glider_fn=trim(output_dir)//"G.IPP."//IPP_str//".ip."//id_str
 
-            open(save_glider_FnIDs(ip,IPP),file=trim(glider_fn),&
-                form='formatted',access='append',&
-                status='new')
+            !open(save_glider_FnIDs(ip,IPP),file=trim(glider_fn),&
+            !    form='formatted',access='append',&
+            !    status='unknown')
             uvw_g(3) = gw
         endif
 
     endif
 
     uvw_g(1:2)=glider_uv(ip,:,IPP)
+
 #endif
 
 end subroutine get_glider_velocity

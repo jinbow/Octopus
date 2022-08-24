@@ -56,7 +56,7 @@ module global
     CHARACTER (len=64) :: casename,path2uvw,path2grid,FnPartiInit,output_dir,fn_phihyd,fn_mld
     CHARACTER (len=64) :: fn_UVEL,fn_VVEL,fn_WVEL,fn_THETA,fn_SALT,fn_GAMMA
 
-    CHARACTER (len=64), dimension(Nrecs, Nvar2read) :: filenames
+    CHARACTER (len=128), dimension(Nrecs, Nvar2read) :: filenames
 
     !mixing parameters
     REAL*8 :: Khdiff, Kvdiff, kvdt2, khdt2
@@ -77,8 +77,8 @@ module global
 #ifdef isGlider
     real*8 :: parking_time=1,surfacing_time=60
     real*8, ALLOCATABLE :: glider_clock(:,:,:),glider_position(:,:,:),glider_uv(:,:,:),glider_angle(:,:)
-    integer*8, ALLOCATABLE :: glider_cycle(:,:)
-    real*8 :: dive_depth,absv
+    integer*8, ALLOCATABLE :: glider_cycle(:,:),target_switch(:,:)
+    real*8 :: dive_depth,absv,fixedangle,uv_factor=1.0,w_factor=1.0
     integer*8, allocatable :: save_glider_FnIDs(:,:)
 #endif
 

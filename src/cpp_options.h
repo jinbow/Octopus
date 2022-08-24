@@ -9,8 +9,8 @@
 #undef reflective_meridional_boundary
 #undef jump_looping
 #undef periodic_x
-#undef monitoring
-#undef one_file_per_step
+#define monitoring
+#define one_file_per_step
 #undef stationary_velocity
-#define barrier_lon
+#undef barrier_lon
 #undef barrier_lat

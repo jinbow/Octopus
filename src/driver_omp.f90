@@ -49,9 +49,9 @@ program main
        do i=1,Npts
             write(id_str,"(I6.6)") i
             write(IPP_str,"(I6.6)") IPP
-            glider_fn=trim(output_dir)//"G.IPP."//IPP_str//".ip."//id_str//".cycle.000000.data"
+            glider_fn=trim(output_dir)//"G.IPP."//IPP_str//".ip."//id_str
             open(save_glider_FnIDs(i,IPP),file=trim(glider_fn),&
-                form='formatted',access='sequential',&
+                form='formatted',access='append',&
                 status='new')
       enddo
 #endif
