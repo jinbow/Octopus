@@ -14,6 +14,7 @@ import numpy as np
 import scipy as sp
 import pylab as plt
 import os,sys
+from scipy import interpolate
 
 def reflective_boundary():
     from scipy.interpolate import NearestNDInterpolator as npi 
@@ -39,7 +40,7 @@ def reflective_boundary():
     newy=np.zeros((nz,ny,nx+20))
     
     for k in np.arange(nz):
-        print "calculating reflective boundary condition for model level",k
+        print("calculating reflective boundary condition for model level",k)
         hfc=hfac[k,...]
         hf=np.c_[hfc[:,-10:],hfc,hfc[:,:10]]
         ip=(hf.flatten()>0)
@@ -51,9 +52,9 @@ def reflective_boundary():
     
     newx[...,8:-8].astype('>f4').tofile(pth_data_out+'/reflect_x.bin')
     newy[...,8:-8].astype('>f4').tofile(pth_data_out+'/reflect_y.bin')
-    print "+"*40
-    print "  Saved files reflect_x.bin reflect_y.bin to %s "%pth_data_out
-    print "+"*40
+    print("+"*40)
+    print("  Saved files reflect_x.bin reflect_y.bin to %s "%pth_data_out)
+    print("+"*40)
     
     return
 
@@ -63,14 +64,14 @@ def z2kbin(saveplot=False):
     fn_RF=pth_data_in+'RF.data'
     try:
         z=np.fromfile(fn_RF,'>f4')
-        print "There are %i values in RF.data"%z.size
+        print("There are %i values in RF.data"%z.size)
     except:
         sys.exit(' ^o^ '*20+'%s does not exist, please double check.'%fn_RF+
                 ' ^p^ '*20)
         
     z=abs(z)
 
-    ff=sp.interpolate.interp1d(z,np.linspace(0,nz,nz+1),'linear',
+    ff=interpolate.interp1d(z,np.linspace(0,nz,nz+1),'linear',
                                bounds_error=False,fill_value=nz)
     newz = ff(np.arange(6500))
     newz.astype('>f4').tofile(pth_data_out+'z_to_k_lookup_table.bin')
@@ -92,7 +93,7 @@ def k2zbin(saveplot=False):
                 ' ^p^ '*20)
         
     z=abs(z)
-    ff=sp.interpolate.interp1d(np.linspace(0,nz,nz+1),z,'linear')
+    ff=interpolate.interp1d(np.linspace(0,nz,nz+1),z,'linear')
     newz = ff(np.linspace(0,nz,nz*10+1))
     newz.astype('>f4').tofile(pth_data_out+'k_to_z_lookup_table.bin')
     if saveplot:
@@ -104,7 +105,7 @@ def k2zbin(saveplot=False):
 def check_folder_existence():
     if not os.path.exists(pth_data_out):
         os.popen('mkdir %s'%pth_data_out)
-        print "%s does not exist, just created it for you."%pth_data_out
+        print("%s does not exist, just created it for you."%pth_data_out)
     if not os.path.exists(pth_data_in):
         sys.exit('%s does not exist, please double check.'%pth_data_in)
     return
@@ -113,20 +114,20 @@ if __name__=='__main__':
     '''change pth_data_out and pth_data_in according to your system,
        run the program using "python gen_data.py" '''
 
-    nz,ny,nx=42,320,2160 #the model grid size
+    nz,ny,nx=104,1024,1801 #the model grid size
 
-    pth_data_out='../data/' 
+    pth_data_out='/home/jiw097/sose.grid/' 
 
     #path to MITgcm grid data, i.e., DXG.data,DYG.data etc.
     #this script will look for hFacC.data and RF.data in this folder to
     #generate necessary binary files for Ocotpus
 
-    pth_data_in='../data/' 
+    pth_data_in='/home/jiw097/sose.grid/' 
 
     check_folder_existence()
  
     #generate reflect_x.bin and reflect_y.bin
-    reflective_boundary()
+    # reflective_boundary()
 
     #generate k_to_z_lookup_table.bin and 
     k2zbin()

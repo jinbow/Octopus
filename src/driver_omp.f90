@@ -9,7 +9,7 @@ program main
     integer*8 :: i,IPP
     character(len=10)     :: date,time0,time1,zone
     character(len=6)     :: id_str,IPP_str
-    character(len=255)     :: glider_fn
+    character(len=255)     :: glider_fn,argo_fn
     integer*8,dimension(8):: time
 
     CALL DATE_AND_TIME(date,time0,zone,time)
@@ -29,6 +29,9 @@ program main
    
     call load_grid()
    
+! The reflective boundary use a ad-hoc algorithm to expell particles that enter the continent.
+! This can happen if the time step is large.
+
 #ifndef isArgo
     call load_reflect()
 #endif
@@ -48,8 +51,27 @@ program main
             write(IPP_str,"(I6.6)") IPP
             glider_fn=trim(output_dir)//"G.IPP."//IPP_str//".ip."//id_str//".cycle.000000.data"
             open(save_glider_FnIDs(i,IPP),file=trim(glider_fn),&
-                form='formatted',access='append',&
+                form='formatted',access='sequential',&
                 status='new')
+      enddo
+#endif
+
+#ifdef isArgo
+       do i=1,Npts
+            write(id_str,"(I6.6)") i
+            write(IPP_str,"(I6.6)") IPP
+            argo_fn=trim(output_dir)//"A.IPP."//IPP_str//".ip."//id_str//".surfaceLoc.data"
+            !OPEN(save_argo_FnIDs(i,IPP),file=TRIM(argo_fn),&
+            !     access='sequential',form='unformatted', convert='BIG_ENDIAN',status='unknown')
+
+            OPEN(save_argo_FnIDs(i,IPP),file=TRIM(argo_fn))
+#ifdef saveArgoProfile
+            OPEN(save_argo_profileIDs(i,IPP),file=trim(output_dir)//"A.IPP."//IPP_str//".ip."//id_str//".profiles.data",&
+                 access='direct',form='unformatted', recl=6*4*4,convert='BIG_ENDIAN',status='unknown')
+#endif
+
+            WRITE(save_argo_FnIDs(i,IPP),*) real(0.0,4),REAL(xyz(i,:,IPP),4)
+
       enddo
 #endif
 
@@ -62,6 +84,7 @@ program main
     else
         iswitch=1
         call check_and_save(NPP)
+        !load the first two time steps
         call load_uvw(1,0)
         call load_uvw(2,1)
 #ifdef saveTSG
@@ -71,14 +94,13 @@ program main
 
     endif
 
-        
     do while (tt<=tend)
     print*, "tt,tend =====",tt,tend,xyz(1,1,1)
         SNPP = min(int(tt/dt_case)+1,NPP)
 
-     !   if ( mod(tt,dt_case)==0 .and. int(tt/dt_case,8)+1<=NPP) then
-     !       call init_particles(SNPP)
-     !   endif
+        if ( mod(tt,dt_case)==0 .and. int(tt/dt_case,8)+1<=NPP) then
+            call init_particles(SNPP)
+        endif
 
         do i=1,int(dt_file/dt)
             dtp = real(mod(tt,dt_file))/real(dt_file)
@@ -92,7 +114,8 @@ program main
 #endif
         enddo
 
-        if (mod(rec_num,Nrecs)==0) then
+        !reach the end of the records, start to loop velocity from the first record
+        if (mod(rec_num,Nrecs)==0) then 
             call load_uvw(1,0)
             call load_uvw(2,1)
 
@@ -117,6 +140,7 @@ program main
             iswitch=1
         else
             rec_num=rec_num+1
+
             iswitch=abs(iswitch-1)
             call load_uvw(rec_num,iswitch)
 #ifdef saveTSG
@@ -132,6 +156,16 @@ program main
     do i=1,Npts
        do IPP=1,NPP
          close(save_glider_FnIDs(i,IPP))
+       enddo
+    enddo
+#endif
+#ifdef isArgo
+    do i=1,Npts
+       do IPP=1,NPP
+         close(save_argo_FnIDs(i,IPP))
+#ifdef saveArgoProfile
+         close(save_argo_profileIDs(i,IPP))
+#endif
        enddo
     enddo
 #endif

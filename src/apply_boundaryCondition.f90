@@ -1,4 +1,6 @@
 subroutine set_boundary(IPP)
+#include "cpp_options.h"
+
     use global
     implicit none
     integer*8 :: ip
@@ -19,10 +21,13 @@ subroutine set_boundary(IPP)
         call find_index(ip,IPP)
 
         !reflective boundary condition
+
+#ifdef reflective_continent
         if (hFacC(pi2f(ip,IPP),pj2f(ip,IPP),pk2f(ip,IPP))<1e-5) then
             xyz(ip,1,IPP)=xyz(ip,1,IPP)+reflect_x(pi2f(ip,IPP),pj2f(ip,IPP),pk2f(ip,IPP)) !semi-reflective boundary
             xyz(ip,2,IPP)=xyz(ip,2,IPP)+reflect_y(pi2f(ip,IPP),pj2f(ip,IPP),pk2f(ip,IPP)) !semi-reflective boundary
         endif
+#endif
 
 
     enddo

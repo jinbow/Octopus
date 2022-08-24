@@ -1,5 +1,6 @@
 subroutine check_and_save(SNPP)
 #include "cpp_options.h"
+
     use global, only :tt,saveFreq,diagFreq,pickupFreq,&
         rec_num,dt_reinit,iswitch,pickup,count_step
     implicit none
@@ -13,7 +14,11 @@ subroutine check_and_save(SNPP)
     if (mod(count_step,saveFreq) .eq. 0) then
         t0=abs(iswitch-1)
         t1=iswitch
-        print*, "write data to files at step ",rec_num,' tt=',tt/saveFreq
+
+#ifdef monitoring
+        print*, "write data to files at step ",count_step,' tt=',tt
+#endif
+
         do IPP=1,SNPP
 
 #ifdef saveTSG
@@ -23,7 +28,9 @@ subroutine check_and_save(SNPP)
 #ifdef saveGradient
             call calc_gradient(t0,IPP)
 #endif
+
             call save_data(IPP)
+
         enddo
 
     endif
@@ -31,7 +38,7 @@ subroutine check_and_save(SNPP)
     !$OMP SECTION
 
 #ifdef monitoring
-    if (mod(tt,diagFreq) .eq. 0) then
+    if (mod(int(tt),diagFreq) .eq. 0) then
         call diag()
     endif
 #endif

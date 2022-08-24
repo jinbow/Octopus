@@ -1,12 +1,20 @@
 #define saveTSG
 #undef isArgo
+<<<<<<< HEAD
 #define isGlider
+=======
+#undef saveArgoProfile
+#undef isGlider
+>>>>>>> ea753c0ff46e8557182f32e0fdfef2146b06cf7b
 #undef reflective_continent
 #undef use_Laplacian_diffusion
 #undef use_mixedlayer_shuffle
 #undef saveGradient
 #undef reflective_meridional_boundary
 #undef jump_looping
+#undef periodic_x
 #undef monitoring
-#define one_file_per_step
+#undef one_file_per_step
 #undef stationary_velocity
+#define barrier_lon
+#undef barrier_lat

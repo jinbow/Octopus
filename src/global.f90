@@ -38,7 +38,7 @@ module global
     !grid
     REAL*8, DIMENSION(-2:Nx+1,0:Ny-1) :: dxg_r, dyg_r
     REAL*8, DIMENSION(-1:Nz):: drf_r
-    REAL*8 :: z2k(5701), k2z(0:420)
+    REAL*8 :: z2k(5701), k2z(0:1040)
 
     !timing parameters
     integer*8 :: saveFreq, diagFreq,iswitch,count_step=0,rec_num
@@ -62,7 +62,16 @@ module global
     REAL*8 :: Khdiff, Kvdiff, kvdt2, khdt2
 
 #ifdef isArgo
-    integer*8 :: argo_clock(2)=0,parking_time,surfacing_time
+    integer*8 :: parking_time=864000,surfacing_time=600,save_argo_FnID
+    real*8 :: parking_depth=20,max_depth=30
+    integer*8, DIMENSION(:,:,:), ALLOCATABLE :: argo_clock
+    integer*8, allocatable :: save_argo_FnIDs(:,:)
+
+#ifdef saveArgoProfile
+    integer*8, allocatable :: save_argo_profileIDs(:,:)
+    integer*8 :: argoprofilerec=1
+#endif
+
 #endif
 
 #ifdef isGlider
@@ -72,5 +81,7 @@ module global
     real*8 :: dive_depth,absv
     integer*8, allocatable :: save_glider_FnIDs(:,:)
 #endif
+
+    integer*8 :: barrier_north, barrier_south, barrier_east, barrier_west
 
 end module global
