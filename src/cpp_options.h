@@ -1,6 +1,6 @@
-#undef saveTSG
-#define isArgo
-#undef isGlider
+#define saveTSG
+#undef isArgo
+#define isGlider
 #undef reflective_continent
 #undef use_Laplacian_diffusion
 #undef use_mixedlayer_shuffle
