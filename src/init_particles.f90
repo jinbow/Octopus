@@ -9,6 +9,7 @@ subroutine init_particles(IPP)
 
     implicit none
     integer*8, intent(in):: IPP
+    real*8 :: glider_target(4,Npts)
 
         print*, "initialize particles for case", IPP
 
@@ -18,9 +19,6 @@ subroutine init_particles(IPP)
         read(FnPartiInitId,rec=1) xyz(:,:,IPP)
         close(FnPartiInitId)
 
-print*, "initial x",xyz(:,1,IPP)
-print*, "initial y",xyz(:,2,IPP)
-print*, "initial z",xyz(:,3,IPP)
 
 #ifdef isArgo
         xyz(:,3,IPP)=0
@@ -33,20 +31,28 @@ print*, "initial z",xyz(:,3,IPP)
        !xyz(2,1,IPP)= 99.9
        !xyz(2,2,IPP)= 199.9
 
-       glider_position(:,3,IPP)=xyz(:,1,IPP)
-       glider_position(:,4,IPP)=xyz(:,2,IPP)
+        open(FnPartiInitId,file='glider_target.txt',form='formatted',&
+            access='sequential',status='old')
+        read(FnPartiInitId,'(F7.4,1X,F7.4,1X,F7.4,1X,F7.4)') glider_target
+        close(FnPartiInitId)
 
-       xyz(:,1:2,IPP)=xyz(:,1:2,IPP)+0.01
+       print*, "**** Read glider_target.txt"
+       print*, "**** Glider targets are ", glider_target
+
+       glider_position(:,3:6,IPP)=transpose(glider_target)
+
+       !xyz(:,1:2,IPP)=xyz(:,1:2,IPP) !+0.01
        !xyz(1,1:2,IPP)=2
-       glider_position(:,1,IPP)=xyz(:,1,IPP)
-       glider_position(:,2,IPP)=xyz(:,2,IPP)
 
+       glider_position(:,1:2,IPP)=glider_position(:,3:4,IPP)
 
-       
+       xyz(:,1:2,IPP)=glider_position(:,3:4,IPP)
+
+       target_switch(:,IPP)=1
 
        glider_clock(:,1,IPP)=0
        glider_cycle(:,:)=0
-       glider_angle(:,:)=60
+       glider_angle(:,:)=fixedangle
 
 #endif
 
